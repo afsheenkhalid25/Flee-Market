@@ -2,7 +2,6 @@ package fuuast.fyp.fleamarket;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -20,17 +18,15 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Login extends ActionBarActivity {
+public class Login extends ActionBarActivity implements View.OnClickListener{
 
-    Firebase fb;
+    private Firebase fb;
+    private String email_id,password,ac_type=null;
+    private EditText et_email,et_pass;
+    private ImageView img_login;
+    private ArrayList array_list;
 
-    String email_id,password,message=null,ac_type=null;
-
-    EditText et_email,et_pass;
-    ImageView img;
-    ArrayList array_list;
-
-    ProgressDialog pd;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,36 +37,35 @@ public class Login extends ActionBarActivity {
         fb = new Firebase("https://flee-market.firebaseio.com/");
         array_list = new ArrayList();
 
-        pd = new ProgressDialog(Login.this);
+        progressDialog = new ProgressDialog(Login.this);
 
-        et_email = (EditText) findViewById(R.id.email);
-        et_pass = (EditText) findViewById(R.id.password);
+        et_email = (EditText) findViewById(R.id.login_et_email);
+        et_pass = (EditText) findViewById(R.id.login_et_password);
 
-        img = (ImageView) findViewById(R.id.img2);
-        img.setOnClickListener(new img_OnClickListener());
+        img_login = (ImageView) findViewById(R.id.login_img_login);
+        img_login.setOnClickListener(this);
     }
 
-    public class img_OnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v)
-        {            
-            email_id = et_email.getText().toString();
-            password = et_pass.getText().toString();
+    @Override
+    public void onClick(View view) {
+        email_id = et_email.getText().toString();
+        password = et_pass.getText().toString();
 
-            if (email_id.equals("") || password.equals("")){
-                 Toast.makeText(Login.this, "Please Enter Complete Details", Toast.LENGTH_SHORT).show();}
-            else
-                Login();
-        }
+        if (email_id.equals("") || password.equals("")){
+            Toast.makeText(Login.this, "Please Enter Complete Details", Toast.LENGTH_SHORT).show();}
+        else
+            Login();
     }
 
     public void Login()
     {
-        img.setEnabled(false);
-        pd.setMessage("\tProcessing...");
-        pd.setCancelable(false);
-        pd.setCanceledOnTouchOutside(false);
-        pd.show();
+        img_login.setEnabled(false);
+        et_email.setEnabled(false);
+        et_pass.setEnabled(false);
+        progressDialog.setMessage("\tProcessing...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         fb.authWithPassword(email_id, password, new Firebase.AuthResultHandler()
         {
             @Override
@@ -104,22 +99,26 @@ public class Login extends ActionBarActivity {
 
                         if (ac_type.equals("Admin")) {
                             //....Admin Panel.....
-                            pd.dismiss();
+                            progressDialog.dismiss();
                             Intent i=new Intent(Login.this,AdminPanel.class);
                             startActivity(i);
                         }else if (ac_type.equals("Shopkeeper")) {
                             //....Shopkeeper Panel.....
-                            pd.dismiss();
+                            progressDialog.dismiss();
                             Toast.makeText(Login.this, "Welcome to Shopkeeper Panel", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
-                        pd.dismiss();
-                        message = firebaseError.getMessage();
-                        Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
-                        img.setEnabled(true);
+                        Log.d("LOGIN TASK........","ON CANCELLED "+firebaseError.getMessage());
+                        progressDialog.dismiss();
+                        Toast.makeText(Login.this, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        et_email.setText("");
+                        et_pass.setText("");
+                        img_login.setEnabled(true);
+                        et_email.setEnabled(true);
+                        et_pass.setEnabled(true);
                     }
 
                 });
@@ -127,11 +126,14 @@ public class Login extends ActionBarActivity {
 
             @Override
             public void onAuthenticationError(FirebaseError error) {
-                Log.d("LOGIN TASK........","ON ERROR");
-                pd.dismiss();
-                message = error.getMessage();
-                Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
-                img.setEnabled(true);
+                Log.d("LOGIN TASK........","ON ERROR"+error);
+                progressDialog.dismiss();
+                Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                et_email.setText("");
+                et_pass.setText("");
+                et_email.setEnabled(true);
+                et_pass.setEnabled(true);
+                img_login.setEnabled(true);
             }
 
         });
