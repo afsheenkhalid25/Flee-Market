@@ -1,0 +1,238 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateAccount">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/ic_action_user_add"
+        android:clickable="true"
+        android:id="@+id/img3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#ff00b2ff"
+        android:id="@+id/linearLayout"
+        android:gravity="right" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Create Account"
+            android:textColor="#FFFFFF"
+            android:textSize="23dp"
+            android:padding="10dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_done"
+            android:clickable="true"
+            android:id="@+id/img"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/linearLayout">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:paddingLeft="40dp"
+          android:paddingRight="40dp"
+          android:paddingTop="20dp"
+          android:paddingBottom="20dp"
+          android:id="@+id/linearLayout3">
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/txt6"
+                android:textSize="15dp"
+                android:text="Type"/>
+
+            <Spinner
+                android:layout_width="219dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:id="@+id/txt1"
+                android:textSize="15dp"
+                android:text="Name"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/et_name"
+                android:inputType="textCapWords"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt2"
+                android:layout_marginTop="1dp"
+                android:textSize="15dp"
+                android:text="Email ID"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/et_email"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:id="@+id/txt3"
+                android:textSize="15dp"
+                android:text="Password"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/et_password"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:id="@+id/txt4"
+                android:textSize="15dp"
+                android:text="Re-Enter Password"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/et_repassword"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/txt5"
+                android:textSize="15dp"
+                android:text="Phone No"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/et_phone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/txt7"
+                android:textSize="15dp"
+                android:text="Address" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/et_address" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/txt8"
+                android:textSize="15dp"
+                android:text="NIC" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/et_nic" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="5dp"
+                 android:id="@+id/txt9"
+                 android:textSize="15dp"
+                 android:text="Organization Name"/>
+
+             <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="1dp"
+                 android:inputType="text"
+                 android:ems="10"
+                 android:id="@+id/et_org_name" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="5dp"
+                 android:id="@+id/txt10"
+                 android:textSize="15dp"
+                 android:text="Organization contact" />
+
+             <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="1dp"
+                 android:inputType="phone"
+                 android:ems="10"
+                 android:id="@+id/et_org_cntct" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="5dp"
+                 android:id="@+id/txt11"
+                 android:textSize="15dp"
+                 android:text="Organization Type"
+                 android:visibility="visible" />
+
+             <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="1dp"
+                 android:inputType="text"
+                 android:ems="10"
+                 android:id="@+id/et_org_type"
+                 android:visibility="visible" />
+
+      </LinearLayout>
+
+   </ScrollView>
+
+</RelativeLayout>
