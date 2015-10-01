@@ -30,7 +30,10 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
             public void onMapClick(LatLng latLng) {
                 lat= ""+latLng.latitude;
                 lon= ""+latLng.longitude;
-
+                GetAddress objGetAddress=new GetAddress(CreateMarket.this,Double.parseDouble(lat),Double.parseDouble(lon));
+                objGetAddress.get();
+                while (objGetAddress.parsingComplete);
+                address=objGetAddress.getCity();
             }
         });
     }
