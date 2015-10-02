@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#ff00b2ff"
-        android:id="@+id/linearLayout"
-        android:gravity="right" >
+        android:background="@color/material_blue_grey_800"
+        android:gravity="right"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,36 +21,37 @@
             android:textColor="#FFFFFF"
             android:textSize="23dp"
             android:padding="10dp"
+            android:textStyle="bold"
             android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_overflow"
             android:clickable="true"
-            android:id="@+id/img2"
-            android:onClick="showPopup"/>
+            android:paddingRight="10dp"
+            android:id="@+id/adminpanel_img_options"
+            android:onClick="showPopup" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:paddingTop="20dp"
         android:id="@+id/relativeLayout"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:padding="10dp"
+        android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@color/material_grey_300">
 
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="150dp"
-            android:src="@drawable/ic_launcher"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/profilepic"
             android:clickable="true"
-            android:id="@+id/img1"
-            android:layout_alignParentTop="true"
+            android:id="@+id/adminpanel_img_profilepic"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -59,67 +60,71 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Name"
-            android:id="@+id/textView"
-            android:paddingTop="10dp"
+            android:id="@+id/adminpanel_tv_name"
             android:paddingLeft="10dp"
-            android:layout_alignTop="@+id/img1"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignTop="@+id/adminpanel_img_profilepic"
+            android:layout_toRightOf="@+id/adminpanel_img_profilepic"
+            android:layout_toEndOf="@+id/adminpanel_img_profilepic" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Email_Id"
-            android:id="@+id/textView2"
-            android:paddingTop="10dp"
+            android:id="@+id/adminpanel_tv_email"
             android:paddingLeft="10dp"
-            android:layout_below="@+id/textView"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#ff00b2ff"
-        android:id="@+id/linearLayout5"
-        android:gravity="right"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+            android:layout_below="@+id/adminpanel_tv_name"
+            android:layout_toRightOf="@+id/adminpanel_img_profilepic"
+            android:layout_toEndOf="@+id/adminpanel_img_profilepic" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Markets Preview "
-            android:textColor="#FFFFFF"
-            android:textSize="23dp"
-            android:padding="10dp"
-            android:layout_weight="1" />
+            android:text="Phone"
+            android:paddingLeft="10dp"
+            android:id="@+id/adminpanel_tv_phone"
+            android:layout_below="@+id/adminpanel_tv_email"
+            android:layout_toRightOf="@+id/adminpanel_img_profilepic"
+            android:layout_toEndOf="@+id/adminpanel_img_profilepic" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_new"
-            android:clickable="true"
-            android:id="@+id/img"/>
+    </RelativeLayout>
 
-    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Markets"
+        android:textColor="@color/material_blue_grey_800"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:textSize="14dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/textView"
+        android:background="@color/material_grey_300" />
+
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:id="@+id/adminpanel_lv_markets"
         android:paddingTop="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_below="@+id/linearLayout5"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/textView"
+        android:background="@color/material_grey_100" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Market Found"
+        android:id="@+id/adminpanel_tv_status"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

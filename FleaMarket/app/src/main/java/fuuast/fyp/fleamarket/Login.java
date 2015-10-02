@@ -98,8 +98,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                     {
                         Log.d("LOGIN TASK........","ON CHILD ADDED");
 
-                        Users_Data ud = dataSnapshot.getValue(Users_Data.class);
-                        Data_SingleTon data = Data_SingleTon.getInstance();
+                        UserDataModel ud = dataSnapshot.getValue(UserDataModel.class);
+                        UserDataModelSingleTon data = UserDataModelSingleTon.getInstance();
 
                         data.setId(authData.getUid());
                         data.setName(ud.getName());

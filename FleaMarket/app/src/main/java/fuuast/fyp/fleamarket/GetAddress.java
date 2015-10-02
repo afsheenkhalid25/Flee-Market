@@ -12,9 +12,9 @@ public class GetAddress {
 
     public volatile boolean parsingComplete = true;
     Double lat,lng;
-    private String city="None";
-    Geocoder geocoder;
-    List<Address> addresses = null;
+    private String city=null;
+    private Geocoder geocoder;
+    private List<Address> addresses = null;
 
     public GetAddress(Context mContext,Double lat,Double lng) {
         this.lat=lat;

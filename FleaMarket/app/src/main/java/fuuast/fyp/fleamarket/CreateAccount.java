@@ -135,7 +135,7 @@ public class CreateAccount extends ActionBarActivity
                     @Override
                     public void onAuthenticated(final AuthData authData) {
                         Log.d("Position........","on authenticated");
-                        Users_Data ud = new Users_Data();
+                        UserDataModel ud = new UserDataModel();
                         ud.setName(name);
                         ud.setEmail_id(email_id);
                         ud.setPassword(password);

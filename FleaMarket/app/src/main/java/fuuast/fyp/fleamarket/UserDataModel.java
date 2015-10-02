@@ -1,6 +1,6 @@
 package fuuast.fyp.fleamarket;
 
-public class Users_Data
+public class UserDataModel
 {
     private String name,email_id,password,phone,type,address,nic,org_name,org_cntct,image_url,org_typ;
 

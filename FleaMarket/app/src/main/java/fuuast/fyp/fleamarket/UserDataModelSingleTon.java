@@ -1,10 +1,10 @@
 package fuuast.fyp.fleamarket;
 
-public class Data_SingleTon {
+public class UserDataModelSingleTon {
 
     private String id,name,email_id,password,phone,type,address,nic,org_name,org_cntct,image_url,org_typ;
 
-    static Data_SingleTon obj = new Data_SingleTon();
+    static UserDataModelSingleTon obj = new UserDataModelSingleTon();
 
     public String getId() {
         return id;
@@ -102,9 +102,9 @@ public class Data_SingleTon {
         this.org_typ = org_typ;
     }
 
-    public static Data_SingleTon getInstance() {
+    public static UserDataModelSingleTon getInstance() {
         if (obj == null) {
-            obj = new Data_SingleTon();
+            obj = new UserDataModelSingleTon();
         }
         return obj;
     }

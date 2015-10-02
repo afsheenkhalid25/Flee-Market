@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="fuuast.fyp.fleamarket.AdminPanel">
 
-    <item android:id="@+id/settings"
+    <item android:id="@+id/adminpanel_opt_createmarket"
+        android:title="Create Market" />
+    <item android:id="@+id/adminpanel_opt_settings"
         android:title="Settings"/>
-    <item android:id="@+id/logout"
+    <item android:id="@+id/adminpanel_opt_logout"
         android:title="Logout" />
+
 
 </menu>

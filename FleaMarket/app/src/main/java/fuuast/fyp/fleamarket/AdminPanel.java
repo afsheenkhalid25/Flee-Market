@@ -14,32 +14,31 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class AdminPanel extends ActionBarActivity {
+public class AdminPanel extends ActionBarActivity implements View.OnClickListener {
 
-    TextView txtname,txtemail;
-    String admin_id;
-    Data_SingleTon ds = Data_SingleTon.getInstance();
-    ImageView img;
-    ListView listView;
-    ArrayList mrkt_names,mrkt_area;
+    TextView txtname,txtemail,txtphone;
+    UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
+    ImageView profilepic,options;
+    ListView marketlist;
+    ArrayList mrkt_names,mrkt_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
 
-        txtname = (TextView) findViewById(R.id.textView);
-        txtemail = (TextView) findViewById(R.id.textView2);
+        txtname = (TextView) findViewById(R.id.adminpanel_tv_name);
+        txtemail = (TextView) findViewById(R.id.adminpanel_tv_email);
+        txtphone=(TextView) findViewById(R.id.adminpanel_tv_phone);
 
-        img = (ImageView) findViewById(R.id.img);
-        img.setOnClickListener(new img_OnClickListener());
+        options = (ImageView) findViewById(R.id.adminpanel_img_options);
+        options.setOnClickListener(this);
 
-        listView=(ListView) findViewById(R.id.listView);
+        marketlist=(ListView) findViewById(R.id.adminpanel_lv_markets);
 
-        txtname.setText(ds.getName());
-        txtemail.setText(ds.getEmail_id());
-
-        admin_id = ds.getId();
+        txtname.setText(userDataModelSingleTon.getName());
+        txtemail.setText(userDataModelSingleTon.getEmail_id());
+        txtphone.setText(userDataModelSingleTon.getPhone());
 
         getMarketsData();
     }
@@ -48,41 +47,53 @@ public class AdminPanel extends ActionBarActivity {
 
     }
 
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        popup.inflate(R.menu.actions);
-        popup.show();
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.settings:
-                        action("settings");
-                        return true;
-                    case R.id.logout:
-                        action("logout");
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-    }
-
     public void action (String s) {
         if (s.equals("settings")) {
             Log.d("menu item...", "settings");
         } else if (s.equals("logout")) {
             Log.d("menu item...", "logout");
         }
+        switch (s){
+            case "settings":
+                Log.d("menu item...", "settings");
+                break;
+            case "logout":
+                Log.d("menu item...", "logout");
+                break;
+            case "create":
+                Log.d("menu item...", "create market");
+                Intent i=new Intent(this,CreateMarket.class);
+                startActivity(i);
+                break;
+        }
     }
 
-    public class img_OnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent i=new Intent(AdminPanel.this,CreateMarket.class);
-            startActivity(i);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.adminpanel_img_options:
+                PopupMenu popup = new PopupMenu(this, view);
+                popup.inflate(R.menu.actions);
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.adminpanel_opt_settings:
+                                action("settings");
+                                return true;
+                            case R.id.adminpanel_opt_logout:
+                                action("logout");
+                                return true;
+                            case R.id.adminpanel_opt_createmarket:
+                                action("create");
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                break;
         }
     }
 }
