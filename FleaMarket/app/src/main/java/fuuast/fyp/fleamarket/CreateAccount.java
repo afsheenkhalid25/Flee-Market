@@ -2,24 +2,21 @@ package fuuast.fyp.fleamarket;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +27,14 @@ public class CreateAccount extends ActionBarActivity
 {
     private String name,email_id,password,re_password,phone,type,nic,address,org_name,org_cntct,org_typ,image_url,message=null;
 
-    Firebase fb;
+    private Firebase fb;
 
-    EditText et_name,et_email,et_pass,et_repass,et_phn,et_add,et_nic,et_On,et_Oc,et_Ot;
-    TextView txt1,txt2,txt3;
-    ImageView img;
-    Spinner sp;
-    ScrollView sv;
-    ProgressDialog pd;
+    private EditText et_name,et_email,et_pass,et_repass,et_phn,et_add,et_nic,et_On,et_Oc,et_Ot;
+    private TextView txt1,txt2,txt3;
+    private ImageView img;
+    private Spinner sp;
+    private ScrollView sv;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,25 +46,22 @@ public class CreateAccount extends ActionBarActivity
 
         pd = new ProgressDialog(CreateAccount.this);
 
-        et_name = (EditText) findViewById(R.id.et_name);
-        et_email = (EditText) findViewById(R.id.et_email);
-        et_pass = (EditText) findViewById(R.id.et_password);
-        et_repass = (EditText) findViewById(R.id.et_repassword);
-        et_phn = (EditText) findViewById(R.id.et_phone);
-        et_add = (EditText) findViewById(R.id.et_address);
-        et_nic = (EditText) findViewById(R.id.et_nic);
-        et_On = (EditText) findViewById(R.id.et_org_name);
-        et_Oc = (EditText) findViewById(R.id.et_org_cntct);
-        et_Ot = (EditText) findViewById(R.id.et_org_type);
-        txt1 = (TextView) findViewById(R.id.txt9);
-        txt2 = (TextView) findViewById(R.id.txt10);
-        txt3 = (TextView) findViewById(R.id.txt11);
+        et_name = (EditText) findViewById(R.id.ca_et_name);
+        et_email = (EditText) findViewById(R.id.ca_et_email);
+        et_pass = (EditText) findViewById(R.id.ca_et_password);
+        et_repass = (EditText) findViewById(R.id.ca_et_repassword);
+        et_phn = (EditText) findViewById(R.id.ca_et_phone);
+        et_add = (EditText) findViewById(R.id.ca_et_address);
+        et_nic = (EditText) findViewById(R.id.ca_et_nic);
+        et_On = (EditText) findViewById(R.id.ca_et_org_name);
+        et_Oc = (EditText) findViewById(R.id.ca_et_org_cntct);
+        et_Ot = (EditText) findViewById(R.id.ca_et_org_type);
         sv = (ScrollView) findViewById(R.id.scrollView);
 
-        img = (ImageView) findViewById(R.id.img);
+        img = (ImageView) findViewById(R.id.ca_img);
         img.setOnClickListener(new img_OnClickListener());
 
-        sp = (Spinner) findViewById(R.id.spinner);
+        sp = (Spinner) findViewById(R.id.ca_spinner);
 
         List<String> list = new ArrayList<String>();
         list.add("Admin");

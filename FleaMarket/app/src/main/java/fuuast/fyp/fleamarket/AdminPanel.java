@@ -1,18 +1,15 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,17 +30,18 @@ public class AdminPanel extends ActionBarActivity {
 
         txtname = (TextView) findViewById(R.id.textView);
         txtemail = (TextView) findViewById(R.id.textView2);
+
         img = (ImageView) findViewById(R.id.img);
         img.setOnClickListener(new img_OnClickListener());
 
+        listView=(ListView) findViewById(R.id.listView);
+
         txtname.setText(ds.getName());
         txtemail.setText(ds.getEmail_id());
+
         admin_id = ds.getId();
 
         getMarketsData();
-
-        CustomAdapter arrayAdapter=new CustomAdapter(this,mrkt_names,mrkt_area);
-        listView.setAdapter(arrayAdapter);
     }
 
     public void getMarketsData(){

@@ -9,18 +9,16 @@
         android:layout_height="fill_parent"
         android:src="@drawable/ic_action_user_add"
         android:clickable="true"
-        android:id="@+id/img3"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_weight="1" />
+        android:layout_alignParentEnd="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#ff00b2ff"
-        android:id="@+id/linearLayout"
-        android:gravity="right" >
+        android:background="@color/material_blue_grey_800"
+        android:gravity="right"
+        android:id="@+id/linearLayout2">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,84 +28,67 @@
             android:textColor="#FFFFFF"
             android:textSize="23dp"
             android:padding="10dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_done"
+            android:paddingRight="10dp"
             android:clickable="true"
-            android:id="@+id/img"/>
+            android:id="@+id/ca_img" />
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/linearLayout">
+        android:layout_below="@+id/linearLayout2">
 
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:paddingLeft="40dp"
-          android:paddingRight="40dp"
-          android:paddingTop="20dp"
-          android:paddingBottom="20dp"
-          android:id="@+id/linearLayout3">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
 
-                <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:id="@+id/txt6"
                 android:textSize="15dp"
-                android:text="Type"/>
+                android:text="Type" />
 
             <Spinner
-                android:layout_width="219dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:id="@+id/txt1"
-                android:textSize="15dp"
-                android:text="Name"/>
+                android:id="@+id/ca_spinner"
+                android:paddingTop="5dp"
+                android:spinnerMode="dropdown"
+                android:textAlignment="center" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:id="@+id/et_name"
-                android:inputType="textCapWords"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txt2"
-                android:layout_marginTop="1dp"
-                android:textSize="15dp"
-                android:text="Email ID"/>
+                android:id="@+id/ca_et_name"
+                android:inputType="textCapWords"
+                android:hint="Name" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:inputType="textEmailAddress"
+                android:layout_marginTop="5dp"
                 android:ems="10"
-                android:id="@+id/et_email"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:id="@+id/txt3"
-                android:textSize="15dp"
-                android:text="Password"/>
+                android:id="@+id/ca_et_email"
+                android:hint="Email ID" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -115,124 +96,76 @@
                 android:layout_marginTop="5dp"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/et_password"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:id="@+id/txt4"
-                android:textSize="15dp"
-                android:text="Re-Enter Password"/>
+                android:id="@+id/ca_et_password"
+                android:hint="Password" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/et_repassword"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:id="@+id/txt5"
-                android:textSize="15dp"
-                android:text="Phone No"/>
+                android:ems="10"
+                android:id="@+id/ca_et_repassword"
+                android:hint="Re Enter Password" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
                 android:inputType="phone"
-                android:ems="10"
-                android:id="@+id/et_phone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:id="@+id/txt7"
-                android:textSize="15dp"
-                android:text="Address" />
+                android:ems="10"
+                android:id="@+id/ca_et_phone"
+                android:hint="Phone No" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
                 android:inputType="textPostalAddress"
-                android:ems="10"
-                android:id="@+id/et_address" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:id="@+id/txt8"
-                android:textSize="15dp"
-                android:text="NIC" />
+                android:ems="10"
+                android:id="@+id/ca_et_address"
+                android:hint="Address" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="5dp"
                 android:inputType="phone"
                 android:ems="10"
-                android:id="@+id/et_nic" />
+                android:id="@+id/ca_et_nic"
+                android:hint="NIC #" />
 
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="5dp"
-                 android:id="@+id/txt9"
-                 android:textSize="15dp"
-                 android:text="Organization Name"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/ca_et_org_name"
+                android:hint="Organization" />
 
-             <EditText
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="1dp"
-                 android:inputType="text"
-                 android:ems="10"
-                 android:id="@+id/et_org_name" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/ca_et_org_cntct"
+                android:hint="Organization No" />
 
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="5dp"
-                 android:id="@+id/txt10"
-                 android:textSize="15dp"
-                 android:text="Organization contact" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/ca_et_org_type"
+                android:visibility="visible"
+                android:hint="Organization Type" />
 
-             <EditText
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="1dp"
-                 android:inputType="phone"
-                 android:ems="10"
-                 android:id="@+id/et_org_cntct" />
+        </LinearLayout>
 
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="5dp"
-                 android:id="@+id/txt11"
-                 android:textSize="15dp"
-                 android:text="Organization Type"
-                 android:visibility="visible" />
+    </ScrollView>
 
-             <EditText
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="1dp"
-                 android:inputType="text"
-                 android:ems="10"
-                 android:id="@+id/et_org_type"
-                 android:visibility="visible" />
-
-      </LinearLayout>
-
-   </ScrollView>
 
 </RelativeLayout>

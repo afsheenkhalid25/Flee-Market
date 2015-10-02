@@ -2,8 +2,8 @@ package fuuast.fyp.fleamarket;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,8 +23,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     private Firebase fb;
     private String email_id,password,ac_type=null;
     private EditText et_email,et_pass;
-    private ImageView img_login;
+    private ImageView img_login,img_createaccount;
+    View v;
     private ArrayList array_list;
+    Boolean check = false;
 
     ProgressDialog progressDialog;
 
@@ -44,17 +46,34 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
         img_login = (ImageView) findViewById(R.id.login_img_login);
         img_login.setOnClickListener(this);
+        img_createaccount = (ImageView) findViewById(R.id.login_btn_createaccount);
+        img_createaccount.setOnClickListener(this);
+
+        v=findViewById(R.id.login_rl_customers);
+        v.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        email_id = et_email.getText().toString();
-        password = et_pass.getText().toString();
+        switch (view.getId()){
+            case R.id.login_img_login:
+                email_id = et_email.getText().toString();
+                password = et_pass.getText().toString();
 
-        if (email_id.equals("") || password.equals("")){
-            Toast.makeText(Login.this, "Please Enter Complete Details", Toast.LENGTH_SHORT).show();}
-        else
-            Login();
+                if (email_id.equals("") || password.equals("")){
+                    Toast.makeText(Login.this, "Please Enter Complete Details", Toast.LENGTH_SHORT).show();}
+                else
+                    Login();
+                break;
+            case R.id.login_btn_createaccount:
+                Intent i=new Intent(Login.this,CreateAccount.class);
+                startActivity(i);
+                break;
+            case R.id.login_rl_customers:
+                Toast.makeText(Login.this,"Ready to view Market?",Toast.LENGTH_SHORT).show();
+                break;
+        }
+
     }
 
     public void Login()
@@ -99,11 +118,13 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
                         if (ac_type.equals("Admin")) {
                             //....Admin Panel.....
+                            check=true;
                             progressDialog.dismiss();
                             Intent i=new Intent(Login.this,AdminPanel.class);
                             startActivity(i);
                         }else if (ac_type.equals("Shopkeeper")) {
                             //....Shopkeeper Panel.....
+                            check=true;
                             progressDialog.dismiss();
                             Toast.makeText(Login.this, "Welcome to Shopkeeper Panel", Toast.LENGTH_SHORT).show();
                         }
@@ -142,10 +163,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
-        if(ac_type==null){
-            Intent i=new Intent(Login.this,MainActivity.class);
-            startActivity(i);
+        if(check){
+            finish();
         }
     }
 }
