@@ -11,21 +11,31 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class AdminPanel extends ActionBarActivity implements View.OnClickListener {
 
-    TextView txtname,txtemail,txtphone;
-    UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
-    ImageView profilepic,options;
-    ListView marketlist;
-    ArrayList mrkt_names,mrkt_address;
+    private TextView txtname,txtemail,txtphone;
+    private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
+    private ImageView profilepic,options;
+    private ListView marketlist;
+    private ArrayList mrkt_id,mrkt_names,mrkt_address,mrkt_imgURL;
+    private Firebase firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
+
+        Firebase.setAndroidContext(this);
+        firebase=new Firebase("https://flee-market.firebaseio.com/");
 
         txtname = (TextView) findViewById(R.id.adminpanel_tv_name);
         txtemail = (TextView) findViewById(R.id.adminpanel_tv_email);
@@ -40,14 +50,55 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         txtemail.setText(userDataModelSingleTon.getEmail_id());
         txtphone.setText(userDataModelSingleTon.getPhone());
 
-        getMarketsData();
+        mrkt_names=new ArrayList();
+        mrkt_address=new ArrayList();
+        mrkt_imgURL=new ArrayList();
+        mrkt_id=new ArrayList();
+
+        getMarkets();
     }
 
-    public void getMarketsData(){
+    private void getMarkets(){
+        firebase.child("Admin_Market").child(userDataModelSingleTon.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mrkt_imgURL.clear();
+                mrkt_address.clear();
+                mrkt_names.clear();
+                if (dataSnapshot.hasChildren()){
+                    for (DataSnapshot d:dataSnapshot.getChildren()){
+                        mrkt_id.add(((HashMap<String,Object>)d.getValue()).get("marketID").toString());
+                        getMarketData(((HashMap<String,Object>)d.getValue()).get("marketID").toString());
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
-    public void action (String s) {
+    private void getMarketData(String marketID){
+        firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MarketDataModel marketDataModel=dataSnapshot.getValue(MarketDataModel.class);
+                mrkt_names.add(marketDataModel.getName());
+                mrkt_address.add(marketDataModel.getAddress());
+                mrkt_imgURL.add(marketDataModel.getImageURL());
+                marketlist.setAdapter(new CustomAdapter(AdminPanel.this,mrkt_names,mrkt_address,mrkt_imgURL));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    private void action (String s) {
         if (s.equals("settings")) {
             Log.d("menu item...", "settings");
         } else if (s.equals("logout")) {
