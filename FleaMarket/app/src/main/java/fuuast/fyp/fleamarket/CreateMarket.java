@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -23,7 +24,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
     private String lat=null,lon=null,address=null,name=null;
     private EditText et_name;
-    private Button create;
+    private ImageView img;
     private MarketDataModel marketDataModel;
     private UserDataModelSingleTon userDataModelSingleTon;
     private Firebase firebase,markets;
@@ -37,12 +38,12 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
-        et_name= (EditText) findViewById(R.id.createmarket_et_marketname);
-        create= (Button) findViewById(R.id.createmarket_btn_create);
-        create.setOnClickListener(this);
+        et_name= (EditText) findViewById(R.id.et_marketname);
+        img = (ImageView) findViewById(R.id.cm_img);
+        img.setOnClickListener(this);
 
         et_name.setEnabled(false);
-        create.setEnabled(false);
+        img.setEnabled(false);
 
         marketDataModel=new MarketDataModel();
         userDataModelSingleTon=UserDataModelSingleTon.getInstance();
@@ -58,7 +59,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapClickListener(this);
         et_name.setEnabled(true);
-        create.setEnabled(true);
+        img.setEnabled(true);
     }
 
     @Override
@@ -79,8 +80,8 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.createmarket_btn_create:
-                Log.d("CREATE MARKET.....","BUTTON CLICKED");
+            case R.id.cm_img:
+                Log.d("CREATE MARKET.....","CLICKED");
                 if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")){
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());

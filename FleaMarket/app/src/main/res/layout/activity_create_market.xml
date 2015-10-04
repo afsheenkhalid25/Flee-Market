@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         android:background="@color/material_blue_grey_800"
         android:gravity="right"
-        android:id="@+id/linearLayout6">
+        android:id="@+id/linearLayout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,7 +24,26 @@
             android:layout_weight="1"
             android:textStyle="bold" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_done"
+            android:paddingRight="10dp"
+            android:clickable="true"
+            android:id="@+id/cm_img" />
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:id="@+id/relativeLayout"
+        android:padding="10dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/material_grey_300"
+        android:outlineProvider="background" />
 
     <EditText
         android:layout_width="match_parent"
@@ -35,36 +54,22 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:id="@+id/createmarket_et_marketname"
+        android:id="@+id/et_marketname"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="#000000"
-        android:layout_below="@+id/linearLayout6" />
+        android:layout_below="@+id/relativeLayout" />
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/createmarket_map"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/createmarket_btn_create"
-        android:layout_below="@+id/createmarket_et_marketname" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CREATE"
-        android:id="@+id/createmarket_btn_create"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@color/material_grey_600"
-        android:textColor="#FFFFFF" />
+        android:layout_below="@+id/et_marketname"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
 
