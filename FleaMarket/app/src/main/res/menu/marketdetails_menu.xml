@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fuuast.fyp.fleamarket.MarketView">
+
+    <item android:id="@+id/adminpanel_opt_logout"
+        android:title="Shops Request" />
+    <item android:id="@+id/adminpanel_opt_createmarket"
+        android:title="Edit" />
+    <item android:id="@+id/adminpanel_opt_settings"
+        android:title="Delete"/>
+
+</menu>
