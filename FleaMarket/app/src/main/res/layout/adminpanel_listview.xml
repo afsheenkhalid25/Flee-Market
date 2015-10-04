@@ -40,7 +40,8 @@
         android:layout_height="50dp"
         android:src="@drawable/ic_action_next_item2"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:id="@+id/adminpanel_img_marketdetails" />
 
 
 

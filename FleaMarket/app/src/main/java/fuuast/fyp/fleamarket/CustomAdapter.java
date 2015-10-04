@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,14 +15,15 @@ public class CustomAdapter extends BaseAdapter{
 
     Context context;
     ArrayList mrkt_names,mrkt_area,mrkt_imageUrl;
-    TextView tv_names,tv_area;
+    TextView marketName,marketArea;
     ImageView img;
+
 
     public CustomAdapter(Context context, ArrayList names, ArrayList area, ArrayList imageUrl) {
         this.context = context;
         this.mrkt_names = names;
         this.mrkt_area = area;
-        this.mrkt_imageUrl=mrkt_imageUrl;
+        this.mrkt_imageUrl = imageUrl;
     }
 
     @Override
@@ -40,14 +42,25 @@ public class CustomAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent)
+    {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v=inflater.inflate(R.layout.adminpanel_listview,null);
-        TextView marketName=(TextView) v.findViewById(R.id.adminpanel_tv_marketname);
-        TextView marketArea=(TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
-        ImageView imageView=(ImageView) v.findViewById(R.id.adminpanel_img_marketpic);
+        View v = inflater.inflate(R.layout.adminpanel_listview,null);
+
+        marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
+        marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
+
+        img = (ImageView) v.findViewById(R.id.adminpanel_img_marketdetails);
+        img.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "this shows market details", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         marketName.setText(mrkt_names.get(position).toString());
         marketArea.setText(mrkt_area.get(position).toString());
+
         return v;
     }
 }

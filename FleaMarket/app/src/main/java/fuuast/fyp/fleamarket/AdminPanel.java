@@ -99,17 +99,25 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     }
 
     private void action (String s) {
+        if (s.equals("settings")) {
+            Log.d("menu item...", "settings");
+        } else if (s.equals("logout")) {
+            Log.d("menu item...", "logout");
+        }
         switch (s){
             case "settings":
                 Log.d("menu item...", "settings");
                 break;
             case "logout":
                 Log.d("menu item...", "logout");
+                firebase.unauth();
+                Intent i = new Intent(this,Login.class);
+                startActivity(i);
                 break;
             case "create":
                 Log.d("menu item...", "create market");
-                Intent i=new Intent(this,CreateMarket.class);
-                startActivity(i);
+                Intent j = new Intent(this,CreateMarket.class);
+                startActivity(j);
                 break;
         }
     }
