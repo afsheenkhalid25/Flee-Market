@@ -1,6 +1,7 @@
 package fuuast.fyp.fleamarket;
 
-public class MarketDataModel {
+public class MarketDataModel
+{
     private String name, adminID, latitude, longitude, address, imageURL;
 
     public String getName() {
@@ -50,4 +51,5 @@ public class MarketDataModel {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
+
 }

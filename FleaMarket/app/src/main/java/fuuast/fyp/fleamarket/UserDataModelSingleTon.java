@@ -108,7 +108,4 @@ public class UserDataModelSingleTon {
         }
         return obj;
     }
-
-
-
 }

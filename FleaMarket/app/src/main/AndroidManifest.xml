@@ -23,6 +23,7 @@
             android:label="Flea Market" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,6 +42,10 @@
         <activity
             android:name=".CreateMarket"
             android:label="@string/title_activity_create_market" >
+        </activity>
+        <activity
+            android:name=".MarketView"
+            android:label="@string/title_activity_market_view" >
         </activity>
     </application>
 

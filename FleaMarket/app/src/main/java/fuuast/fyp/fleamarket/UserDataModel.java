@@ -91,4 +91,5 @@ public class UserDataModel
     public void setType(String type) {
         this.type = type;
     }
+
 }
