@@ -30,7 +30,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
     private UserDataModelSingleTon userDataModelSingleTon;
     private Firebase firebase,markets;
     private GoogleMap mMap;
-    private ProgressDialog pd;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
-        pd = new ProgressDialog(CreateMarket.this);
+        progressDialog = new ProgressDialog(CreateMarket.this);
 
         et_name= (EditText) findViewById(R.id.et_marketname);
         img = (ImageView) findViewById(R.id.cm_img);
@@ -72,8 +72,10 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
         lat= ""+latLng.latitude;
         lon= ""+latLng.longitude;
+
         GetAddress objGetAddress=new GetAddress(CreateMarket.this,Double.parseDouble(lat),Double.parseDouble(lon));
         objGetAddress.get();
+
         while (objGetAddress.parsingComplete);
         address=objGetAddress.getCity();
         if (address==null)
@@ -107,10 +109,10 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
     private void createMarket(MarketDataModel marketDataModel)
     {
-        pd.setMessage("\tCreating...");
-        pd.setCancelable(false);
-        pd.setCanceledOnTouchOutside(false);
-        pd.show();
+        progressDialog.setMessage("\tCreating...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
 
         markets=firebase.child("Markets").push();
         markets.setValue(marketDataModel, new Firebase.CompletionListener() {
@@ -118,7 +120,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError!=null){
                     img.setEnabled(true);
-                    pd.dismiss();
+                    progressDialog.dismiss();
                     Log.d("CREATE MARKET.....",firebaseError.getMessage());
                     Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
                 }
@@ -142,7 +144,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                     removeMarket();
                 }
                 else{
-                    pd.dismiss();
+                    progressDialog.dismiss();
                     Toast.makeText(CreateMarket.this,"Market Created",Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(CreateMarket.this,AdminPanel.class);
                     startActivity(i);
@@ -163,7 +165,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
             }
         });
         img.setEnabled(true);
-        pd.dismiss();
+        progressDialog.dismiss();
         Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
     }
 
