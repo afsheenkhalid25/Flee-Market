@@ -30,11 +30,12 @@ public class CreateAccount extends ActionBarActivity
     private Firebase fb;
 
     private EditText et_name,et_email,et_pass,et_repass,et_phn,et_add,et_nic,et_On,et_Oc,et_Ot;
-    private TextView txt1,txt2,txt3;
     private ImageView img;
     private Spinner sp;
     private ScrollView sv;
     private ProgressDialog pd;
+    private UserDataModelSingleTon data = UserDataModelSingleTon.getInstance();
+    private UserDataModel ud = new UserDataModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,6 @@ public class CreateAccount extends ActionBarActivity
     public void CreateAccount()
     {
         Log.d("Position........", "in create account function");
-        sv.setEnabled(false);
         img.setEnabled(false);
         pd.setMessage("\tProcessing...");
         pd.setCancelable(false);
@@ -133,9 +133,10 @@ public class CreateAccount extends ActionBarActivity
                 fb.authWithPassword(email_id, password, new Firebase.AuthResultHandler()
                 {
                     @Override
-                    public void onAuthenticated(final AuthData authData) {
+                    public void onAuthenticated(final AuthData authData)
+                    {
                         Log.d("Position........","on authenticated");
-                        UserDataModel ud = new UserDataModel();
+
                         ud.setName(name);
                         ud.setEmail_id(email_id);
                         ud.setPassword(password);
@@ -146,6 +147,10 @@ public class CreateAccount extends ActionBarActivity
                         ud.setOrg_name(org_name);
                         ud.setOrg_typ(org_typ);
                         ud.setOrg_cntct(org_cntct);
+
+                        //setting value in UserDataModelSingleTon class for using in admin panel class....
+                        data.setId(authData.getUid());
+                        setUserDataModelSingleTon();
 
                         fb.child("Users").child(authData.getUid()).setValue(ud, new Firebase.CompletionListener() {
                             @Override
@@ -182,33 +187,44 @@ public class CreateAccount extends ActionBarActivity
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError error) {
-                        Log.d("Position........","in authenticated error ");
+                        Log.d("Position........", "in authenticated error ");
                         pd.dismiss();
                         message = error.getMessage();
                         Toast.makeText(CreateAccount.this, message, Toast.LENGTH_SHORT).show();
                         img.setEnabled(true);
-                        sv.setEnabled(true);
                     }
                 });
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                Log.d("Position........","create user error ");
+                Log.d("Position........", "create user error ");
                 pd.dismiss();
                 message = firebaseError.getMessage();
                 Toast.makeText(CreateAccount.this, message, Toast.LENGTH_SHORT).show();
                 img.setEnabled(true);
-                sv.setEnabled(true);
             }
         });
+    }
+
+    private void setUserDataModelSingleTon()
+    {
+        data.setName(ud.getName());
+        data.setEmail_id(ud.getEmail_id());
+        data.setPassword(ud.getPassword());
+        data.setPhone(ud.getPhone());
+        data.setType(ud.getType());
+        data.setAddress(ud.getAddress());
+        data.setNic(ud.getNic());
+        data.setImage_url(ud.getImage_url());
+        data.setOrg_name(ud.getOrg_name());
+        data.setOrg_typ(ud.getOrg_typ());
+        data.setOrg_cntct(ud.getOrg_cntct());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         finish();
-        //Intent i=new Intent(CreateAccount.this,MainActivity.class);
-        //startActivity(i);
     }
 }

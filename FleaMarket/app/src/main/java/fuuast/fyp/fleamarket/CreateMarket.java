@@ -1,10 +1,11 @@
 package fuuast.fyp.fleamarket;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
     private UserDataModelSingleTon userDataModelSingleTon;
     private Firebase firebase,markets;
     private GoogleMap mMap;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
+
+        pd = new ProgressDialog(CreateMarket.this);
 
         et_name= (EditText) findViewById(R.id.et_marketname);
         img = (ImageView) findViewById(R.id.cm_img);
@@ -82,7 +86,10 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         switch(view.getId()){
             case R.id.cm_img:
                 Log.d("CREATE MARKET.....","CLICKED");
-                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")){
+                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals(""))
+                {
+                    img.setEnabled(false);
+
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());
                     marketDataModel.setLatitude(lat);
@@ -98,13 +105,20 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void createMarket(MarketDataModel marketDataModel){
-        markets=firebase.child("Markets").push();
+    private void createMarket(MarketDataModel marketDataModel)
+    {
+        pd.setMessage("\tCreating...");
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
 
+        markets=firebase.child("Markets").push();
         markets.setValue(marketDataModel, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError!=null){
+                    img.setEnabled(true);
+                    pd.dismiss();
                     Log.d("CREATE MARKET.....",firebaseError.getMessage());
                     Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
                 }
@@ -115,9 +129,11 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void addMarkettoadmin(String adminID, final String marketID){
+    private void addMarkettoadmin(String adminID, final String marketID)
+    {
         HashMap<String,Object> hashMap=new HashMap<String, Object>();
         hashMap.put("marketID",marketID);
+
         firebase.child("Admin_Market").child(adminID).push().setValue(hashMap, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -126,7 +142,10 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                     removeMarket();
                 }
                 else{
+                    pd.dismiss();
                     Toast.makeText(CreateMarket.this,"Market Created",Toast.LENGTH_SHORT).show();
+                    Intent i=new Intent(CreateMarket.this,AdminPanel.class);
+                    startActivity(i);
                 }
             }
         });
@@ -138,11 +157,19 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if(firebaseError!=null){
                     Log.d("REMOVE MARKET.....",firebaseError.getMessage());
-                }
-                else {
-                    Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("REMOVE MARKET.....","successfully removed");
                 }
             }
         });
+        img.setEnabled(true);
+        pd.dismiss();
+        Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

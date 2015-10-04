@@ -99,11 +99,6 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     }
 
     private void action (String s) {
-        if (s.equals("settings")) {
-            Log.d("menu item...", "settings");
-        } else if (s.equals("logout")) {
-            Log.d("menu item...", "logout");
-        }
         switch (s){
             case "settings":
                 Log.d("menu item...", "settings");

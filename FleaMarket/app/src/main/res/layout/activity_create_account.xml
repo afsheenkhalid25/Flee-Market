@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:ems="10"
                 android:id="@+id/ca_et_email"
                 android:hint="Email ID" />
@@ -106,7 +106,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/ca_et_password"
@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:ems="10"
                 android:id="@+id/ca_et_repassword"
                 android:hint="Re Enter Password" />
@@ -125,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:ems="10"
                 android:id="@+id/ca_et_phone"
                 android:hint="Phone No" />
@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:ems="10"
                 android:id="@+id/ca_et_address"
                 android:hint="Address" />
@@ -142,7 +142,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:inputType="phone"
                 android:ems="10"
                 android:id="@+id/ca_et_nic"
@@ -151,7 +151,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:inputType="text"
                 android:ems="10"
                 android:id="@+id/ca_et_org_name"
@@ -160,7 +160,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:inputType="phone"
                 android:ems="10"
                 android:id="@+id/ca_et_org_cntct"
@@ -169,7 +169,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:inputType="text"
                 android:ems="10"
                 android:id="@+id/ca_et_org_type"
@@ -179,6 +179,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </RelativeLayout>
