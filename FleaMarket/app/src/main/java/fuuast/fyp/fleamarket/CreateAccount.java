@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
@@ -33,9 +33,9 @@ public class CreateAccount extends ActionBarActivity
     private ImageView img;
     private Spinner sp;
     private ScrollView sv;
-    private ProgressDialog pd;
-    private UserDataModelSingleTon data = UserDataModelSingleTon.getInstance();
-    private UserDataModel ud = new UserDataModel();
+    private ProgressDialog progressDialog;
+    private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
+    private UserDataModel userDataModel = new UserDataModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class CreateAccount extends ActionBarActivity
         Firebase.setAndroidContext(this);
         fb = new Firebase("https://flee-market.firebaseio.com/");
 
-        pd = new ProgressDialog(CreateAccount.this);
+        progressDialog = new ProgressDialog(CreateAccount.this);
 
         et_name = (EditText) findViewById(R.id.ca_et_name);
         et_email = (EditText) findViewById(R.id.ca_et_email);
@@ -57,12 +57,30 @@ public class CreateAccount extends ActionBarActivity
         et_On = (EditText) findViewById(R.id.ca_et_org_name);
         et_Oc = (EditText) findViewById(R.id.ca_et_org_cntct);
         et_Ot = (EditText) findViewById(R.id.ca_et_org_type);
+
         sv = (ScrollView) findViewById(R.id.scrollView);
 
         img = (ImageView) findViewById(R.id.ca_img);
         img.setOnClickListener(new img_OnClickListener());
 
         sp = (Spinner) findViewById(R.id.ca_spinner);
+        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(sp.getSelectedItem().equals("Admin")){
+                    et_On.setEnabled(true);
+                    et_Oc.setEnabled(true);
+                    et_Ot.setEnabled(true);
+                }else{
+                    et_On.setEnabled(false);
+                    et_Oc.setEnabled(false);
+                    et_Ot.setEnabled(false);
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         List<String> list = new ArrayList<String>();
         list.add("Admin");
@@ -119,10 +137,10 @@ public class CreateAccount extends ActionBarActivity
     {
         Log.d("Position........", "in create account function");
         img.setEnabled(false);
-        pd.setMessage("\tProcessing...");
-        pd.setCancelable(false);
-        pd.setCanceledOnTouchOutside(false);
-        pd.show();
+        progressDialog.setMessage("\tProcessing...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         Log.d("Position........","in create user");
         fb.createUser(email_id, password, new Firebase.ValueResultHandler<Map<String, Object>>()
         {
@@ -137,50 +155,39 @@ public class CreateAccount extends ActionBarActivity
                     {
                         Log.d("Position........","on authenticated");
 
-                        ud.setName(name);
-                        ud.setEmail_id(email_id);
-                        ud.setPassword(password);
-                        ud.setType(type);
-                        ud.setPhone(phone);
-                        ud.setAddress(address);
-                        ud.setNic(nic);
-                        ud.setOrg_name(org_name);
-                        ud.setOrg_typ(org_typ);
-                        ud.setOrg_cntct(org_cntct);
+                        //setting values of user data in setUserData function for using it in admin panel class....
+                        userDataModelSingleTon.setId(authData.getUid());
+                        setUserData();
 
-                        //setting value in UserDataModelSingleTon class for using in admin panel class....
-                        data.setId(authData.getUid());
-                        setUserDataModelSingleTon();
-
-                        fb.child("Users").child(authData.getUid()).setValue(ud, new Firebase.CompletionListener() {
+                        fb.child("Users").child(authData.getUid()).setValue(userDataModel, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                pd.dismiss();
-                                if(firebaseError==null){
-                                    Log.d("Position........","on complete ");
-                                    Toast.makeText(CreateAccount.this, "Account Created", Toast.LENGTH_SHORT).show();
-                                    if (type.equals("Admin")) {
-                                        //....Admin Panel.....
-                                        Toast.makeText(CreateAccount.this, "Welcome to Admin Panel", Toast.LENGTH_SHORT).show();
-                                        Intent i=new Intent(CreateAccount.this,AdminPanel.class);
-                                        startActivity(i);
-                                    } else if (type.equals("Shopkeeper")) {
-                                        //....Shopkeeper Panel.....
-                                        Toast.makeText(CreateAccount.this, "Welcome to Shopkeeper Panel", Toast.LENGTH_SHORT).show();
-                                    }
-                                }else{
-                                    Log.d("Position........","in data saving error");
-                                    fb.removeUser(email_id,password, new Firebase.ResultHandler() {
-                                        @Override
-                                        public void onSuccess() {
-                                            Toast.makeText(CreateAccount.this, "Try again to Create Account", Toast.LENGTH_SHORT).show();
-                                        }
-                                        @Override
-                                        public void onError(FirebaseError firebaseError) {
-
-                                        }
-                                    });
+                            progressDialog.dismiss();
+                            if(firebaseError==null){
+                                Log.d("Position........","on complete ");
+                                Toast.makeText(CreateAccount.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                if (type.equals("Admin")) {
+                                    //....Admin Panel.....
+                                    Toast.makeText(CreateAccount.this, "Welcome to Admin Panel", Toast.LENGTH_SHORT).show();
+                                    Intent i=new Intent(CreateAccount.this,AdminPanel.class);
+                                    startActivity(i);
+                                } else if (type.equals("Shopkeeper")) {
+                                    //....Shopkeeper Panel.....
+                                    Toast.makeText(CreateAccount.this, "Welcome to Shopkeeper Panel", Toast.LENGTH_SHORT).show();
                                 }
+                            }else{
+                                Log.d("Position........","in data saving error");
+                                fb.removeUser(email_id,password, new Firebase.ResultHandler() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Toast.makeText(CreateAccount.this, "Try again to Create Account", Toast.LENGTH_SHORT).show();
+                                    }
+                                    @Override
+                                    public void onError(FirebaseError firebaseError) {
+
+                                    }
+                                });
+                            }
                             }
 
                         });
@@ -188,7 +195,7 @@ public class CreateAccount extends ActionBarActivity
                     @Override
                     public void onAuthenticationError(FirebaseError error) {
                         Log.d("Position........", "in authenticated error ");
-                        pd.dismiss();
+                        progressDialog.dismiss();
                         message = error.getMessage();
                         Toast.makeText(CreateAccount.this, message, Toast.LENGTH_SHORT).show();
                         img.setEnabled(true);
@@ -199,7 +206,7 @@ public class CreateAccount extends ActionBarActivity
             @Override
             public void onError(FirebaseError firebaseError) {
                 Log.d("Position........", "create user error ");
-                pd.dismiss();
+                progressDialog.dismiss();
                 message = firebaseError.getMessage();
                 Toast.makeText(CreateAccount.this, message, Toast.LENGTH_SHORT).show();
                 img.setEnabled(true);
@@ -207,19 +214,32 @@ public class CreateAccount extends ActionBarActivity
         });
     }
 
-    private void setUserDataModelSingleTon()
+    private void setUserData()
     {
-        data.setName(ud.getName());
-        data.setEmail_id(ud.getEmail_id());
-        data.setPassword(ud.getPassword());
-        data.setPhone(ud.getPhone());
-        data.setType(ud.getType());
-        data.setAddress(ud.getAddress());
-        data.setNic(ud.getNic());
-        data.setImage_url(ud.getImage_url());
-        data.setOrg_name(ud.getOrg_name());
-        data.setOrg_typ(ud.getOrg_typ());
-        data.setOrg_cntct(ud.getOrg_cntct());
+        //for class UserDataModel
+        userDataModel.setName(name);
+        userDataModel.setEmail_id(email_id);
+        userDataModel.setPassword(password);
+        userDataModel.setType(type);
+        userDataModel.setPhone(phone);
+        userDataModel.setAddress(address);
+        userDataModel.setNic(nic);
+        userDataModel.setOrg_name(org_name);
+        userDataModel.setOrg_typ(org_typ);
+        userDataModel.setOrg_cntct(org_cntct);
+
+        //for class UserDataModelSingleTon
+        userDataModelSingleTon.setName(userDataModel.getName());
+        userDataModelSingleTon.setEmail_id(userDataModel.getEmail_id());
+        userDataModelSingleTon.setPassword(userDataModel.getPassword());
+        userDataModelSingleTon.setPhone(userDataModel.getPhone());
+        userDataModelSingleTon.setType(userDataModel.getType());
+        userDataModelSingleTon.setAddress(userDataModel.getAddress());
+        userDataModelSingleTon.setNic(userDataModel.getNic());
+        userDataModelSingleTon.setImage_url(userDataModel.getImage_url());
+        userDataModelSingleTon.setOrg_name(userDataModel.getOrg_name());
+        userDataModelSingleTon.setOrg_typ(userDataModel.getOrg_typ());
+        userDataModelSingleTon.setOrg_cntct(userDataModel.getOrg_cntct());
     }
 
     @Override
