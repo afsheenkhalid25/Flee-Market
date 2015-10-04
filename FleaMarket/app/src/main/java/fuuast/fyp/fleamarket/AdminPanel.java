@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class AdminPanel extends ActionBarActivity implements View.OnClickListener {
 
-    private TextView txtname,txtemail,txtphone;
+    private TextView txtname,txtemail,txtphone,markets_status;
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
     private ImageView profilepic,options;
     private ListView marketlist;
@@ -40,6 +40,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         txtname = (TextView) findViewById(R.id.adminpanel_tv_name);
         txtemail = (TextView) findViewById(R.id.adminpanel_tv_email);
         txtphone=(TextView) findViewById(R.id.adminpanel_tv_phone);
+        markets_status = (TextView) findViewById(R.id.adminpanel_tv_status);
 
         options = (ImageView) findViewById(R.id.adminpanel_img_options);
         options.setOnClickListener(this);
@@ -88,6 +89,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                 mrkt_names.add(marketDataModel.getName());
                 mrkt_address.add(marketDataModel.getAddress());
                 mrkt_imgURL.add(marketDataModel.getImageURL());
+                markets_status.setVisibility(View.INVISIBLE);
                 marketlist.setAdapter(new CustomAdapter(AdminPanel.this,mrkt_names,mrkt_address,mrkt_imgURL));
             }
 
@@ -148,6 +150,9 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                     }
                 });
                 break;
+            case R.id.adminpanel_img_marketdetails:
+                Intent i=new Intent(AdminPanel.this,MarketView.class);
+                startActivity(i);
         }
     }
 }

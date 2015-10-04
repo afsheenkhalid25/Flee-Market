@@ -24,6 +24,7 @@ public class CustomAdapter extends BaseAdapter{
         this.mrkt_names = names;
         this.mrkt_area = area;
         this.mrkt_imageUrl = imageUrl;
+
     }
 
     @Override
