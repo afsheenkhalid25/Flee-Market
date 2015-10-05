@@ -30,7 +30,7 @@
             android:src="@drawable/ic_action_overflow"
             android:clickable="true"
             android:paddingRight="10dp"
-            android:id="@+id/marketview_img_options"
+            android:id="@+id/marketdetails_img_options"
             android:onClick="showPopup" />
 
     </LinearLayout>

@@ -7,10 +7,9 @@
     <item android:id="@+id/adminpanel_opt_createmarket"
         android:title="Create Market"
         android:icon="@drawable/ic_action_new"/>
-    <item android:id="@+id/adminpanel_opt_settings"
-        android:title="Settings"/>
+    <item android:id="@+id/adminpanel_opt_editprofile"
+        android:title="Edit Profile"/>
     <item android:id="@+id/adminpanel_opt_logout"
         android:title="Logout" />
-
 
 </menu>

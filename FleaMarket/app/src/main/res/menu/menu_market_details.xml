@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="fuuast.fyp.fleamarket.MarketDetails">
 
-    <item android:id="@+id/marketdetails_opt_shopreques"
+    <item android:id="@+id/marketdetails_opt_shoprequest"
         android:title="Shops Request" />
     <item android:id="@+id/marketdetails_opt_viewonmap"
         android:title="View on Map" />

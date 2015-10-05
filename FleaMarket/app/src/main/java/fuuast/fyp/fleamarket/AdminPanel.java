@@ -111,21 +111,23 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
 
     private void action (String s) {
         switch (s){
-            case "settings":
-                Log.d("menu item...", "settings");
+            case "editprofile":
+                Log.d("menu item...", "editprofile");
+                Intent i = new Intent(this,EditAdminProfile.class);
+                startActivity(i);
                 break;
             case "logout":
                 Log.d("menu item...", "logout");
                 firebase.unauth();
                 CHECK_FINISH = true;
-                Intent i = new Intent(this,Login.class);
-                startActivity(i);
+                Intent j = new Intent(this,Login.class);
+                startActivity(j);
                 break;
             case "create":
                 Log.d("menu item...", "create market");
                 CHECK_FINISH = true;
-                Intent j = new Intent(this,CreateMarket.class);
-                startActivity(j);
+                Intent k = new Intent(this,CreateMarket.class);
+                startActivity(k);
                 break;
         }
     }
@@ -141,8 +143,8 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.adminpanel_opt_settings:
-                                action("settings");
+                            case R.id.adminpanel_opt_editprofile:
+                                action("editprofile");
                                 return true;
                             case R.id.adminpanel_opt_logout:
                                 action("logout");
