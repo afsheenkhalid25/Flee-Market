@@ -51,15 +51,6 @@ public class AdminPanel_CustomAdapter extends BaseAdapter{
         marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
         marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
 
-        img = (ImageView) v.findViewById(R.id.adminpanel_img_marketdetails);
-        img.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context,MarketDetails.class);
-                context.startActivity(i);
-            }
-        });
-
         marketName.setText(market_names.get(position).toString());
         marketArea.setText(market_area.get(position).toString());
 

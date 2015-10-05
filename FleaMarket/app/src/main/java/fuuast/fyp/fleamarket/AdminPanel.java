@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -47,6 +48,13 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         options.setOnClickListener(this);
 
         marketlist=(ListView) findViewById(R.id.adminpanel_lv_markets);
+        marketlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(AdminPanel.this,MarketDetails.class);
+                startActivity(i);
+            }
+        });
 
         txtname.setText(userDataModelSingleTon.getName());
         txtemail.setText(userDataModelSingleTon.getEmail_id());
