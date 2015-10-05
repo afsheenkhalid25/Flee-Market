@@ -2,7 +2,7 @@ package fuuast.fyp.fleamarket;
 
 public class MarketDataModel
 {
-    private String name, adminID, latitude, longitude, address, imageURL;
+    private String name, adminID, latitude, longitude, address, imageURL, allow_checkbox;
 
     public String getName() {
         return name;
@@ -10,6 +10,14 @@ public class MarketDataModel
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAllow_checkbox() {
+        return allow_checkbox;
+    }
+
+    public void setAllow_checkbox(String allow_checkbox) {
+        this.allow_checkbox = allow_checkbox;
     }
 
     public String getAdminID() {

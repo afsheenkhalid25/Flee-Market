@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fuuast.fyp.fleamarket.CreateMarket"
-    android:background="#FFFFFF">
+    android:background="@color/material_grey_100">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="15dp"
         android:id="@+id/relativeLayout"
         android:padding="10dp"
         android:layout_below="@+id/linearLayout"
@@ -60,6 +60,17 @@
         android:textColor="#000000"
         android:layout_below="@+id/relativeLayout" />
 
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow customer to create shop"
+        android:id="@+id/cm_checkbox"
+        android:layout_below="@+id/et_marketname"
+        android:layout_alignLeft="@+id/et_marketname"
+        android:layout_alignStart="@+id/et_marketname"
+        android:checked="false"
+        android:textSize="18dp" />
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +79,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/et_marketname"
+        android:layout_below="@+id/cm_checkbox"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

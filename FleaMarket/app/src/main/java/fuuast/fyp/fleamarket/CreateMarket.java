@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,8 +24,9 @@ import java.util.HashMap;
 
 public class CreateMarket extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener{
 
-    private String lat=null,lon=null,address=null,name=null;
+    private String lat=null,lon=null,address=null,name=null,allow_checkbox="Not_Allowed";
     private EditText et_name;
+    private CheckBox cb_allow;
     private ImageView img;
     private MarketDataModel marketDataModel;
     private UserDataModelSingleTon userDataModelSingleTon;
@@ -42,7 +44,10 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
         progressDialog = new ProgressDialog(CreateMarket.this);
 
-        et_name= (EditText) findViewById(R.id.et_marketname);
+        et_name = (EditText) findViewById(R.id.et_marketname);
+        cb_allow = (CheckBox) findViewById(R.id.cm_checkbox);
+        cb_allow.setOnClickListener(this);
+
         img = (ImageView) findViewById(R.id.cm_img);
         img.setOnClickListener(this);
 
@@ -73,7 +78,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         lat= ""+latLng.latitude;
         lon= ""+latLng.longitude;
 
-        GetAddress objGetAddress=new GetAddress(CreateMarket.this,Double.parseDouble(lat),Double.parseDouble(lon));
+        GetAddress objGetAddress = new GetAddress(CreateMarket.this,Double.parseDouble(lat),Double.parseDouble(lon));
         objGetAddress.get();
 
         while (objGetAddress.parsingComplete);
@@ -98,10 +103,20 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                     marketDataModel.setLongitude(lon);
                     marketDataModel.setAddress(address);
                     marketDataModel.setImageURL("n/a");
+                    marketDataModel.setAllow_checkbox(allow_checkbox);
                     createMarket(marketDataModel);
                 }
                 else {
                     Toast.makeText(this,"Data Incomplete",Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.cm_checkbox:
+                if(cb_allow.isChecked()){
+                    allow_checkbox="Allowed";
+                    Log.d("CREATE MARKET.....","checkbox is checked");
+                }else{
+                    allow_checkbox="Not_Allowed";
+                    Log.d("CREATE MARKET.....","checkbox is not checked");
                 }
                 break;
         }
