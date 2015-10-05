@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="fuuast.fyp.fleamarket.MarketDetails">
 
-    <item android:id="@+id/adminpanel_opt_logout"
+    <item android:id="@+id/marketdetails_opt_shopreques"
         android:title="Shops Request" />
-    <item android:id="@+id/adminpanel_opt_createmarket"
+    <item android:id="@+id/marketdetails_opt_viewonmap"
+        android:title="View on Map" />
+    <item android:id="@+id/marketdetails_opt_edit"
         android:title="Edit" />
-    <item android:id="@+id/adminpanel_opt_settings"
+    <item android:id="@+id/marketdetails_opt_delete"
         android:title="Delete"/>
 
 </menu>

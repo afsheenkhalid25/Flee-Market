@@ -25,7 +25,7 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="46dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_overflow"
             android:clickable="true"
@@ -46,8 +46,8 @@
         android:background="@color/material_grey_300">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:src="@drawable/profilepic"
             android:clickable="true"
             android:id="@+id/adminpanel_img_profilepic"
