@@ -43,6 +43,4 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/adminpanel_img_marketdetails" />
 
-
-
 </RelativeLayout>
