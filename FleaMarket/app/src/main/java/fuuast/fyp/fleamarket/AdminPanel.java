@@ -28,7 +28,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     private ListView marketlist;
     private ArrayList mrkt_id,mrkt_names,mrkt_address,mrkt_imgURL;
     private Firebase firebase;
-    private Boolean CHECK_LOGOUT=false;
+    private Boolean CHECK_FINISH=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +109,13 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
             case "logout":
                 Log.d("menu item...", "logout");
                 firebase.unauth();
-                CHECK_LOGOUT = true;
+                CHECK_FINISH = true;
                 Intent i = new Intent(this,Login.class);
                 startActivity(i);
                 break;
             case "create":
                 Log.d("menu item...", "create market");
+                CHECK_FINISH = true;
                 Intent j = new Intent(this,CreateMarket.class);
                 startActivity(j);
                 break;
@@ -153,7 +154,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     @Override
     protected void onPause() {
         super.onPause();
-        if(CHECK_LOGOUT){
+        if(CHECK_FINISH){
             finish();
         }
     }
