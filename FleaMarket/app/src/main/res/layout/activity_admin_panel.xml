@@ -108,13 +108,12 @@
         android:id="@+id/textView"
         android:background="@color/material_grey_300" />
 
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/adminpanel_lv_markets"
         android:paddingTop="10dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="15dp"
         android:paddingRight="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -127,6 +126,9 @@
         android:text="No Market Found"
         android:id="@+id/adminpanel_tv_status"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
+
+
 
 </RelativeLayout>

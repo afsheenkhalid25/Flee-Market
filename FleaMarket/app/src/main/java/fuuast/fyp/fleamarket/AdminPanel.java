@@ -28,6 +28,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     private ListView marketlist;
     private ArrayList mrkt_id,mrkt_names,mrkt_address,mrkt_imgURL;
     private Firebase firebase;
+    private Boolean CHECK_LOGOUT=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                 mrkt_address.add(marketDataModel.getAddress());
                 mrkt_imgURL.add(marketDataModel.getImageURL());
                 markets_status.setVisibility(View.INVISIBLE);
-                marketlist.setAdapter(new CustomAdapter(AdminPanel.this,mrkt_names,mrkt_address,mrkt_imgURL));
+                marketlist.setAdapter(new AdminPanel_CustomAdapter(AdminPanel.this,mrkt_names,mrkt_address,mrkt_imgURL));
             }
 
             @Override
@@ -101,11 +102,6 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     }
 
     private void action (String s) {
-        if (s.equals("settings")) {
-            Log.d("menu item...", "settings");
-        } else if (s.equals("logout")) {
-            Log.d("menu item...", "logout");
-        }
         switch (s){
             case "settings":
                 Log.d("menu item...", "settings");
@@ -113,6 +109,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
             case "logout":
                 Log.d("menu item...", "logout");
                 firebase.unauth();
+                CHECK_LOGOUT = true;
                 Intent i = new Intent(this,Login.class);
                 startActivity(i);
                 break;
@@ -129,7 +126,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         switch (view.getId()){
             case R.id.adminpanel_img_options:
                 PopupMenu popup = new PopupMenu(this, view);
-                popup.inflate(R.menu.actions);
+                popup.inflate(R.menu.menu_admin_panel);
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -150,9 +147,14 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                     }
                 });
                 break;
-            case R.id.adminpanel_img_marketdetails:
-                Intent i=new Intent(AdminPanel.this,MarketView.class);
-                startActivity(i);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(CHECK_LOGOUT){
+            finish();
         }
     }
 }

@@ -1,6 +1,7 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +12,24 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends BaseAdapter{
+public class AdminPanel_CustomAdapter extends BaseAdapter{
 
     Context context;
-    ArrayList mrkt_names,mrkt_area,mrkt_imageUrl;
+    ArrayList market_names,market_area,market_imageUrl;
     TextView marketName,marketArea;
     ImageView img;
 
 
-    public CustomAdapter(Context context, ArrayList names, ArrayList area, ArrayList imageUrl) {
+    public AdminPanel_CustomAdapter(Context context, ArrayList names, ArrayList area, ArrayList imageUrl) {
         this.context = context;
-        this.mrkt_names = names;
-        this.mrkt_area = area;
-        this.mrkt_imageUrl = imageUrl;
-
+        this.market_names = names;
+        this.market_area = area;
+        this.market_imageUrl = imageUrl;
     }
 
     @Override
     public int getCount() {
-        return mrkt_area.size();
+        return market_area.size();
     }
 
     @Override
@@ -55,12 +55,13 @@ public class CustomAdapter extends BaseAdapter{
         img.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "this shows market details", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context,MarketDetails.class);
+                context.startActivity(i);
             }
         });
 
-        marketName.setText(mrkt_names.get(position).toString());
-        marketArea.setText(mrkt_area.get(position).toString());
+        marketName.setText(market_names.get(position).toString());
+        marketArea.setText(market_area.get(position).toString());
 
         return v;
     }
