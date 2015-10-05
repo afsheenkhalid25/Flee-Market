@@ -76,13 +76,13 @@ public class CreateAccount extends ActionBarActivity
                     et_Ot.setEnabled(false);
                 }
             }
-
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
         List<String> list = new ArrayList<String>();
+        list.add("<select Type>");
         list.add("Admin");
         list.add("Shopkeeper");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
@@ -129,7 +129,9 @@ public class CreateAccount extends ActionBarActivity
                 }
                 else
                     Toast.makeText(CreateAccount.this, "Password Does not Match", Toast.LENGTH_SHORT).show();
-            }
+            }else
+                Toast.makeText(CreateAccount.this, "First select type", Toast.LENGTH_SHORT).show();
+
         }
     }
 

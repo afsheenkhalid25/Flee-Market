@@ -44,7 +44,7 @@
             android:label="@string/title_activity_create_market" >
         </activity>
         <activity
-            android:name=".MarketView"
+            android:name=".MarketDetails"
             android:label="@string/title_activity_market_view" >
         </activity>
     </application>
