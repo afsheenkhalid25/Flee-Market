@@ -7,20 +7,41 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
+import java.util.ArrayList;
 
 public class MarketDetails extends ActionBarActivity implements View.OnClickListener {
 
-    ImageView options;
+    private TextView tv_market_name,tv_market_address,shops_status;
+    private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
+    private ListView shops_list;
+    private ArrayList market_id,market_names,market_address,market_imgURL;
+    private Firebase firebase;
+    private Boolean CHECK_FINISH=false;
+    private ImageView options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_details);
 
+        Firebase.setAndroidContext(this);
+        firebase=new Firebase("https://flee-market.firebaseio.com/");
+
+        tv_market_name = (TextView) findViewById(R.id.marketview_tv_name);
+        tv_market_address = (TextView) findViewById(R.id.marketview_tv_area);
+        shops_status = (TextView) findViewById(R.id.marketview_tv_status);
+
         options = (ImageView) findViewById(R.id.marketdetails_img_options);
         options.setOnClickListener(this);
+
+        tv_market_name.setText(marketDataModelSingleTon.getMarket_name());
+        tv_market_address.setText(marketDataModelSingleTon.getMarket_address());
     }
 
     private void onAction (String s) {

@@ -10,5 +10,6 @@
     <string name="title_activity_create_market">Map</string>
     <string name="title_activity_market_view">MarketView</string>
     <string name="title_activity_edit_profile">EditProfile</string>
+    <string name="title_activity_admin_market_view">Map</string>
 
 </resources>

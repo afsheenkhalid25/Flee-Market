@@ -24,12 +24,15 @@ import java.util.HashMap;
 public class AdminPanel extends ActionBarActivity implements View.OnClickListener {
 
     private TextView tv_name,tv_email,tv_phone,markets_status;
-    private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
     private ImageView options;
     private ListView market_list;
     private ArrayList market_id,market_names,market_address,market_imgURL;
     private Firebase firebase;
     private Boolean CHECK_FINISH=false;
+
+    private MarketDataModel marketDataModel;
+    private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
+    private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +93,22 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         });
     }
 
-    private void getMarketData(String marketID){
+    private void getMarketData(final String marketID){
         firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                MarketDataModel marketDataModel=dataSnapshot.getValue(MarketDataModel.class);
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
                 market_names.add(marketDataModel.getName());
                 market_address.add(marketDataModel.getAddress());
                 market_imgURL.add(marketDataModel.getImageURL());
+
+                //setting values of market data in MarketDataModelSingleTon class for using it in market details class....
+                marketDataModelSingleTon.setAdmin_id(userDataModelSingleTon.getId());
+                marketDataModelSingleTon.setMarket_id(marketID);
+                marketDataModelSingleTon.setMarket_address(marketDataModel.getAddress());
+                marketDataModelSingleTon.setMarket_name(marketDataModel.getName());
+
                 markets_status.setVisibility(View.INVISIBLE);
                 market_list.setAdapter(new AdminPanel_CustomAdapter(AdminPanel.this,market_names,market_address,market_imgURL));
             }
