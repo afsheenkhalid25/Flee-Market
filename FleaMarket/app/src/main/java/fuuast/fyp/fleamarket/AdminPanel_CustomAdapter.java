@@ -17,8 +17,6 @@ public class AdminPanel_CustomAdapter extends BaseAdapter{
     Context context;
     ArrayList market_names,market_area,market_imageUrl;
     TextView marketName,marketArea;
-    ImageView img;
-
 
     public AdminPanel_CustomAdapter(Context context, ArrayList names, ArrayList area, ArrayList imageUrl) {
         this.context = context;

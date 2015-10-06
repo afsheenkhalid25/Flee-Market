@@ -26,9 +26,7 @@ import java.util.Map;
 public class CreateAccount extends ActionBarActivity
 {
     private String name,email_id,password,re_password,phone,type,nic,address,org_name,org_cntct,org_typ,image_url,message=null;
-
     private Firebase fb;
-
     private EditText et_name,et_email,et_pass,et_repass,et_phn,et_add,et_nic,et_On,et_Oc,et_Ot;
     private ImageView img;
     private Spinner sp;
@@ -58,8 +56,6 @@ public class CreateAccount extends ActionBarActivity
         et_Oc = (EditText) findViewById(R.id.ca_et_org_cntct);
         et_Ot = (EditText) findViewById(R.id.ca_et_org_type);
 
-        sv = (ScrollView) findViewById(R.id.scrollView);
-
         img = (ImageView) findViewById(R.id.ca_img);
         img.setOnClickListener(new img_OnClickListener());
 
@@ -82,7 +78,7 @@ public class CreateAccount extends ActionBarActivity
         });
 
         List<String> list = new ArrayList<String>();
-        list.add("<select Type>");
+        list.add("<Select Type>");
         list.add("Admin");
         list.add("Shopkeeper");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);

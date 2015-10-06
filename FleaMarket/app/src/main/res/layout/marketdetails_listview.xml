@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Market Name"
+        android:text="Shop Name"
         android:paddingLeft="10dp"
         android:id="@+id/marketdetails_tv_shopname"
         android:textColor="@color/material_blue_grey_800"

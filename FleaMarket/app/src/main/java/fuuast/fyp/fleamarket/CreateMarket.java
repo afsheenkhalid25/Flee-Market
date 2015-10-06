@@ -103,7 +103,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                     marketDataModel.setLongitude(lon);
                     marketDataModel.setAddress(address);
                     marketDataModel.setImageURL("n/a");
-                    marketDataModel.setAllow_checkbox(allow_checkbox);
+                    //marketDataModel.setAllow_checkbox(allow_checkbox);
                     createMarket(marketDataModel);
                 }
                 else {
@@ -140,13 +140,13 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                     Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    addMarkettoadmin(userDataModelSingleTon.getId(),markets.getKey());
+                    addMarketToAdmin(userDataModelSingleTon.getId(),markets.getKey());
                 }
             }
         });
     }
 
-    private void addMarkettoadmin(String adminID, final String marketID)
+    private void addMarketToAdmin(String adminID, final String marketID)
     {
         HashMap<String,Object> hashMap=new HashMap<String, Object>();
         hashMap.put("marketID",marketID);

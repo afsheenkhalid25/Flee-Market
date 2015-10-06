@@ -16,8 +16,6 @@ public class MarketDetails_CustomAdapter extends BaseAdapter
     Context context;
     ArrayList shop_Name,shop_Owner,shop_Category,shop_imageUrl;
     TextView shopName,shopOwner,shopCategory;
-    ImageView img;
-
 
     public MarketDetails_CustomAdapter(Context context, ArrayList names, ArrayList owner, ArrayList category, ArrayList imageUrl) {
         this.context = context;
@@ -51,15 +49,6 @@ public class MarketDetails_CustomAdapter extends BaseAdapter
         shopName = (TextView) v.findViewById(R.id.marketdetails_tv_shopname);
         shopOwner = (TextView) v.findViewById(R.id.marketdetails_tv_shopowner);
         shopCategory = (TextView) v.findViewById(R.id.marketdetails_tv_shopcategory);
-
-        img = (ImageView) v.findViewById(R.id.marketdetails_img_shopdetails);
-        img.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context,MarketDetails.class);
-                context.startActivity(i);
-            }
-        });
 
         shopName.setText(shop_Name.get(position).toString());
         shopOwner.setText(shop_Owner.get(position).toString());
