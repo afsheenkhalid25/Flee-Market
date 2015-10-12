@@ -249,7 +249,6 @@ public class EditAdminProfile extends ActionBarActivity{
         userDataModel.setOrg_cntct(org_cntct);
         userDataModel.setEmail_id(email_id);
         userDataModel.setOrg_typ(userDataModelSingleTon.getOrg_typ().toString());
-        userDataModel.setImage_url(userDataModelSingleTon.getImage_url().toString());
         userDataModel.setType("Admin");
 
         userDataModelSingleTon.setName(userDataModel.getName());
