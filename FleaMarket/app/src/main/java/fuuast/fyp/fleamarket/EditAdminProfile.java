@@ -143,8 +143,6 @@ public class EditAdminProfile extends ActionBarActivity{
     {
         email_id = tv_email.getText().toString();
         name = et_name.getText().toString();
-        re_pass = et_repass.getText().toString();
-        new_pass = et_crpass.getText().toString();
         phone = et_phn.getText().toString();
         address = et_add.getText().toString();
         nic = et_nic.getText().toString();
@@ -155,13 +153,19 @@ public class EditAdminProfile extends ActionBarActivity{
             Toast.makeText(EditAdminProfile.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
         else
         {
+            try{
+                re_pass = et_repass.getText().toString();
+                new_pass = et_crpass.getText().toString();
+            }catch (NullPointerException ne){
+
+            }
+            progressDialog.setMessage("\tUpdating Profile...");
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             if(new_pass!=null&&re_pass!=null)
             {
                 if(new_pass.equals(re_pass))
                 {
-                    progressDialog.setMessage("\tUpdating Profile...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
                     firebase.authWithPassword(email_id, password, new Firebase.AuthResultHandler()
                     {
@@ -197,8 +201,41 @@ public class EditAdminProfile extends ActionBarActivity{
                     });
                 }else
                     Toast.makeText(EditAdminProfile.this, "Password must be same", Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(EditAdminProfile.this, "New Password must be set correctly", Toast.LENGTH_SHORT).show();
+            } else{
+                progressDialog.show();
+                firebase.authWithPassword(email_id, password, new Firebase.AuthResultHandler()
+                {
+                    @Override
+                    public void onAuthenticated(final AuthData authData)
+                    {
+                        userDataModel.setPassword(new_pass);
+                        setData();
+                        firebase.child("Users").child(authData.getUid()).setValue(userDataModel, new Firebase.CompletionListener()
+                        {
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                progressDialog.dismiss();
+                                if(firebaseError==null){
+                                    Log.d("Position........","on complete ");
+                                    Toast.makeText(EditAdminProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                    Intent i=new Intent(EditAdminProfile.this,AdminPanel.class);
+                                    startActivity(i);
+                                }else{
+                                    Log.d("Position........","in data saving error");
+                                    Toast.makeText(EditAdminProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError error) {
+                        Log.d("LOGIN TASK........","ON ERROR"+error);
+                        progressDialog.dismiss();
+                        Toast.makeText(EditAdminProfile.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 

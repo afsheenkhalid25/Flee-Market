@@ -169,7 +169,7 @@
 
             <SlidingDrawer
                 android:layout_width="wrap_content"
-                android:layout_height="450dp"
+                android:layout_height="50dp"
                 android:id="@+id/sd_chngOthr"
                 android:handle="@+id/rl_chngOthr"
                 android:content="@+id/contentLayout2"
@@ -319,13 +319,5 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:id="@+id/relativeLayout2"
-        android:layout_alignParentBottom="true"
-        android:background="@color/material_grey_300"
-        android:outlineProvider="background" />
 
 </LinearLayout>
