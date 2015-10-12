@@ -44,7 +44,7 @@
 
         <activity
             android:name=".CreateMarket"
-            android:label="@string/title_activity_create_market" >
+            android:label="Create Market" >
         </activity>
 
         <activity
@@ -54,10 +54,9 @@
 
         <activity
             android:name=".EditAdminProfile"
-            android:label="@string/title_activity_edit_profile" >
+            android:label="Edit Profile" >
         </activity>
 
     </application>
 
 </manifest>
-
