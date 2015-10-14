@@ -90,7 +90,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Change Name"
                     android:textColor="@color/material_blue_grey_800"
-                    android:textSize="23dp"
+                    android:textSize="20dp"
                     android:padding="10dp"
                     android:layout_weight="1"
                     android:id="@+id/editprofile_tv_name" />
@@ -127,7 +127,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Change Password"
                     android:textColor="@color/material_blue_grey_800"
-                    android:textSize="23dp"
+                    android:textSize="20dp"
                     android:padding="10dp"
                     android:layout_weight="1"
                     android:id="@+id/ep_tv_password" />
@@ -169,7 +169,7 @@
 
             <SlidingDrawer
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:id="@+id/sd_chngOthr"
                 android:handle="@+id/rl_chngOthr"
                 android:content="@+id/contentLayout2"
@@ -192,7 +192,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Change Others"
                         android:textColor="@color/material_blue_grey_800"
-                        android:textSize="23dp"
+                        android:textSize="20dp"
                         android:padding="10dp"
                         android:layout_weight="1"
                         android:id="@+id/ep_tv_others"/>

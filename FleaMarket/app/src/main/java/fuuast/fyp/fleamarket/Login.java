@@ -104,7 +104,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                         data.setId(authData.getUid());
                         data.setName(ud.getName());
                         data.setEmail_id(ud.getEmail_id());
-                        data.setPassword(ud.getPassword());
+                        data.setPassword(password);
                         data.setPhone(ud.getPhone());
                         data.setType(ud.getType());
                         data.setAddress(ud.getAddress());

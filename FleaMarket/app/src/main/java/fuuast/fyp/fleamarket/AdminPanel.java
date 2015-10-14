@@ -28,7 +28,6 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     private ListView market_list;
     private ArrayList market_id,market_names,market_address,market_imgURL;
     private Firebase firebase;
-    private Boolean CHECK_FINISH=false;
 
     private MarketDataModel marketDataModel;
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
@@ -124,20 +123,17 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         switch (s){
             case "edit_profile":
                 Log.d("menu item...", "Edit Profile");
-                CHECK_FINISH = true;
                 Intent i = new Intent(this,EditAdminProfile.class);
                 startActivity(i);
                 break;
             case "logout":
                 Log.d("menu item...", "Logout");
                 firebase.unauth();
-                CHECK_FINISH = true;
                 Intent j = new Intent(this,Login.class);
                 startActivity(j);
                 break;
             case "create":
                 Log.d("menu item...", "Create Market");
-                CHECK_FINISH = true;
                 Intent k = new Intent(this,CreateMarket.class);
                 startActivity(k);
                 break;
@@ -176,8 +172,6 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     @Override
     protected void onPause() {
         super.onPause();
-        if(CHECK_FINISH){
-            finish();
-        }
+        finish();
     }
 }
