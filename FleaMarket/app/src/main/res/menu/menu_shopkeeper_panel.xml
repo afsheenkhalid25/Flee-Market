@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fuuast.fyp.fleamarket.ShopkeeperPanel">
+
+    <item android:id="@+id/shoppanel_opt_createshop"
+        android:title="Create Shop"
+        android:icon="@drawable/ic_action_new"/>
+    <item android:id="@+id/shoppanel_opt_pending_shop"
+        android:title="Pending Shops" />
+    <item android:id="@+id/shoppanel_opt_editprofile"
+        android:title="Edit Profile"/>
+    <item android:id="@+id/shoppanel_opt_logout"
+        android:title="Logout" />
+
+</menu>
