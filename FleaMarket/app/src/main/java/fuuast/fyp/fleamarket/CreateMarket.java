@@ -96,7 +96,6 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                 if (lat!=null&&lon!=null&&!et_name.getText().toString().equals(""))
                 {
                     img.setEnabled(false);
-
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());
                     marketDataModel.setLatitude(lat);
@@ -182,6 +181,13 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         img.setEnabled(true);
         progressDialog.dismiss();
         Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(CreateMarket.this,AdminPanel.class);
+        startActivity(i);
     }
 
     @Override

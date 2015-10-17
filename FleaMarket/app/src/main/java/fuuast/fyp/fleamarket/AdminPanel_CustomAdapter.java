@@ -1,14 +1,11 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -46,7 +43,7 @@ public class AdminPanel_CustomAdapter extends BaseAdapter{
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.adminpanel_listview,null);
 
-        marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
+        marketName = (TextView) v.findViewById(R.id.shoppanel_tv_shopname);
         marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
 
         marketName.setText(market_names.get(position).toString());

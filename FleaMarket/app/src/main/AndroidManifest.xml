@@ -14,7 +14,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="Flea Market"
         android:theme="@style/AppTheme" >
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -31,32 +30,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CreateAccount"
             android:label="@string/title_activity_create_account" >
         </activity>
-
         <activity
             android:name=".AdminPanel"
             android:label="@string/title_activity_admin_panel" >
         </activity>
-
         <activity
             android:name=".CreateMarket"
             android:label="Create Market" >
         </activity>
-
         <activity
             android:name=".MarketDetails"
             android:label="@string/title_activity_market_view" >
         </activity>
-
         <activity
             android:name=".EditAdminProfile"
             android:label="Edit Profile" >
         </activity>
-
+        <activity
+            android:name=".AdminMarketMapView"
+            android:label="@string/title_activity_admin_market_map_view" >
+        </activity>
+        <activity
+            android:name=".CreateShop"
+            android:label="@string/title_activity_create_shop" >
+        </activity>
+        <activity
+            android:name=".ShopkeeperPanel"
+            android:label="@string/title_activity_shopkeeper_panel" >
+        </activity>
     </application>
 
 </manifest>

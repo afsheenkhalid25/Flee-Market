@@ -8,5 +8,9 @@
     <string name="title_activity_admin_panel">AdminPanel</string>
     <string name="title_activity_market_view">MarketView</string>
     <string name="title_activity_edit_admin_profile">EditAdminProfile</string>
+    <string name="title_activity_admin_market_map_view">Map</string>
+    <string name="title_activity_create_shop">CreateShop</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_shopkeeper_panel">ShopkeeperPanel</string>
 
 </resources>

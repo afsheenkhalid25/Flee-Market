@@ -15,6 +15,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.auth.api.Auth;
 
 import java.util.ArrayList;
 
@@ -23,12 +24,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     private Firebase fb;
     private String email_id,password,ac_type=null;
     private EditText et_email,et_pass;
-    private ImageView img_login,img_createaccount;
-    View v;
-    private ArrayList array_list;
-    Boolean check = false;
-
-    ProgressDialog progressDialog;
+    private ImageView img_login,img_create_account;
+    private View v;
+    private AuthData loginAuthData;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +36,30 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
         Firebase.setAndroidContext(this);
         fb = new Firebase("https://flee-market.firebaseio.com/");
-        array_list = new ArrayList();
 
         progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setMessage("\tProcessing...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         et_email = (EditText) findViewById(R.id.login_et_email);
         et_pass = (EditText) findViewById(R.id.login_et_password);
 
         img_login = (ImageView) findViewById(R.id.login_img_login);
         img_login.setOnClickListener(this);
-        img_createaccount = (ImageView) findViewById(R.id.login_btn_createaccount);
-        img_createaccount.setOnClickListener(this);
+        img_create_account = (ImageView) findViewById(R.id.login_btn_createaccount);
+        img_create_account.setOnClickListener(this);
 
-        v=findViewById(R.id.login_rl_customers);
+        v = findViewById(R.id.login_rl_customers);
         v.setOnClickListener(this);
+
+        loginAuthData = fb.getAuth();
+        if (loginAuthData != null) {
+            img_login.setEnabled(false);
+            et_email.setEnabled(false);
+            et_pass.setEnabled(false);
+            loginTask();
+        }
     }
 
     @Override
@@ -73,7 +82,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 Toast.makeText(Login.this,"Ready to view Market?",Toast.LENGTH_SHORT).show();
                 break;
         }
-
     }
 
     public void Login()
@@ -81,9 +89,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
         img_login.setEnabled(false);
         et_email.setEnabled(false);
         et_pass.setEnabled(false);
-        progressDialog.setMessage("\tProcessing...");
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
         fb.authWithPassword(email_id, password, new Firebase.AuthResultHandler()
         {
@@ -91,58 +96,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             public void onAuthenticated(final AuthData authData)
             {
                 Log.d("LOGIN TASK........","ON AUTHENTICATED");
-                fb.child("Users").child(authData.getUid()).addValueEventListener(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        Log.d("LOGIN TASK........","ON CHILD ADDED");
-
-                        UserDataModel ud = dataSnapshot.getValue(UserDataModel.class);
-                        UserDataModelSingleTon data = UserDataModelSingleTon.getInstance();
-
-                        data.setId(authData.getUid());
-                        data.setName(ud.getName());
-                        data.setEmail_id(ud.getEmail_id());
-                        data.setPassword(password);
-                        data.setPhone(ud.getPhone());
-                        data.setType(ud.getType());
-                        data.setAddress(ud.getAddress());
-                        data.setNic(ud.getNic());
-                        data.setImage_url(ud.getImage_url());
-                        data.setOrg_name(ud.getOrg_name());
-                        data.setOrg_typ(ud.getOrg_typ());
-                        data.setOrg_cntct(ud.getOrg_cntct());
-
-                        ac_type = ud.getType().toString();
-
-                        if (ac_type.equals("Admin")) {
-                            //....Admin Panel.....
-                            check=true;
-                            progressDialog.dismiss();
-                            Intent i=new Intent(Login.this,AdminPanel.class);
-                            startActivity(i);
-                        }else if (ac_type.equals("Shopkeeper")) {
-                            //....Shopkeeper Panel.....
-                            check=true;
-                            progressDialog.dismiss();
-                            Toast.makeText(Login.this, "Welcome to Shopkeeper Panel", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        Log.d("LOGIN TASK........","ON CANCELLED "+firebaseError.getMessage());
-                        progressDialog.dismiss();
-                        Toast.makeText(Login.this, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                        et_email.setText("");
-                        et_pass.setText("");
-                        img_login.setEnabled(true);
-                        et_email.setEnabled(true);
-                        et_pass.setEnabled(true);
-                    }
-
-                });
+                loginAuthData = authData;
+                loginTask();
             }
 
             @Override
@@ -156,15 +111,70 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 et_pass.setEnabled(true);
                 img_login.setEnabled(true);
             }
-
         });
+    }
+
+    public void loginTask()
+    {
+        fb.child("Users").child(loginAuthData.getUid()).addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                Log.d("LOGIN TASK........","ON CHILD ADDED");
+
+                UserDataModel ud = dataSnapshot.getValue(UserDataModel.class);
+                UserDataModelSingleTon data = UserDataModelSingleTon.getInstance();
+
+                data.setId(loginAuthData.getUid());
+                data.setName(ud.getName());
+                data.setEmail_id(ud.getEmail_id());
+                data.setPassword(password);
+                data.setPhone(ud.getPhone());
+                data.setType(ud.getType());
+                data.setAddress(ud.getAddress());
+                data.setNic(ud.getNic());
+                data.setImage_url(ud.getImage_url());
+                data.setOrg_name(ud.getOrg_name());
+                data.setOrg_typ(ud.getOrg_typ());
+                data.setOrg_cntct(ud.getOrg_cntct());
+
+                ac_type = ud.getType().toString();
+
+                if (ac_type.equals("Admin")) {
+                    progressDialog.dismiss();
+                    Intent i=new Intent(Login.this,AdminPanel.class);
+                    startActivity(i);
+                }else if (ac_type.equals("Shopkeeper")) {
+                    progressDialog.dismiss();
+                    Intent i=new Intent(Login.this,ShopkeeperPanel.class);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d("LOGIN TASK........","ON CANCELLED "+firebaseError.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(Login.this, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                et_email.setText("");
+                et_pass.setText("");
+                img_login.setEnabled(true);
+                et_email.setEnabled(true);
+                et_pass.setEnabled(true);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(check){
             finish();
-        }
     }
 }

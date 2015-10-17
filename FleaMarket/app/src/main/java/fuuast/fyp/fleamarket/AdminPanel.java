@@ -170,6 +170,12 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         finish();

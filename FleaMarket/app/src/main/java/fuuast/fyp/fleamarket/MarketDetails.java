@@ -22,7 +22,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     private ListView shops_list;
     private ArrayList market_id,market_names,market_address,market_imgURL;
     private Firebase firebase;
-    private Boolean CHECK_FINISH=false;
     private ImageView options;
 
     @Override
@@ -53,19 +52,16 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
-                //CHECK_FINISH = true;
                 //Intent j = new Intent(this,Login.class);
                 //startActivity(j);
                 break;
             case "edit":
                 Log.d("menu item...", "Edit Market");
-                //CHECK_FINISH = true;
                 //Intent k = new Intent(this,CreateMarket.class);
                 //startActivity(k);
                 break;
             case "delete":
                 Log.d("menu item...", "Delete Market");
-                //CHECK_FINISH = true;
                 //Intent k = new Intent(this,CreateMarket.class);
                 //startActivity(k);
                 break;
@@ -102,5 +98,18 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 });
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(this,AdminPanel.class);
+        startActivity(i);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

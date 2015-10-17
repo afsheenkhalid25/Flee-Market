@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/adminpanel_img_marketpic"
+        android:id="@+id/shoppanel_img_marketpic"
         android:src="@drawable/marketpic"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -18,11 +18,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Market Name"
         android:paddingLeft="10dp"
-        android:id="@+id/adminpanel_tv_marketname"
+        android:id="@+id/shoppanel_tv_shopname"
         android:textColor="@color/material_blue_grey_800"
-        android:layout_alignTop="@+id/adminpanel_img_marketpic"
-        android:layout_toRightOf="@+id/adminpanel_img_marketpic"
-        android:layout_toEndOf="@+id/adminpanel_img_marketpic" />
+        android:layout_alignTop="@+id/shoppanel_img_marketpic"
+        android:layout_toRightOf="@+id/shoppanel_img_marketpic"
+        android:layout_toEndOf="@+id/shoppanel_img_marketpic" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,9 +31,9 @@
         android:text="area"
         android:paddingLeft="10dp"
         android:id="@+id/adminpanel_tv_marketarea"
-        android:layout_below="@+id/adminpanel_tv_marketname"
-        android:layout_toRightOf="@+id/adminpanel_img_marketpic"
-        android:layout_toEndOf="@+id/adminpanel_img_marketpic" />
+        android:layout_below="@+id/shoppanel_tv_shopname"
+        android:layout_toRightOf="@+id/shoppanel_img_marketpic"
+        android:layout_toEndOf="@+id/shoppanel_img_marketpic" />
 
     <ImageView
         android:layout_width="50dp"

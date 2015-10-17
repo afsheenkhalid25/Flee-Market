@@ -5,7 +5,7 @@
     tools:context="fuuast.fyp.fleamarket.MarketDetails">
 
     <item android:id="@+id/marketdetails_opt_shoprequest"
-        android:title="Shops Request" />
+        android:title="Shops Requests" />
     <item android:id="@+id/marketdetails_opt_viewonmap"
         android:title="View on Map" />
     <item android:id="@+id/marketdetails_opt_edit"

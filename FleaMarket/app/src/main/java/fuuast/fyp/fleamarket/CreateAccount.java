@@ -127,7 +127,6 @@ public class CreateAccount extends ActionBarActivity
                     Toast.makeText(CreateAccount.this, "Password Does not Match", Toast.LENGTH_SHORT).show();
             }else
                 Toast.makeText(CreateAccount.this, "First select type", Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -153,7 +152,7 @@ public class CreateAccount extends ActionBarActivity
                     {
                         Log.d("Position........","on authenticated");
 
-                        //setting values of user data in setUserData function for using it in admin panel class....
+                        //setting values of user data in setUserData function for using it in admin & shopkeeper panel activities....
                         userDataModelSingleTon.setId(authData.getUid());
                         setUserData();
 
@@ -165,13 +164,13 @@ public class CreateAccount extends ActionBarActivity
                                 Log.d("Position........","on complete ");
                                 Toast.makeText(CreateAccount.this, "Account Created", Toast.LENGTH_SHORT).show();
                                 if (type.equals("Admin")) {
-                                    //....Admin Panel.....
                                     Toast.makeText(CreateAccount.this, "Welcome to Admin Panel", Toast.LENGTH_SHORT).show();
                                     Intent i=new Intent(CreateAccount.this,AdminPanel.class);
                                     startActivity(i);
                                 } else if (type.equals("Shopkeeper")) {
-                                    //....Shopkeeper Panel.....
                                     Toast.makeText(CreateAccount.this, "Welcome to Shopkeeper Panel", Toast.LENGTH_SHORT).show();
+                                    Intent i=new Intent(CreateAccount.this,ShopkeeperPanel.class);
+                                    startActivity(i);
                                 }
                             }else{
                                 Log.d("Position........","in data saving error");
@@ -182,13 +181,11 @@ public class CreateAccount extends ActionBarActivity
                                     }
                                     @Override
                                     public void onError(FirebaseError firebaseError) {
-
                                     }
                                 });
                             }
-                            }
-
-                        });
+                        }
+                    });
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError error) {
@@ -238,6 +235,13 @@ public class CreateAccount extends ActionBarActivity
         userDataModelSingleTon.setOrg_name(userDataModel.getOrg_name());
         userDataModelSingleTon.setOrg_typ(userDataModel.getOrg_typ());
         userDataModelSingleTon.setOrg_cntct(userDataModel.getOrg_cntct());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(CreateAccount.this,Login.class);
+        startActivity(i);
     }
 
     @Override

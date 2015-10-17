@@ -201,14 +201,12 @@ public class EditAdminProfile extends ActionBarActivity{
                     }
                     @Override
                     public void onError(FirebaseError firebaseError) {
-                        Toast.makeText(EditAdminProfile.this, "Error!! Password is not reset. Try Again.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }else
                 Toast.makeText(EditAdminProfile.this, "Password must be reset correctly", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     public void setData() {
         userDataModel.setEmail_id(email_id);
@@ -230,6 +228,13 @@ public class EditAdminProfile extends ActionBarActivity{
         userDataModelSingleTon.setNic(userDataModel.getNic());
         userDataModelSingleTon.setOrg_name(userDataModel.getOrg_name());
         userDataModelSingleTon.setOrg_cntct(userDataModel.getOrg_cntct());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(this,AdminPanel.class);
+        startActivity(i);
     }
 
     @Override
