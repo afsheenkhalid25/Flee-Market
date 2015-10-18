@@ -20,7 +20,6 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class AdminPanel extends ActionBarActivity implements View.OnClickListener {
 
     private TextView tv_name,tv_email,tv_phone,markets_status;

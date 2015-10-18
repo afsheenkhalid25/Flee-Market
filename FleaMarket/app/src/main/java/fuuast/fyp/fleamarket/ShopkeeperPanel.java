@@ -19,7 +19,6 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-
 public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickListener {
 
     private TextView tv_name,tv_email,tv_phone,shops_status;

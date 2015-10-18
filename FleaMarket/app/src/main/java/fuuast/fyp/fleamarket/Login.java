@@ -58,6 +58,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             img_login.setEnabled(false);
             et_email.setEnabled(false);
             et_pass.setEnabled(false);
+            progressDialog.show();
             loginTask();
         }
     }
@@ -68,7 +69,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             case R.id.login_img_login:
                 email_id = et_email.getText().toString();
                 password = et_pass.getText().toString();
-
                 if (email_id.equals("") || password.equals("")){
                     Toast.makeText(Login.this, "Please Enter Complete Details", Toast.LENGTH_SHORT).show();}
                 else

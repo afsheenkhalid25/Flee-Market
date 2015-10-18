@@ -70,6 +70,9 @@ public class EditProfile extends ActionBarActivity{
         rl_slider = (RelativeLayout) findViewById(R.id.rl_chngOthr);
 
         progressDialog = new ProgressDialog(EditProfile.this);
+        progressDialog.setMessage("\tUpdating Profile...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         setPopup();
         setSlidingDrawers();
@@ -111,9 +114,8 @@ public class EditProfile extends ActionBarActivity{
                 tv_others.setText("Done");
                 sd_chngOthr.getLayoutParams().height = 850;
                 if(userDataModelSingleTon.getType().equals("Shopkeeper")){
-                    sd_chngOthr.getLayoutParams().height = 700;
+                    sd_chngOthr.getLayoutParams().height = 600;
                 }
-
             }
         });
 
@@ -174,9 +176,6 @@ public class EditProfile extends ActionBarActivity{
             Toast.makeText(EditProfile.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
         else
         {
-            progressDialog.setMessage("\tUpdating Profile...");
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
             if (new_pass.equals("")&&re_pass.equals("")) {
                 progressDialog.show();
                 userDataModel.setPassword(password);
@@ -184,15 +183,15 @@ public class EditProfile extends ActionBarActivity{
                 firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        progressDialog.dismiss();
-                        if (firebaseError == null) {
-                            Log.d("Position........", "on complete ");
-                            setDataModel();
-                            Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.d("Position........", "in data saving error");
-                            Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
-                        }
+                    progressDialog.dismiss();
+                    if (firebaseError == null) {
+                        Log.d("Position........", "on complete ");
+                        setDataModel();
+                        Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("Position........", "in data saving error");
+                        Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
+                    }
                     }
                 });
             } else  if (new_pass.equals(re_pass)) {
@@ -205,15 +204,15 @@ public class EditProfile extends ActionBarActivity{
                         firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                progressDialog.dismiss();
-                                if (firebaseError == null) {
-                                    Log.d("Position........", "on complete ");
-                                    setDataModel();
-                                    Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Log.d("Position........", "in data saving error");
-                                    Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
-                                }
+                            progressDialog.dismiss();
+                            if (firebaseError == null) {
+                                Log.d("Position........", "on complete ");
+                                setDataModel();
+                                Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("Position........", "in data saving error");
+                                Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
+                            }
                             }
                         });
                     }
@@ -228,7 +227,7 @@ public class EditProfile extends ActionBarActivity{
 
     public void setData() {
         userDataModel.setEmail_id(email_id);
-        userDataModel.setType(userDataModelSingleTon.getType());
+        userDataModel.setType(userDataModelSingleTon.getType().toString());
         userDataModel.setName(name);
         userDataModel.setPhone(phone);
         userDataModel.setAddress(address);
@@ -268,7 +267,6 @@ public class EditProfile extends ActionBarActivity{
             progressDialog = null;
         }
         finish();
-
     }
 }
 
