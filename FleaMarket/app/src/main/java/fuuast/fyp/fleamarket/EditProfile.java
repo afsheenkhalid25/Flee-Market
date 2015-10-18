@@ -20,15 +20,15 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 
-public class EditAdminProfile extends ActionBarActivity{
+public class EditProfile extends ActionBarActivity{
 
     private Firebase firebase;
-    private TextView tv_email,tv_others;
+    private TextView tv_email,tv_others,tv_On,tv_Oc;
     private ImageView img_done,img_sd;
     private RelativeLayout rl_slider;
     private SlidingDrawer sd_chngOthr;
     private EditText et_name,et_crpass,et_repass,et_phn,et_add,et_nic,et_On,et_Oc;
-    private String admin_id,email_id,name,password,new_pass=null,re_pass=null,phone,nic,address,org_name,org_cntct;
+    private String user_id,email_id,name,password,new_pass=null,re_pass=null,phone,nic,address,org_name,org_cntct;
     private AlertDialog alertD;
     private AlertDialog.Builder alertDialogBuilder;
     private ProgressDialog progressDialog;
@@ -39,7 +39,7 @@ public class EditAdminProfile extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_admin_profile);
+        setContentView(R.layout.activity_edit_profile);
 
         Firebase.setAndroidContext(this);
         firebase = new Firebase("https://flee-market.firebaseio.com/");
@@ -65,9 +65,11 @@ public class EditAdminProfile extends ActionBarActivity{
 
         tv_email = (TextView) findViewById(R.id.ep_tv_email);
         tv_others = (TextView) findViewById(R.id.ep_tv_others);
+        tv_On = (TextView) findViewById(R.id.tv_On);
+        tv_Oc = (TextView) findViewById(R.id.tv_Oc);
         rl_slider = (RelativeLayout) findViewById(R.id.rl_chngOthr);
 
-        progressDialog = new ProgressDialog(EditAdminProfile.this);
+        progressDialog = new ProgressDialog(EditProfile.this);
 
         setPopup();
         setSlidingDrawers();
@@ -76,14 +78,27 @@ public class EditAdminProfile extends ActionBarActivity{
 
     public void showData() {
         tv_email.setText(userDataModelSingleTon.getEmail_id().toString());
-        admin_id = userDataModelSingleTon.getId().toString();
+        user_id = userDataModelSingleTon.getId().toString();
         password = userDataModelSingleTon.getPassword();
-        et_phn.setText(userDataModelSingleTon.getPhone().toString(),TextView.BufferType.EDITABLE);
-        et_add.setText(userDataModelSingleTon.getAddress().toString(),TextView.BufferType.EDITABLE);
-        et_nic.setText(userDataModelSingleTon.getNic().toString(),TextView.BufferType.EDITABLE);
-        et_On.setText(userDataModelSingleTon.getOrg_name().toString(),TextView.BufferType.EDITABLE);
-        et_Oc.setText(userDataModelSingleTon.getOrg_cntct().toString(),TextView.BufferType.EDITABLE);
-        et_name.setText(userDataModelSingleTon.getName().toString(),TextView.BufferType.EDITABLE);
+        et_name.setText(userDataModelSingleTon.getName().toString(), TextView.BufferType.EDITABLE);
+        et_phn.setText(userDataModelSingleTon.getPhone().toString(), TextView.BufferType.EDITABLE);
+        et_add.setText(userDataModelSingleTon.getAddress().toString(), TextView.BufferType.EDITABLE);
+        et_nic.setText(userDataModelSingleTon.getNic().toString(), TextView.BufferType.EDITABLE);
+        if(userDataModelSingleTon.getType().equals("Admin")) {
+            et_On.setText(userDataModelSingleTon.getOrg_name().toString(), TextView.BufferType.EDITABLE);
+            et_Oc.setText(userDataModelSingleTon.getOrg_cntct().toString(), TextView.BufferType.EDITABLE);
+            et_On.setVisibility(View.VISIBLE);
+            et_Oc.setVisibility(View.VISIBLE);
+            tv_On.setVisibility(View.VISIBLE);
+            tv_Oc.setVisibility(View.VISIBLE);
+        }else{
+            et_On.setText("-", TextView.BufferType.EDITABLE);
+            et_Oc.setText("-", TextView.BufferType.EDITABLE);
+            et_On.setVisibility(View.INVISIBLE);
+            et_Oc.setVisibility(View.INVISIBLE);
+            tv_On.setVisibility(View.INVISIBLE);
+            tv_Oc.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setSlidingDrawers() {
@@ -95,6 +110,9 @@ public class EditAdminProfile extends ActionBarActivity{
                 img_sd.setPadding(600,0,0,0);
                 tv_others.setText("Done");
                 sd_chngOthr.getLayoutParams().height = 850;
+                if(userDataModelSingleTon.getType().equals("Shopkeeper")){
+                    sd_chngOthr.getLayoutParams().height = 700;
+                }
 
             }
         });
@@ -111,10 +129,10 @@ public class EditAdminProfile extends ActionBarActivity{
     }
 
     public void setPopup() {
-        LayoutInflater layoutInflater = LayoutInflater.from(EditAdminProfile.this);
+        LayoutInflater layoutInflater = LayoutInflater.from(EditProfile.this);
         View v = layoutInflater.inflate(R.layout.password_popup, null);
 
-        alertDialogBuilder = new AlertDialog.Builder(EditAdminProfile.this);
+        alertDialogBuilder = new AlertDialog.Builder(EditProfile.this);
         alertDialogBuilder.setView(v);
 
         final EditText input = (EditText) v.findViewById(R.id.userInput);
@@ -128,7 +146,7 @@ public class EditAdminProfile extends ActionBarActivity{
                     if (dl_pass.equals(password)) {
                         dataUpdate();
                     }else
-                        Toast.makeText(EditAdminProfile.this, "Insert your current password correctly", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfile.this, "Insert your current password correctly", Toast.LENGTH_SHORT).show();
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -153,7 +171,7 @@ public class EditAdminProfile extends ActionBarActivity{
         re_pass=et_repass.getText().toString();
 
         if (name.equals("")||phone.equals("")||address.equals("")||nic.equals("")||org_name.equals("")||org_cntct.equals(""))
-            Toast.makeText(EditAdminProfile.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditProfile.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
         else
         {
             progressDialog.setMessage("\tUpdating Profile...");
@@ -163,17 +181,17 @@ public class EditAdminProfile extends ActionBarActivity{
                 progressDialog.show();
                 userDataModel.setPassword(password);
                 setData();
-                firebase.child("Users").child(admin_id).setValue(userDataModel, new Firebase.CompletionListener() {
+                firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         progressDialog.dismiss();
                         if (firebaseError == null) {
                             Log.d("Position........", "on complete ");
                             setDataModel();
-                            Toast.makeText(EditAdminProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("Position........", "in data saving error");
-                            Toast.makeText(EditAdminProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -184,17 +202,17 @@ public class EditAdminProfile extends ActionBarActivity{
                     public void onSuccess() {
                         userDataModel.setPassword(new_pass);
                         setData();
-                        firebase.child("Users").child(admin_id).setValue(userDataModel, new Firebase.CompletionListener() {
+                        firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                 progressDialog.dismiss();
                                 if (firebaseError == null) {
                                     Log.d("Position........", "on complete ");
                                     setDataModel();
-                                    Toast.makeText(EditAdminProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Log.d("Position........", "in data saving error");
-                                    Toast.makeText(EditAdminProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -204,13 +222,13 @@ public class EditAdminProfile extends ActionBarActivity{
                     }
                 });
             }else
-                Toast.makeText(EditAdminProfile.this, "Password must be reset correctly", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Password must be reset correctly", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void setData() {
         userDataModel.setEmail_id(email_id);
-        userDataModel.setType("Admin");
+        userDataModel.setType(userDataModelSingleTon.getType());
         userDataModel.setName(name);
         userDataModel.setPhone(phone);
         userDataModel.setAddress(address);
@@ -233,14 +251,24 @@ public class EditAdminProfile extends ActionBarActivity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(this,AdminPanel.class);
-        startActivity(i);
+        if(userDataModelSingleTon.getType().equals("Admin")){
+            Intent i=new Intent(this,AdminPanel.class);
+            startActivity(i);
+        }else if(userDataModelSingleTon.getType().equals("Shopkeeper")){
+            Intent i=new Intent(this,ShopkeeperPanel.class);
+            startActivity(i);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
         finish();
+
     }
 }
 

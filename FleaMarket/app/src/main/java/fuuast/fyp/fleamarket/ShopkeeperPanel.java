@@ -120,8 +120,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         switch (s){
             case "edit_profile":
                 Log.d("menu item...", "Edit Profile");
-                //Intent i = new Intent(this,EditshopProfile.class);
-                //startActivity(i);
+                Intent i = new Intent(this,EditProfile.class);
+                startActivity(i);
                 break;
             case "logout":
                 Log.d("menu item...", "Logout");

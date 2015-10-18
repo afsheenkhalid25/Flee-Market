@@ -41,7 +41,7 @@ public class ShopkeeperPanel_CustomAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.shoppanel_listview,null);
+        View v = inflater.inflate(R.layout.shopkeeperpanel_listview,null);
 
         shopName = (TextView) v.findViewById(R.id.shoppanel_tv_shopname);
         shopMarket = (TextView) v.findViewById(R.id.shoppanel_tv_shopmarket);

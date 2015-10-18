@@ -1,7 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="fuuast.fyp.fleamarket.EditAdminProfile"
+    tools:context="fuuast.fyp.fleamarket.EditProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -281,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Organization"
-                        android:id="@+id/textView5"
+                        android:id="@+id/tv_On"
                         android:paddingLeft="4dp"/>
 
                     <EditText
@@ -299,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Org_contact#"
-                        android:id="@+id/textView6"
+                        android:id="@+id/tv_Oc"
                         android:paddingLeft="4dp"/>
 
                     <EditText

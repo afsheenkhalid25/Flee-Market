@@ -47,7 +47,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         switch (s){
             case "shopRequest":
                 Log.d("menu item...", "Shop Requests");
-                //Intent i = new Intent(this,EditAdminProfile.class);
+                //Intent i = new Intent(this,EditProfile.class);
                 //startActivity(i);
                 break;
             case "view_on_map":

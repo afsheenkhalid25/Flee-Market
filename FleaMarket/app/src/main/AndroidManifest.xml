@@ -47,7 +47,7 @@
             android:label="@string/title_activity_market_view" >
         </activity>
         <activity
-            android:name=".EditAdminProfile"
+            android:name=".EditProfile"
             android:label="Edit Profile" >
         </activity>
         <activity
