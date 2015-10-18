@@ -1,12 +1,14 @@
 package fuuast.fyp.fleamarket;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
-public class CreateShop extends ActionBarActivity {
+public class CreateShop extends ActionBarActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,26 +16,21 @@ public class CreateShop extends ActionBarActivity {
         setContentView(R.layout.activity_create_shop);
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_shop, menu);
-        return true;
+    public void onClick(View v) {
+
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(CreateShop.this,ShopkeeperPanel.class);
+        startActivity(i);
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

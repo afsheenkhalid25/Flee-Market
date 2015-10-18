@@ -183,9 +183,9 @@ public class EditProfile extends ActionBarActivity{
                 firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    progressDialog.dismiss();
                     if (firebaseError == null) {
                         Log.d("Position........", "on complete ");
+                        progressDialog.dismiss();
                         setDataModel();
                         Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                     } else {
@@ -204,9 +204,9 @@ public class EditProfile extends ActionBarActivity{
                         firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            progressDialog.dismiss();
                             if (firebaseError == null) {
                                 Log.d("Position........", "on complete ");
+                                progressDialog.dismiss();
                                 setDataModel();
                                 Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                             } else {
@@ -264,7 +264,6 @@ public class EditProfile extends ActionBarActivity{
         super.onPause();
         if (progressDialog != null) {
             progressDialog.dismiss();
-            progressDialog = null;
         }
         finish();
     }
