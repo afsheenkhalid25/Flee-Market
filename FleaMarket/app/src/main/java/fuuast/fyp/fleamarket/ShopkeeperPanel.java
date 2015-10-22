@@ -1,32 +1,41 @@
 package fuuast.fyp.fleamarket;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickListener {
 
     private TextView tv_name,tv_email,tv_phone,shops_status;
     private ImageView img_options;
     private ListView shop_list;
-    private ArrayList shop_id,shop_names,shop_market,shop_imgURL;
+    private ArrayList shop_id,shop_names,shop_market,market_id,market_names,market_address,market_imgURL;
     private Firebase firebase;
 
+    Dialog dialog;
+    private MarketDataModel marketDataModel;
+    private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
@@ -58,12 +67,15 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         tv_email.setText(userDataModelSingleTon.getEmail_id());
         tv_phone.setText(userDataModelSingleTon.getPhone());
 
+        market_names=new ArrayList();
+        market_address=new ArrayList();
+        market_imgURL=new ArrayList();
+        market_id=new ArrayList();
+        shop_id=new ArrayList();
         shop_names=new ArrayList();
         shop_market=new ArrayList();
-        shop_imgURL=new ArrayList();
-        shop_id=new ArrayList();
 
-        getShops();
+        //getShops();
     }
 
     private void getShops(){
@@ -88,7 +100,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         });*/
     }
 
-    private void getMarketData(final String marketID){
+    private void getShopData(final String marketID){
         /*firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -119,7 +131,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         switch (s){
             case "edit_profile":
                 Log.d("menu item...", "Edit Profile");
-                Intent i = new Intent(this,EditProfile.class);
+            Intent i = new Intent(this,EditProfile.class );
                 startActivity(i);
                 break;
             case "logout":
@@ -130,8 +142,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                 break;
             case "create":
                 Log.d("menu item...", "Create Shop");
-                Intent k = new Intent(this,CreateShop.class);
-                startActivity(k);
+                createShop();
                 break;
             case "pending":
                 Log.d("menu item...", "Pending Shops");
@@ -167,8 +178,73 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                         }
                     }
                 });
-                break;
+            break;
         }
+    }
+
+    public void createShop(){
+        getMarketList();
+        View view = getLayoutInflater().inflate(R.layout.selectmarket_listview, null);
+        ListView lv = (ListView) view.findViewById(R.id.listView1);
+        AdminPanel_CustomAdapter customAdapter = new AdminPanel_CustomAdapter(ShopkeeperPanel.this, market_names,market_address,market_imgURL);
+        lv.setAdapter(customAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Position","On item clicked");
+                Log.d("Name",market_names.get(position).toString());
+                marketDataModelSingleTon.setMarket_id(market_id.get(position).toString());
+                marketDataModelSingleTon.setMarket_name(market_names.get(position).toString());
+                marketDataModelSingleTon.setMarket_address(market_address.get(position).toString());
+                dialog.dismiss();
+                Intent i = new Intent(ShopkeeperPanel.this,CreateShop.class);
+                startActivity(i);
+            }
+        });
+        dialog = new Dialog(ShopkeeperPanel.this);
+        dialog.setTitle("Select Market");
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    private void getMarketList()
+    {
+        market_id.clear();
+        market_names.clear();
+        market_address.clear();
+        market_imgURL.clear();
+        firebase.child("Markets").addChildEventListener(new ChildEventListener()
+        {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                market_id.add(dataSnapshot.getKey().toString());
+                marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
+                market_names.add(marketDataModel.getName());
+                market_address.add(marketDataModel.getAddress());
+                market_imgURL.add(marketDataModel.getImageURL());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override

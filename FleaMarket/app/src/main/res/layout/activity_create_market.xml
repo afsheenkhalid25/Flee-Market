@@ -63,7 +63,7 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Allow customer to create shop"
+        android:text="Allow shopkeeper to create shop"
         android:id="@+id/cm_checkbox"
         android:layout_below="@+id/et_marketname"
         android:layout_alignLeft="@+id/et_marketname"

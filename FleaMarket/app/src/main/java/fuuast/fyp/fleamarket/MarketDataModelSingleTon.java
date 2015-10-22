@@ -2,9 +2,33 @@ package fuuast.fyp.fleamarket;
 
 public class MarketDataModelSingleTon {
 
-    private String market_id,admin_id,market_name,market_address;
+    private String market_id,admin_id,market_name,market_address,market_lat,market_lon,market_check;
 
     static MarketDataModelSingleTon obj = new MarketDataModelSingleTon();
+
+    public String getMarket_lat() {
+        return market_lat;
+    }
+
+    public void setMarket_lat(String market_lat) {
+        this.market_lat = market_lat;
+    }
+
+    public String getMarket_lon() {
+        return market_lon;
+    }
+
+    public void setMarket_lon(String market_lon) {
+        this.market_lon = market_lon;
+    }
+
+    public String getMarket_check() {
+        return market_check;
+    }
+
+    public void setMarket_check(String market_check) {
+        this.market_check = market_check;
+    }
 
     public String getMarket_id() {
         return market_id;
@@ -43,6 +67,5 @@ public class MarketDataModelSingleTon {
             obj = new MarketDataModelSingleTon();
         }
         return obj;
-
     }
 }

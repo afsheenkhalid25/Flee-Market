@@ -43,7 +43,7 @@ public class AdminPanel_CustomAdapter extends BaseAdapter{
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.adminpanel_listview,null);
 
-        marketName = (TextView) v.findViewById(R.id.shoppanel_tv_shopname);
+        marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
         marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
 
         marketName.setText(market_names.get(position).toString());

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
     android:padding="15dp">
 
     <ImageView
@@ -18,7 +18,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Market Name"
         android:paddingLeft="10dp"
-        android:id="@+id/shoppanel_tv_shopname"
+        android:id="@+id/adminpanel_tv_marketname"
         android:textColor="@color/material_blue_grey_800"
         android:layout_alignTop="@+id/shoppanel_img_marketpic"
         android:layout_toRightOf="@+id/shoppanel_img_marketpic"
@@ -31,7 +31,7 @@
         android:text="area"
         android:paddingLeft="10dp"
         android:id="@+id/adminpanel_tv_marketarea"
-        android:layout_below="@+id/shoppanel_tv_shopname"
+        android:layout_below="@+id/adminpanel_tv_marketname"
         android:layout_toRightOf="@+id/shoppanel_img_marketpic"
         android:layout_toEndOf="@+id/shoppanel_img_marketpic" />
 
