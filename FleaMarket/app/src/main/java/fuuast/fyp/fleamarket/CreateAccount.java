@@ -150,10 +150,10 @@ public class CreateAccount extends ActionBarActivity
                     @Override
                     public void onAuthenticated(final AuthData authData)
                     {
-                        Log.d("Position........","on authenticated");
-
                         //setting values of user data in setUserData function for using it in admin & shopkeeper panel activities....
                         userDataModelSingleTon.setId(authData.getUid());
+                        Log.d("Position........","on authenticated:");
+                        Log.d("Position........",authData.getUid()+"   "+authData.getProvider());
                         setUserData();
 
                         fb.child("Users").child(authData.getUid()).setValue(userDataModel, new Firebase.CompletionListener() {
@@ -214,7 +214,6 @@ public class CreateAccount extends ActionBarActivity
         //for class UserDataModel
         userDataModel.setName(name);
         userDataModel.setEmail_id(email_id);
-        userDataModel.setPassword(password);
         userDataModel.setType(type);
         userDataModel.setPhone(phone);
         userDataModel.setAddress(address);
@@ -226,12 +225,10 @@ public class CreateAccount extends ActionBarActivity
         //for class UserDataModelSingleTon
         userDataModelSingleTon.setName(userDataModel.getName());
         userDataModelSingleTon.setEmail_id(userDataModel.getEmail_id());
-        userDataModelSingleTon.setPassword(userDataModel.getPassword());
         userDataModelSingleTon.setPhone(userDataModel.getPhone());
         userDataModelSingleTon.setType(userDataModel.getType());
         userDataModelSingleTon.setAddress(userDataModel.getAddress());
         userDataModelSingleTon.setNic(userDataModel.getNic());
-        userDataModelSingleTon.setImage_url(userDataModel.getImage_url());
         userDataModelSingleTon.setOrg_name(userDataModel.getOrg_name());
         userDataModelSingleTon.setOrg_typ(userDataModel.getOrg_typ());
         userDataModelSingleTon.setOrg_cntct(userDataModel.getOrg_cntct());

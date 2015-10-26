@@ -1,9 +1,11 @@
 package fuuast.fyp.fleamarket;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -15,17 +17,14 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.android.gms.auth.api.Auth;
-
-import java.util.ArrayList;
 
 public class Login extends ActionBarActivity implements View.OnClickListener{
 
     private Firebase fb;
     private String email_id,password,ac_type=null;
     private EditText et_email,et_pass;
-    private ImageView img_login,img_create_account;
-    private View v;
+    private ImageView img_login;
+    private View v,v1,v2;
     private AuthData loginAuthData;
     private ProgressDialog progressDialog;
 
@@ -47,11 +46,15 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
         img_login = (ImageView) findViewById(R.id.login_img_login);
         img_login.setOnClickListener(this);
-        img_create_account = (ImageView) findViewById(R.id.login_btn_createaccount);
-        img_create_account.setOnClickListener(this);
 
         v = findViewById(R.id.login_rl_customers);
         v.setOnClickListener(this);
+
+        v1 = findViewById(R.id.login_btn_createaccount);
+        v1.setOnClickListener(this);
+
+        v2 = findViewById(R.id.login_btn_forgotpass);
+        v2.setOnClickListener(this);
 
         loginAuthData = fb.getAuth();
         if (loginAuthData != null) {
@@ -77,6 +80,38 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             case R.id.login_btn_createaccount:
                 Intent i=new Intent(Login.this,CreateAccount.class);
                 startActivity(i);
+                break;
+            case R.id.login_btn_forgotpass:
+                new AlertDialog.Builder(Login.this)
+                        .setTitle("Forget Password")
+                        .setMessage("Are you sure you want to reset password?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (et_email.getText().toString().equals("")) {
+                                    Toast.makeText(Login.this, "Please Enter Email ID in Above Field.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    progressDialog.show();
+                                    fb.resetPassword(et_email.getText().toString(), new Firebase.ResultHandler() {
+                                        @Override
+                                        public void onSuccess() {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Login.this, "Password has been sent to your Email Account", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onError(FirebaseError firebaseError) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Login.this,firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
                 break;
             case R.id.login_rl_customers:
                 Toast.makeText(Login.this,"Ready to view Market?",Toast.LENGTH_SHORT).show();
@@ -129,12 +164,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 data.setId(loginAuthData.getUid());
                 data.setName(ud.getName());
                 data.setEmail_id(ud.getEmail_id());
-                data.setPassword(password);
                 data.setPhone(ud.getPhone());
                 data.setType(ud.getType());
                 data.setAddress(ud.getAddress());
                 data.setNic(ud.getNic());
-                data.setImage_url(ud.getImage_url());
                 data.setOrg_name(ud.getOrg_name());
                 data.setOrg_typ(ud.getOrg_typ());
                 data.setOrg_cntct(ud.getOrg_cntct());
@@ -167,14 +200,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
-            finish();
+        finish();
     }
 }

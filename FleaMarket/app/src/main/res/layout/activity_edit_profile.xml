@@ -26,14 +26,6 @@
             android:textStyle="bold"
             android:layout_weight="1" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_done"
-            android:clickable="true"
-            android:paddingRight="10dp"
-            android:id="@+id/img_done"/>
-
     </LinearLayout>
 
     <ScrollView
@@ -45,272 +37,212 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/scrollView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:weightSum="1">
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rl_header"
-                android:padding="10dp"
-                android:layout_below="@+id/ll_titleBar"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:padding="5dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Email_ID"
+                android:textStyle="bold"
                 android:background="@color/material_grey_300"
-                android:outlineProvider="background">
+                android:textColor="@color/material_blue_grey_800"
+                android:id="@+id/ep_tv_email"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Email_ID"
-                    android:textColor="@color/material_blue_grey_800"
-                    android:id="@+id/ep_tv_email"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
-
-            </RelativeLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp"
+                android:text="Change Password"
+                android:textColor="@color/material_blue_grey_800"
+                android:textSize="14dp"
                 android:background="@color/material_grey_300"
-                android:layout_below="@+id/rl_header"
-                android:id="@+id/ll_changeName"
-                android:gravity="right" >
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/ep_tv_password" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Change Name"
-                    android:textColor="@color/material_blue_grey_800"
-                    android:textSize="20dp"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    android:id="@+id/editprofile_tv_name" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:inputType="textPassword"
+                android:id="@+id/et_oldpass"
+                android:hint="Old Password"/>
 
-            </LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:inputType="textPassword"
+                android:id="@+id/et_newpass"
+                android:hint="New Password"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:inputType="textPassword"
+                android:id="@+id/et_retypPass"
+                android:hint="Retype Password"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Change Password"
+                android:id="@+id/ep_btn_chgpass"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/material_grey_600"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Info"
+                android:textColor="@color/material_blue_grey_800"
+                android:textSize="14dp"
+                android:background="@color/material_grey_300"
+                android:padding="5dp"
+                android:layout_marginTop="20dp"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_name"
                 android:inputType="textCapWords"
-                android:hint="Name"
-                android:layout_below="@+id/ll_changeName"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:enabled="true"
-                android:editable="true" />
+                android:layout_margin="3dp"
+                android:hint="Name"/>
 
-            <LinearLayout
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp"
-                android:background="@color/material_grey_300"
-                android:layout_below="@+id/rl_header"
-                android:id="@+id/ll_changePass"
-                android:gravity="right" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Change Password"
-                    android:textColor="@color/material_blue_grey_800"
-                    android:textSize="20dp"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    android:id="@+id/ep_tv_password" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/ll_PassMenu"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:ems="10"
-                    android:id="@+id/et_newpass"
-                    android:hint="New Password"
-                    android:layout_below="@+id/et_curpass"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:ems="10"
-                    android:id="@+id/et_retypPass"
-                    android:hint="Retype Password"
-                    android:layout_below="@+id/et_newpass"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
-
-            </LinearLayout>
+                android:inputType="phone"
+                android:id="@+id/ca_et_nic"
+                android:layout_margin="3dp"
+                android:hint="NIC #"/>
 
             <SlidingDrawer
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:id="@+id/sd_chngOthr"
-                android:handle="@+id/rl_chngOthr"
+                android:handle="@+id/img_sdButton"
                 android:content="@+id/contentLayout2"
                 android:orientation="vertical"
-                android:layout_marginTop="30dp"
-                android:layout_below="@+id/sd_chngPass"
+                android:layout_marginTop="10dp"
                 android:rotation="180">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:background="@color/material_grey_300"
-                    android:id="@+id/rl_chngOthr"
-                    android:rotation="180">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Change Others"
-                        android:textColor="@color/material_blue_grey_800"
-                        android:textSize="20dp"
-                        android:padding="10dp"
-                        android:layout_weight="1"
-                        android:id="@+id/ep_tv_others"/>
-
-                    <ImageView
-                        android:layout_width="380dp"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_action_expand"
-                        android:paddingLeft="300dp"
-                        android:background="@android:color/transparent"
-                        android:id="@+id/img_sdButton" />
-
-                </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_action_expand"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/img_sdButton"
+                    android:rotation="180"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/contentLayout2"
                     android:orientation="vertical"
-                    android:paddingRight="20dp"
-                    android:paddingLeft="20dp"
                     android:rotation="180">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:id="@+id/relativeLayout"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/material_grey_300"
-                        android:outlineProvider="background" />
-
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Phone No"
-                        android:id="@+id/textView2"
-                        android:paddingLeft="4dp"/>
+                        android:text="Detail"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14dp"
+                        android:background="@color/material_grey_300"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:paddingLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Phone No:"/>
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
-                        android:layout_marginTop="7dp"
-                        android:ems="10"
-                        android:id="@+id/ca_et_phone"
-                        android:hint="Phone No" />
+                        android:layout_margin="3dp"
+                        android:id="@+id/ca_et_phone"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Address"
-                        android:id="@+id/textView3"
-                        android:paddingLeft="4dp"/>
+                        android:textSize="14dp"
+                        android:paddingLeft="5dp"
+                        android:text="Address:"/>
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPostalAddress"
-                        android:layout_marginTop="7dp"
-                        android:ems="10"
-                        android:id="@+id/ca_et_address"
-                        android:hint="Address" />
+                        android:layout_margin="3dp"
+                        android:id="@+id/ca_et_address"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="NIC #"
-                        android:id="@+id/textView4"
-                        android:paddingLeft="4dp"/>
+                        android:textSize="14dp"
+                        android:paddingLeft="5dp"
+                        android:text="Org. Name:"/>
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:inputType="phone"
-                        android:ems="10"
-                        android:id="@+id/ca_et_nic"
-                        android:hint="NIC #"
-                        android:enabled="true" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Organization"
-                        android:id="@+id/tv_On"
-                        android:paddingLeft="4dp"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
                         android:inputType="text"
-                        android:ems="10"
                         android:id="@+id/ca_et_org_name"
-                        android:hint="Organization"
+                        android:layout_margin="3dp"
                         android:enabled="true" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Org_contact#"
-                        android:id="@+id/tv_Oc"
-                        android:paddingLeft="4dp"/>
+                        android:text="Org. Contact:"
+                        android:paddingLeft="5dp"
+                        android:textSize="14dp"/>
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
                         android:inputType="phone"
-                        android:ems="10"
+                        android:layout_margin="3dp"
                         android:id="@+id/ca_et_org_cntct"
-                        android:hint="Organization Contact#"
                         android:enabled="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Org. Type:"
+                        android:paddingLeft="5dp"
+                        android:textSize="14dp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:layout_margin="3dp"
+                        android:id="@+id/ca_et_org_type"
+                        android:enabled="true" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Update"
+                        android:id="@+id/ep_btn_updateinfo"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/material_grey_600"
+                        android:textColor="#FFFFFF" />
 
                 </LinearLayout>
 

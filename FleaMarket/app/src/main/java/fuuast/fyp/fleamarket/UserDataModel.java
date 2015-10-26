@@ -2,18 +2,10 @@ package fuuast.fyp.fleamarket;
 
 public class UserDataModel
 {
-    private String name,email_id,password,phone,type,address,nic,org_name,org_cntct,image_url,org_typ;
+    private String name,email_id,phone,type,address,nic,org_name,org_cntct,org_typ;
 
     public String getName() {
         return name;
-    }
-
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
     }
 
     public String getAddress() {
@@ -66,14 +58,6 @@ public class UserDataModel
 
     public void setEmail_id(String email_id) {
         this.email_id = email_id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {
