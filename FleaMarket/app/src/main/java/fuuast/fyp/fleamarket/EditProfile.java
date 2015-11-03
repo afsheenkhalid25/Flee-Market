@@ -193,36 +193,36 @@ public class EditProfile extends ActionBarActivity{
         else
         {
             new AlertDialog.Builder(EditProfile.this)
-                    .setTitle("Update Profile")
-                    .setMessage("Are you sure you want to update profile?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            progressDialog.show();
-                            setData();
-                            firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
-                                @Override
-                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    if (firebaseError == null) {
-                                        Log.d("Position........", "Data Inserted");
-                                        progressDialog.dismiss();
-                                        Toast.makeText(EditProfile.this, "Data Updated", Toast.LENGTH_SHORT).show();
-                                        firebase.unauth();
-                                        Intent i=new Intent(EditProfile.this,Login.class);
-                                        startActivity(i);
-                                    } else {
-                                        Log.d("Position........", "in data saving error");
-                                        progressDialog.dismiss();
-                                        Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
-                                    }
+                .setTitle("Update Profile")
+                .setMessage("Are you sure you want to update profile?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.show();
+                        setData();
+                        firebase.child("Users").child(user_id).setValue(userDataModel, new Firebase.CompletionListener() {
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                if (firebaseError == null) {
+                                    Log.d("Position........", "Data Inserted");
+                                    progressDialog.dismiss();
+                                    Toast.makeText(EditProfile.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                                    firebase.unauth();
+                                    Intent i=new Intent(EditProfile.this,Login.class);
+                                    startActivity(i);
+                                } else {
+                                    Log.d("Position........", "in data saving error");
+                                    progressDialog.dismiss();
+                                    Toast.makeText(EditProfile.this, "Error!! Try to update later", Toast.LENGTH_SHORT).show();
                                 }
-                            });
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    }).show();
+                    }
+            }).show();
         }
     }
 

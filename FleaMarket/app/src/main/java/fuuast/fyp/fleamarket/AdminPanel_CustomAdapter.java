@@ -12,19 +12,18 @@ import java.util.ArrayList;
 public class AdminPanel_CustomAdapter extends BaseAdapter{
 
     Context context;
-    ArrayList market_names,market_area,market_imageUrl;
+    ArrayList market_names,market_area;
     TextView marketName,marketArea;
 
-    public AdminPanel_CustomAdapter(Context context, ArrayList names, ArrayList area, ArrayList imageUrl) {
+    public AdminPanel_CustomAdapter(Context context, ArrayList names, ArrayList area) {
         this.context = context;
         this.market_names = names;
         this.market_area = area;
-        this.market_imageUrl = imageUrl;
     }
 
     @Override
     public int getCount() {
-        return market_area.size();
+        return market_names.size();
     }
 
     @Override

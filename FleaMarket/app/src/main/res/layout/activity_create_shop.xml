@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fuuast.fyp.fleamarket.CreateShop">
+    tools:context="fuuast.fyp.fleamarket.CreateShop"
+    android:id="@+id/aa">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,25 +25,139 @@
             android:layout_weight="1"
             android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_done"
-            android:paddingRight="10dp"
-            android:clickable="true"
-            android:id="@+id/ca_img" />
-
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Market"
-        android:textColor="@color/material_blue_grey_800"
-        android:id="@+id/ep_tv_email"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Market:"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:id="@+id/textview"
+        android:background="@color/material_grey_300"
         android:layout_below="@+id/linearLayout2"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/textview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dialog"
+        android:drawSelectorOnTop="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Shop Details:"
+        android:paddingLeft="5dp"
+        android:id="@+id/textView5"
+        android:background="@color/material_grey_300"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/spinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:id="@+id/cs_et_name"
+        android:hint="Shop's Name"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/cs_et_width"
+        android:hint="Shop's Width"
+        android:layout_below="@+id/cs_et_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/cs_et_length"
+        android:hint="Shop's Length"
+        android:layout_below="@+id/cs_et_width"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Add Category"
+        android:paddingLeft="5dp"
+        android:id="@+id/textView2"
+        android:background="@color/material_grey_300"
+        android:textSize="20dp"
+        android:layout_below="@+id/cs_et_length"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cs_imd_add"
+        android:src="@drawable/ic_action_new"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/textView2" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/ll" />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:id="@+id/ll"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancle"
+            android:id="@+id/btn_cancle"
+            android:layout_weight="0.50"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="15dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:id="@+id/btn_next"
+            android:layout_weight="0.50"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:shadowColor="@android:color/transparent"
+            android:textSize="15dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -30,7 +30,6 @@ public class CreateAccount extends ActionBarActivity
     private EditText et_name,et_email,et_pass,et_repass,et_phn,et_add,et_nic,et_On,et_Oc,et_Ot;
     private ImageView img;
     private Spinner sp;
-    private ScrollView sv;
     private ProgressDialog progressDialog;
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
     private UserDataModel userDataModel = new UserDataModel();
