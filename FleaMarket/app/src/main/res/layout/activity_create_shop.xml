@@ -112,7 +112,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/cs_imd_add"
+        android:id="@+id/cs_img_add"
         android:src="@drawable/ic_action_new"
         android:layout_alignTop="@+id/textView2"
         android:layout_alignParentRight="true"
