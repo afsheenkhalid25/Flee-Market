@@ -2,11 +2,69 @@ package fuuast.fyp.fleamarket;
 
 public class ShopDataModelSingleTon
 {
-    String name,market_id,user_id,ctgry_one,ctgry_two,ctgry_three,width,length;
+    String name,market_id,user_id,category1,category2,category3,category1_url,category2_url,category3_url,width,length;
 
     double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
 
+    boolean Edit_Check=false;
+
     static ShopDataModelSingleTon obj = new ShopDataModelSingleTon();
+
+    public String getCategory1() {
+        return category1;
+    }
+
+    public void setCategory1(String category1) {
+        this.category1 = category1;
+    }
+
+    public String getCategory2() {
+        return category2;
+    }
+
+    public void setCategory2(String category2) {
+        this.category2 = category2;
+    }
+
+    public String getCategory3() {
+        return category3;
+    }
+
+    public void setCategory3(String category3) {
+        this.category3 = category3;
+    }
+
+    public String getCategory1_url() {
+        return category1_url;
+    }
+
+    public void setCategory1_url(String category1_url) {
+        this.category1_url = category1_url;
+    }
+
+    public String getCategory2_url() {
+        return category2_url;
+    }
+
+    public void setCategory2_url(String category2_url) {
+        this.category2_url = category2_url;
+    }
+
+    public String getCategory3_url() {
+        return category3_url;
+    }
+
+    public void setCategory3_url(String category3_url) {
+        this.category3_url = category3_url;
+    }
+
+    public boolean isEdit_Check() {
+        return Edit_Check;
+    }
+
+    public void setEdit_Check(boolean edit_Check) {
+        Edit_Check = edit_Check;
+    }
 
     public String getName() {
         return name;
@@ -32,36 +90,12 @@ public class ShopDataModelSingleTon
         this.user_id = user_id;
     }
 
-    public String getCtgry_one() {
-        return ctgry_one;
-    }
-
-    public void setCtgry_one(String ctgry_one) {
-        this.ctgry_one = ctgry_one;
-    }
-
-    public String getCtgry_two() {
-        return ctgry_two;
-    }
-
     public String getWidth() {
         return width;
     }
 
     public void setWidth(String width) {
         this.width = width;
-    }
-
-    public void setCtgry_two(String ctgry_two) {
-        this.ctgry_two = ctgry_two;
-    }
-
-    public String getCtgry_three() {
-        return ctgry_three;
-    }
-
-    public void setCtgry_three(String ctgry_three) {
-        this.ctgry_three = ctgry_three;
     }
 
     public String getLength() {

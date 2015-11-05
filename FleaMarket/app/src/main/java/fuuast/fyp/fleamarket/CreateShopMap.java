@@ -36,20 +36,20 @@ public class CreateShopMap extends FragmentActivity {
         btn_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setShopData();
-                firebase.child("ShopData").push().setValue(shopDataModel, new Firebase.CompletionListener()
-                {
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        if(firebaseError!=null){
-                            Toast.makeText(CreateShopMap.this, "Try Creating Shop Later", Toast.LENGTH_SHORT).show();
-                        } else{
-                            Toast.makeText(CreateShopMap.this, "Your shop is now in Pendiing for admin acceptance..", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(CreateShopMap.this,ShopkeeperPanel.class);
-                            startActivity(i);
-                        }
-                    }
-                });
+            setShopData();
+            firebase.child("ShopData").push().setValue(shopDataModel, new Firebase.CompletionListener()
+            {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if(firebaseError!=null){
+                    Toast.makeText(CreateShopMap.this, "Try Creating Shop Later", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(CreateShopMap.this, "Your shop is now in Pendiing for admin acceptance..", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(CreateShopMap.this,ShopkeeperPanel.class);
+                    startActivity(i);
+                }
+                }
+            });
             }
         });
         btn_edit = (Button) findViewById(R.id.btn_edit);
@@ -101,6 +101,16 @@ public class CreateShopMap extends FragmentActivity {
         shopDataModel.setNW_lon(shopDataModelSingleTon.getNW_lon());
         shopDataModel.setSW_lat(shopDataModelSingleTon.getSW_lat());
         shopDataModel.setSW_lon(shopDataModelSingleTon.getSW_lon());
+        if(shopDataModelSingleTon.getCategory2().equals("")){
+            shopDataModel.setCtgry_one(shopDataModelSingleTon.getCategory1().toString());
+        }else if(shopDataModelSingleTon.getCategory3().equals("")){
+            shopDataModel.setCtgry_one(shopDataModelSingleTon.getCategory1().toString());
+            shopDataModel.setCtgry_two(shopDataModelSingleTon.getCategory2().toString());
+        }else{
+            shopDataModel.setCtgry_one(shopDataModelSingleTon.getCategory1().toString());
+            shopDataModel.setCtgry_two(shopDataModelSingleTon.getCategory2().toString());
+            shopDataModel.setCtgry_three(shopDataModelSingleTon.getCategory3().toString());
+        }
     }
 
     @Override

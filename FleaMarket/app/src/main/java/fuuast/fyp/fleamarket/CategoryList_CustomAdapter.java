@@ -15,7 +15,7 @@ public class CategoryList_CustomAdapter extends BaseAdapter {
     Context context;
     ArrayList category_id,category_names,category_Urls;
     TextView category_name;
-    ImageView category_image;
+    ImageView category_image,img_delete;
 
     public CategoryList_CustomAdapter(Context context, ArrayList names, ArrayList url) {
         this.context = context;
