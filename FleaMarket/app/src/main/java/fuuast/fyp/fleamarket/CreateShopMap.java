@@ -102,9 +102,9 @@ public class CreateShopMap extends FragmentActivity {
         shopDataModel.setNW_lon(shopDataModelSingleTon.getNW_lon());
         shopDataModel.setSW_lat(shopDataModelSingleTon.getSW_lat());
         shopDataModel.setSW_lon(shopDataModelSingleTon.getSW_lon());
-        if(shopDataModelSingleTon.getCategory2().equals("")){
+        if(shopDataModelSingleTon.getCategory2().equals("-")){
             shopDataModel.setCategory1(shopDataModelSingleTon.getCategory1().toString());
-        }else if(shopDataModelSingleTon.getCategory3().equals("")){
+        }else if(shopDataModelSingleTon.getCategory3().equals("-")){
             shopDataModel.setCategory1(shopDataModelSingleTon.getCategory1().toString());
             shopDataModel.setCategory2(shopDataModelSingleTon.getCategory2().toString());
         }else{
