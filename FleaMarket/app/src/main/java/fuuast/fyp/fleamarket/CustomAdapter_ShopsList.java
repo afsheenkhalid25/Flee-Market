@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ShopkeeperPanel_CustomAdapter extends BaseAdapter{
+public class CustomAdapter_ShopsList extends BaseAdapter{
 
     Context context;
     ArrayList shop_names,shop_market;
     TextView shopName,shopMarket;
 
-    public ShopkeeperPanel_CustomAdapter(Context context, ArrayList names, ArrayList shop) {
+    public CustomAdapter_ShopsList(Context context, ArrayList names, ArrayList shop) {
         this.context = context;
         this.shop_names = names;
         this.shop_market = shop;
@@ -40,7 +40,7 @@ public class ShopkeeperPanel_CustomAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.shopkeeperpanel_listview,null);
+        View v = inflater.inflate(R.layout.shopslist_listview,null);
 
         shopName = (TextView) v.findViewById(R.id.shoppanel_tv_shopname);
         shopMarket = (TextView) v.findViewById(R.id.shoppanel_tv_shopmarket);

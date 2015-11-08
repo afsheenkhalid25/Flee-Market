@@ -1,16 +1,12 @@
 package fuuast.fyp.fleamarket;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -20,10 +16,8 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickListener {
 
@@ -119,7 +113,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                 if (dataSnapshot.getKey().toString().equals(string)) {
                     marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
                     shop_market.add(marketDataModel.getName());
-                    ShopkeeperPanel_CustomAdapter adapter = (new ShopkeeperPanel_CustomAdapter(ShopkeeperPanel.this,shop_names,shop_market));
+                    CustomAdapter_ShopsList adapter = (new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_names,shop_market));
                     shop_list.setAdapter(adapter);
                 }
         }

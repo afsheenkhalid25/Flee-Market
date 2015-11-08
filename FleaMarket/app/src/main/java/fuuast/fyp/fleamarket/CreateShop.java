@@ -1,7 +1,6 @@
 package fuuast.fyp.fleamarket;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,15 +10,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -115,7 +111,7 @@ public class CreateShop extends ActionBarActivity {
                         select_ct_name.remove(position);
                         select_ct_url.remove(position);
 
-                        CategoryList_CustomAdapter adapter1 = new CategoryList_CustomAdapter(CreateShop.this, select_ct_name, select_ct_url);
+                        CustomAdapter_CategoriesList adapter1 = new CustomAdapter_CategoriesList(CreateShop.this, select_ct_name, select_ct_url);
                         adapter1.notifyDataSetChanged();
                         category_listview.setAdapter(adapter1);
 
@@ -164,7 +160,7 @@ public class CreateShop extends ActionBarActivity {
                 select_ct_name.add(shopDataModelSingleTon.getCategory3().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory3_url().toString());
             }
-            category_listview.setAdapter(new CategoryList_CustomAdapter(CreateShop.this,select_ct_name,select_ct_url));
+            category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
         }
 
         //only for temporary use initailizing categories likr this....
@@ -196,7 +192,7 @@ public class CreateShop extends ActionBarActivity {
                 marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
                 market_names.add(marketDataModel.getName());
                 market_address.add(marketDataModel.getAddress());
-                mySpinner.setAdapter(new AdminPanel_CustomAdapter(CreateShop.this,market_names,market_address));
+                mySpinner.setAdapter(new CustomAdapter_MarketsList(CreateShop.this,market_names,market_address));
             }
 
             @Override
@@ -268,7 +264,7 @@ public class CreateShop extends ActionBarActivity {
     {
         LayoutInflater inflater = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View customView = inflater.inflate(R.layout.category_dialog, null, false);
-        final CategoryList_CustomAdapter adapter = new CategoryList_CustomAdapter(CreateShop.this,category_name,category_url);
+        final CustomAdapter_CategoriesList adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
         ListView list = (ListView) customView.findViewById(R.id.category_listview);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -280,7 +276,7 @@ public class CreateShop extends ActionBarActivity {
                 category_url.remove(position);
                 adapter.notifyDataSetChanged();
 
-                category_listview.setAdapter(new CategoryList_CustomAdapter(CreateShop.this,select_ct_name,select_ct_url));
+                category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
             }
         });
 

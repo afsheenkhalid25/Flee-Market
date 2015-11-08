@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class AdminPanel_CustomAdapter extends BaseAdapter{
+public class CustomAdapter_MarketsList extends BaseAdapter{
 
     Context context;
     ArrayList market_names,market_area;
     TextView marketName,marketArea;
 
-    public AdminPanel_CustomAdapter(Context context, ArrayList names, ArrayList area) {
+    public CustomAdapter_MarketsList(Context context, ArrayList names, ArrayList area) {
         this.context = context;
         this.market_names = names;
         this.market_area = area;
@@ -40,7 +40,7 @@ public class AdminPanel_CustomAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.adminpanel_listview,null);
+        View v = inflater.inflate(R.layout.marketslist_listview,null);
 
         marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
         marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
