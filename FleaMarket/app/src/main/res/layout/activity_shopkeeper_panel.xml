@@ -100,7 +100,7 @@
         android:textColor="@color/material_blue_grey_800"
         android:gravity="center"
         android:textStyle="bold"
-        android:padding="5dp"
+        android:layout_marginBottom="5dp"
         android:textSize="14dp"
         android:layout_below="@+id/relativeLayout"
         android:layout_alignParentRight="true"
@@ -110,7 +110,7 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/shoppanel_lv_shops"
         android:paddingTop="10dp"
         android:paddingLeft="15dp"

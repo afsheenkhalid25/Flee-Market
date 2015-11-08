@@ -109,13 +109,16 @@ public class CreateShop extends ActionBarActivity {
                 builder.setMessage("Are you sure you want to delete this category?");
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                        //selected listview item will be deleted here and added back to category listview....
                         category_name.add(select_ct_name.get(position).toString());
                         category_url.add(select_ct_url.get(position).toString());
                         select_ct_name.remove(position);
                         select_ct_url.remove(position);
+
                         CategoryList_CustomAdapter adapter1 = new CategoryList_CustomAdapter(CreateShop.this, select_ct_name, select_ct_url);
                         adapter1.notifyDataSetChanged();
                         category_listview.setAdapter(adapter1);
+
                         setCategoryDialog();
                     }
                 });

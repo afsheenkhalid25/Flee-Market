@@ -12,14 +12,13 @@ import java.util.ArrayList;
 public class ShopkeeperPanel_CustomAdapter extends BaseAdapter{
 
     Context context;
-    ArrayList shop_names,shop_market,shop_imageUrl;
+    ArrayList shop_names,shop_market;
     TextView shopName,shopMarket;
 
-    public ShopkeeperPanel_CustomAdapter(Context context, ArrayList names, ArrayList shop, ArrayList imageUrl) {
+    public ShopkeeperPanel_CustomAdapter(Context context, ArrayList names, ArrayList shop) {
         this.context = context;
         this.shop_names = names;
         this.shop_market = shop;
-        this.shop_imageUrl = imageUrl;
     }
 
     @Override
