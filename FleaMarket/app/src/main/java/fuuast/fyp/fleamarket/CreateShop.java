@@ -301,12 +301,18 @@ public class CreateShop extends ActionBarActivity {
                         category3_url = "-";
                         break;
                     case 2:
+                        category1 = select_ct_name.get(0).toString();
+                        category1_url = select_ct_url.get(0).toString();
                         category2 = select_ct_name.get(1).toString();
                         category2_url = select_ct_url.get(1).toString();
                         category3 = "-";
                         category3_url = "-";
                         break;
                     case 3:
+                        category1 = select_ct_name.get(0).toString();
+                        category1_url = select_ct_url.get(0).toString();
+                        category2 = select_ct_name.get(1).toString();
+                        category2_url = select_ct_url.get(1).toString();
                         category3 = select_ct_name.get(2).toString();
                         category3_url = select_ct_url.get(2).toString();
                         break;
