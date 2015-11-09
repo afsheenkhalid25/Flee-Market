@@ -116,7 +116,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     CustomAdapter_ShopsList adapter = (new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_names,shop_market));
                     shop_list.setAdapter(adapter);
                 }
-        }
+            }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {

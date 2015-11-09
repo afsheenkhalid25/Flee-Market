@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter_MarketsList extends BaseAdapter{
+public class CustomAdapter_MarketsList extends BaseAdapter {
 
     Context context;
     ArrayList market_names,market_area;

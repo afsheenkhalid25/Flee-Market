@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter_ShopsList extends BaseAdapter{
+public class CustomAdapter_ShopsList extends BaseAdapter {
 
     Context context;
     ArrayList shop_names,shop_market;

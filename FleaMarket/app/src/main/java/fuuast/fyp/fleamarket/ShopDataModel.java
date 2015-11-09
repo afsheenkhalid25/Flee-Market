@@ -1,7 +1,7 @@
 package fuuast.fyp.fleamarket;
 
-public class ShopDataModel
-{
+public class ShopDataModel {
+
     String name,market_id,user_id,category1,category2,category3,width,length;
 
     double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
@@ -149,4 +149,5 @@ public class ShopDataModel
     public void setSE_lon(double SE_lon) {
         this.SE_lon = SE_lon;
     }
+
 }

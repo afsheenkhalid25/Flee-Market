@@ -68,4 +68,5 @@ public class MarketDataModelSingleTon {
         }
         return obj;
     }
+
 }

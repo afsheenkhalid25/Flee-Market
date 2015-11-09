@@ -1,7 +1,7 @@
 package fuuast.fyp.fleamarket;
 
-public class MarketDataModel
-{
+public class MarketDataModel {
+
     private String name, adminID, latitude, longitude, address, imageURL, allow_checkbox;
 
     public String getName() {

@@ -126,4 +126,5 @@ public class CreateShopMap extends FragmentActivity {
         super.onPause();
         finish();
     }
+
 }

@@ -20,7 +20,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     private TextView tv_market_name,tv_market_address,shops_status;
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
     private ListView shops_list;
-    private ArrayList market_id,market_names,market_address,market_imgURL;
+    private ArrayList market_id,market_names,market_address ;
     private Firebase firebase;
     private ImageView options;
 
@@ -30,7 +30,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         setContentView(R.layout.activity_market_details);
 
         Firebase.setAndroidContext(this);
-        firebase=new Firebase("https://flee-market.firebaseio.com/");
+        firebase = new Firebase("https://flee-market.firebaseio.com/");
 
         tv_market_name = (TextView) findViewById(R.id.marketview_tv_name);
         tv_market_address = (TextView) findViewById(R.id.marketview_tv_area);

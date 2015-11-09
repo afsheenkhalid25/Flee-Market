@@ -1,7 +1,7 @@
 package fuuast.fyp.fleamarket;
 
-public class ShopDataModelSingleTon
-{
+public class ShopDataModelSingleTon {
+
     String name,market_id,user_id,category1,category2,category3,category1_url,category2_url,category3_url,width,length;
 
     double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
