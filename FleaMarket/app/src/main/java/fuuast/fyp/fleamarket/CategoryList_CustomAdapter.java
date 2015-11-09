@@ -15,9 +15,9 @@ import java.util.ArrayList;
 public class CategoryList_CustomAdapter extends BaseAdapter {
 
     Context context;
-    ArrayList category_id,category_names,category_Urls;
+    ArrayList category_names,category_Urls;
     TextView category_name;
-    ImageView category_image,img_delete;
+    ImageView category_image;
 
     public CategoryList_CustomAdapter(Context context, ArrayList names, ArrayList url) {
         this.context = context;
