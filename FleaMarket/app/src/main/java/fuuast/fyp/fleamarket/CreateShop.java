@@ -24,8 +24,10 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class CreateShop extends ActionBarActivity {
@@ -134,11 +136,11 @@ public class CreateShop extends ActionBarActivity {
         market_id = new ArrayList();
         getMarketList();
 
-        category_id = new ArrayList();
         category_name = new ArrayList();
         category_url = new ArrayList();
         select_ct_name = new ArrayList();
         select_ct_url = new ArrayList();
+        getCategoryList();
 
         //if user came back to create shop activity through create shop map activity....
         if(shopDataModelSingleTon.isEdit_Check()){
@@ -163,21 +165,6 @@ public class CreateShop extends ActionBarActivity {
             }
             category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
         }
-
-        //only for temporary use initailizing categories likr this....
-        category_name.add("ABC SHOP");
-        category_url.add(R.drawable.marketpic);
-        category_name.add("EFG Shop");
-        category_url.add(R.drawable.marketpic);
-        category_name.add("MNO Shop");
-        category_url.add(R.drawable.marketpic);
-        category_name.add("PQR Shop");
-        category_url.add(R.drawable.marketpic);
-        category_name.add("XYZ Shop");
-        category_url.add(R.drawable.marketpic);
-
-        setCategoryDialog();
-        //getCategoryList();
     }
 
     private void getMarketList()
@@ -220,29 +207,16 @@ public class CreateShop extends ActionBarActivity {
 
     public void getCategoryList()
     {
-        category_id.clear();
-        category_name.clear();
-        category_url.clear();
-        firebase.child("Categories").addChildEventListener(new ChildEventListener()
-        {
+        firebase.child("Categories").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                category_id.add(dataSnapshot.getKey().toString());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                category_name.clear();
+                category_url.clear();
+                for(DataSnapshot d:dataSnapshot.getChildren()){
+                    category_name.add(d.getKey());
+                    category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
+                    setCategoryDialog();
+                }
             }
 
             @Override
@@ -254,7 +228,7 @@ public class CreateShop extends ActionBarActivity {
 
     public void setCategories()
     {
-        if(select_ct_name.size()<=3){
+        if(select_ct_name.size()<3){
             category_dialog.show();
         }else{
             Toast.makeText(CreateShop.this, "You have enough categories selected....", Toast.LENGTH_SHORT).show();

@@ -8,12 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class CustomAdapter_CategoriesList extends BaseAdapter {
 
     Context context;
-    ArrayList category_id,category_names,category_Urls;
+    ArrayList category_names,category_Urls;
     TextView category_name;
     ImageView category_image;
 
@@ -48,7 +50,7 @@ public class CustomAdapter_CategoriesList extends BaseAdapter {
         category_name.setText(category_names.get(position).toString());
 
         category_image = (ImageView) v.findViewById(R.id.pic);
-        //category_image.setImageResource(category_Urls.get(position));
+        Picasso.with(context).load(category_Urls.get(position).toString()).into(category_image);
 
         return v;
     }
