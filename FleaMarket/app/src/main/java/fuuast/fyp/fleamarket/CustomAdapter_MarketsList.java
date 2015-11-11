@@ -9,22 +9,21 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ShopkeeperPanel_CustomAdapter extends BaseAdapter{
+public class CustomAdapter_MarketsList extends BaseAdapter {
 
     Context context;
-    ArrayList shop_names,shop_market,shop_imageUrl;
-    TextView shopName,shopMarket;
+    ArrayList market_names,market_area;
+    TextView marketName,marketArea;
 
-    public ShopkeeperPanel_CustomAdapter(Context context, ArrayList names, ArrayList shop, ArrayList imageUrl) {
+    public CustomAdapter_MarketsList(Context context, ArrayList names, ArrayList area) {
         this.context = context;
-        this.shop_names = names;
-        this.shop_market = shop;
-        this.shop_imageUrl = imageUrl;
+        this.market_names = names;
+        this.market_area = area;
     }
 
     @Override
     public int getCount() {
-        return shop_market.size();
+        return market_names.size();
     }
 
     @Override
@@ -41,13 +40,13 @@ public class ShopkeeperPanel_CustomAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.shopkeeperpanel_listview,null);
+        View v = inflater.inflate(R.layout.marketslist_listview,null);
 
-        shopName = (TextView) v.findViewById(R.id.shoppanel_tv_shopname);
-        shopMarket = (TextView) v.findViewById(R.id.shoppanel_tv_shopmarket);
+        marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
+        marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);
 
-        shopName.setText(shop_names.get(position).toString());
-        shopMarket.setText(shop_market.get(position).toString());
+        marketName.setText(market_names.get(position).toString());
+        marketArea.setText(market_area.get(position).toString());
 
         return v;
     }

@@ -1,16 +1,12 @@
 package fuuast.fyp.fleamarket;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -20,10 +16,8 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickListener {
 
@@ -32,7 +26,10 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private ListView shop_list;
     private ArrayList shop_id,shop_names,shop_market;
     private Firebase firebase;
+    private String shop_user_id,shop_market_id;
 
+    private ShopDataModel shopDataModel = new ShopDataModel();
+    private MarketDataModel marketDataModel = new MarketDataModel();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
@@ -69,7 +66,78 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_names=new ArrayList();
         shop_market=new ArrayList();
 
-        //getShops();
+        getShops();
+    }
+
+    private void getShops(){
+        firebase.child("ShopData").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                shops_status.setVisibility(View.INVISIBLE);
+                shop_id.add(dataSnapshot.getKey().toString());
+                shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
+                shop_user_id = shopDataModel.getUser_id().toString();
+                if(userDataModelSingleTon.getId().equals(shop_user_id)){
+                    shop_names.add(shopDataModel.getName());
+                    shop_market_id = shopDataModel.getMarket_id();
+                    getMarketDetail(shop_market_id);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void getMarketDetail(final String string){
+        firebase.child("Markets").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().toString().equals(string)) {
+                    marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
+                    shop_market.add(marketDataModel.getName());
+                    CustomAdapter_ShopsList adapter = (new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_names,shop_market));
+                    shop_list.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void onAction (String s) {

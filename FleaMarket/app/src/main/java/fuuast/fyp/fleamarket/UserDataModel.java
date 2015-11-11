@@ -1,7 +1,7 @@
 package fuuast.fyp.fleamarket;
 
-public class UserDataModel
-{
+public class UserDataModel {
+
     private String name,email_id,phone,type,address,nic,org_name,org_cntct,org_typ;
 
     public String getName() {

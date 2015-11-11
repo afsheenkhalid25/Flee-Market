@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class AdminMarketMapView extends FragmentActivity {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

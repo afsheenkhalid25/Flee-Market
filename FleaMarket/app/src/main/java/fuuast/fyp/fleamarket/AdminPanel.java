@@ -108,7 +108,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                 marketDataModelSingleTon.setMarket_name(marketDataModel.getName());
 
                 markets_status.setVisibility(View.INVISIBLE);
-                market_list.setAdapter(new AdminPanel_CustomAdapter(AdminPanel.this,market_names,market_address));
+                market_list.setAdapter(new CustomAdapter_MarketsList(AdminPanel.this,market_names,market_address));
             }
 
             @Override

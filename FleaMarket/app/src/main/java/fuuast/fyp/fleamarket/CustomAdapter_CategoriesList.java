@@ -12,14 +12,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class CategoryList_CustomAdapter extends BaseAdapter {
+public class CustomAdapter_CategoriesList extends BaseAdapter {
 
     Context context;
     ArrayList category_names,category_Urls;
     TextView category_name;
     ImageView category_image;
 
-    public CategoryList_CustomAdapter(Context context, ArrayList names, ArrayList url) {
+    public CustomAdapter_CategoriesList(Context context, ArrayList names, ArrayList url) {
         this.context = context;
         this.category_names = names;
         this.category_Urls = url;

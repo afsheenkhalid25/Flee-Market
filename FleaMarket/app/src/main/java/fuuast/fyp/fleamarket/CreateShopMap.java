@@ -44,6 +44,7 @@ public class CreateShopMap extends FragmentActivity {
                 if(firebaseError!=null){
                     Toast.makeText(CreateShopMap.this, "Try Creating Shop Later", Toast.LENGTH_SHORT).show();
                 } else{
+                    shopDataModelSingleTon.setEdit_Check(false);
                     Toast.makeText(CreateShopMap.this, "Your shop is now in Pendiing for admin acceptance..", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(CreateShopMap.this,ShopkeeperPanel.class);
                     startActivity(i);
@@ -101,15 +102,15 @@ public class CreateShopMap extends FragmentActivity {
         shopDataModel.setNW_lon(shopDataModelSingleTon.getNW_lon());
         shopDataModel.setSW_lat(shopDataModelSingleTon.getSW_lat());
         shopDataModel.setSW_lon(shopDataModelSingleTon.getSW_lon());
-        if(shopDataModelSingleTon.getCategory2().equals("")){
-            shopDataModel.setCtgry_one(shopDataModelSingleTon.getCategory1().toString());
-        }else if(shopDataModelSingleTon.getCategory3().equals("")){
-            shopDataModel.setCtgry_one(shopDataModelSingleTon.getCategory1().toString());
-            shopDataModel.setCtgry_two(shopDataModelSingleTon.getCategory2().toString());
+        if(shopDataModelSingleTon.getCategory2().equals("-")){
+            shopDataModel.setCategory1(shopDataModelSingleTon.getCategory1().toString());
+        }else if(shopDataModelSingleTon.getCategory3().equals("-")){
+            shopDataModel.setCategory1(shopDataModelSingleTon.getCategory1().toString());
+            shopDataModel.setCategory2(shopDataModelSingleTon.getCategory2().toString());
         }else{
-            shopDataModel.setCtgry_one(shopDataModelSingleTon.getCategory1().toString());
-            shopDataModel.setCtgry_two(shopDataModelSingleTon.getCategory2().toString());
-            shopDataModel.setCtgry_three(shopDataModelSingleTon.getCategory3().toString());
+            shopDataModel.setCategory1(shopDataModelSingleTon.getCategory1().toString());
+            shopDataModel.setCategory2(shopDataModelSingleTon.getCategory2().toString());
+            shopDataModel.setCategory3(shopDataModelSingleTon.getCategory3().toString());
         }
     }
 
@@ -125,4 +126,5 @@ public class CreateShopMap extends FragmentActivity {
         super.onPause();
         finish();
     }
+
 }
