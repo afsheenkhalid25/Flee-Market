@@ -47,8 +47,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         switch (s){
             case "shopRequest":
                 Log.d("menu item...", "Shop Requests");
-                //Intent i = new Intent(this,EditProfile.class);
-                //startActivity(i);
+                Intent i = new Intent(this,ShopsRequest.class);
+                startActivity(i);
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
@@ -62,8 +62,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "delete":
                 Log.d("menu item...", "Delete Market");
-                //Intent k = new Intent(this,CreateMarket.class);
-                //startActivity(k);
                 break;
         }
     }

@@ -66,78 +66,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_names=new ArrayList();
         shop_market=new ArrayList();
 
-        getShops();
-    }
-
-    private void getShops(){
-        firebase.child("ShopData").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                shops_status.setVisibility(View.INVISIBLE);
-                shop_id.add(dataSnapshot.getKey().toString());
-                shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
-                shop_user_id = shopDataModel.getUser_id().toString();
-                if(userDataModelSingleTon.getId().equals(shop_user_id)){
-                    shop_names.add(shopDataModel.getName());
-                    shop_market_id = shopDataModel.getMarket_id();
-                    getMarketDetail(shop_market_id);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    public void getMarketDetail(final String string){
-        firebase.child("Markets").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.getKey().toString().equals(string)) {
-                    marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
-                    shop_market.add(marketDataModel.getName());
-                    CustomAdapter_ShopsList adapter = (new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_names,shop_market));
-                    shop_list.setAdapter(adapter);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        //getShops();
     }
 
     private void onAction (String s) {
