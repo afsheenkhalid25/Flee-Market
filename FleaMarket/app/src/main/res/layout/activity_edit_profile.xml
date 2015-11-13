@@ -231,18 +231,8 @@
                         android:inputType="phone"
                         android:layout_margin="3dp"
                         android:id="@+id/ca_et_org_type"
-                        android:enabled="true" />
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="Update"
-                        android:id="@+id/ep_btn_updateinfo"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/material_grey_600"
-                        android:textColor="#FFFFFF" />
+                        android:enabled="true"
+                        />
 
                 </LinearLayout>
 
@@ -251,5 +241,18 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:id="@+id/ep_btn_updateinfo"
+        android:layout_below="@+id/scrollView"
+        android:background="@color/material_grey_600"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

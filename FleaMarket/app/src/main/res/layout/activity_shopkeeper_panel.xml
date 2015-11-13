@@ -108,7 +108,7 @@
         android:id="@+id/textView"
         android:background="@color/material_grey_300" />
 
-    <ListView
+   <ListView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/shoppanel_lv_shops"
@@ -120,7 +120,7 @@
         android:layout_below="@+id/textView"
         android:background="@color/material_grey_100" />
 
-    <TextView
+   <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No Shop Found"

@@ -2,13 +2,21 @@ package fuuast.fyp.fleamarket;
 
 public class ShopDataModelSingleTon {
 
-    String name,market_id,user_id,category1,category2,category3,category1_url,category2_url,category3_url,width,length;
+    String name,market_id,shop_id,category1,category2,category3,category1_url,category2_url,category3_url,width,length;
 
     double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
 
     boolean Edit_Check=false;
 
     static ShopDataModelSingleTon obj = new ShopDataModelSingleTon();
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
 
     public String getCategory1() {
         return category1;
@@ -80,14 +88,6 @@ public class ShopDataModelSingleTon {
 
     public void setMarket_id(String market_id) {
         this.market_id = market_id;
-    }
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
     }
 
     public String getWidth() {

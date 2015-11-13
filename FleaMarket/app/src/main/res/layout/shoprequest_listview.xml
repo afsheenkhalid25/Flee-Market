@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="shop Market"
+        android:text="Shopkeeper_email"
         android:paddingLeft="10dp"
         android:id="@+id/shoppanel_tv_shopmarket"
         android:layout_below="@+id/shoppanel_tv_shopname"
@@ -38,7 +38,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_action_next_item2"
+        android:src="@drawable/ic_action_overflow2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/shoppanel_img_shopdetails" />

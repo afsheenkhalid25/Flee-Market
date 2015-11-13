@@ -20,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -32,9 +31,9 @@ import java.util.HashMap;
 
 public class CreateShop extends ActionBarActivity {
 
-    private String name,width,length,market_Id,user_Id,category1,category2,category3,category1_url,category2_url,category3_url;
+    private String name,width,length,market_Id,category1,category2,category3,category1_url,category2_url,category3_url;
     private double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
-    private ArrayList market_id,market_names,market_address,category_id,category_name,category_url,select_ct_name,select_ct_url;
+    private ArrayList market_id,market_names,market_address,category_name,category_url,select_ct_name,select_ct_url;
     private EditText et_name,et_width,et_length;
     private Button btn_cancle,btn_next;
     private ImageView img_add;
@@ -43,9 +42,7 @@ public class CreateShop extends ActionBarActivity {
     private ListView category_listview;
     private AlertDialog category_dialog,alert;
 
-    private MarketDataModel marketDataModel = new MarketDataModel();
     private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
-    private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +55,17 @@ public class CreateShop extends ActionBarActivity {
         et_name = (EditText)findViewById(R.id.cs_et_name);
         et_width = (EditText)findViewById(R.id.cs_et_width);
         et_length = (EditText)findViewById(R.id.cs_et_length);
+
+        market_id = new ArrayList();
+        market_names = new ArrayList();
+        market_address = new ArrayList();
+        getMarketList();
+
+        category_name = new ArrayList();
+        category_url = new ArrayList();
+        select_ct_name = new ArrayList();
+        select_ct_url = new ArrayList();
+        getCategoryList();
 
         btn_cancle = (Button)findViewById(R.id.btn_cancle);
         btn_cancle.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +119,13 @@ public class CreateShop extends ActionBarActivity {
                         //selected listview item will be deleted here and added back to category listview....
                         category_name.add(select_ct_name.get(position).toString());
                         category_url.add(select_ct_url.get(position).toString());
-                        select_ct_name.remove(position);
-                        select_ct_url.remove(position);
 
                         CustomAdapter_CategoriesList adapter1 = new CustomAdapter_CategoriesList(CreateShop.this, select_ct_name, select_ct_url);
-                        adapter1.notifyDataSetChanged();
                         category_listview.setAdapter(adapter1);
+
+                        select_ct_name.remove(position);
+                        select_ct_url.remove(position);
+                        adapter1.notifyDataSetChanged();
 
                         setCategoryDialog();
                     }
@@ -131,91 +140,23 @@ public class CreateShop extends ActionBarActivity {
             }
         });
 
-        market_names = new ArrayList();
-        market_address = new ArrayList();
-        market_id = new ArrayList();
-        getMarketList();
-
-        category_name = new ArrayList();
-        category_url = new ArrayList();
-        select_ct_name = new ArrayList();
-        select_ct_url = new ArrayList();
-        getCategoryList();
-
         //if user came back to create shop activity through create shop map activity....
-        if(shopDataModelSingleTon.isEdit_Check()){
-            et_name.setText(shopDataModelSingleTon.getName().toString(), TextView.BufferType.EDITABLE);
-            et_width.setText(shopDataModelSingleTon.getWidth().toString(), TextView.BufferType.EDITABLE);
-            et_length.setText(shopDataModelSingleTon.getLength().toString(), TextView.BufferType.EDITABLE);
-            if(shopDataModelSingleTon.getCategory2().toString().equals("-")) {
-                select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
-                select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
-            }else if(shopDataModelSingleTon.getCategory3().toString().equals("-")) {
-                select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
-                select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
-                select_ct_name.add(shopDataModelSingleTon.getCategory2().toString());
-                select_ct_url.add(shopDataModelSingleTon.getCategory2_url().toString());
-            }else{
-                select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
-                select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
-                select_ct_name.add(shopDataModelSingleTon.getCategory2().toString());
-                select_ct_url.add(shopDataModelSingleTon.getCategory2_url().toString());
-                select_ct_name.add(shopDataModelSingleTon.getCategory3().toString());
-                select_ct_url.add(shopDataModelSingleTon.getCategory3_url().toString());
-            }
-            category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
-        }
+        setEditState();
     }
 
-    private void getMarketList()
-    {
-        market_id.clear();
-        market_names.clear();
-        market_address.clear();
-        firebase.child("Markets").addChildEventListener(new ChildEventListener()
-        {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                market_id.add(dataSnapshot.getKey().toString());
-                marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
-                market_names.add(marketDataModel.getName());
-                market_address.add(marketDataModel.getAddress());
-                mySpinner.setAdapter(new CustomAdapter_MarketsList(CreateShop.this,market_names,market_address));
-            }
+    private void getMarketList() {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    public void getCategoryList()
-    {
-        firebase.child("Categories").addValueEventListener(new ValueEventListener() {
+        firebase.child("Markets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                category_name.clear();
-                category_url.clear();
+                market_id.clear();
+                market_names.clear();
+                market_address.clear();
                 for(DataSnapshot d:dataSnapshot.getChildren()){
-                    category_name.add(d.getKey());
-                    category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
-                    setCategoryDialog();
+                    market_id.add(d.getKey());
+                    market_names.add(((HashMap<String,String>)d.getValue()).get("name"));
+                    market_address.add(((HashMap<String,String>)d.getValue()).get("address"));
+                    mySpinner.setAdapter(new CustomAdapter_MarketsList(CreateShop.this,market_names,market_address));
                 }
             }
 
@@ -226,17 +167,29 @@ public class CreateShop extends ActionBarActivity {
         });
     }
 
-    public void setCategories()
-    {
-        if(select_ct_name.size()<3){
-            category_dialog.show();
-        }else{
-            Toast.makeText(CreateShop.this, "You have enough categories selected....", Toast.LENGTH_SHORT).show();
-        }
+    public void getCategoryList() {
+
+        firebase.child("Catagories").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                category_name.clear();
+                category_url.clear();
+                for(DataSnapshot d:dataSnapshot.getChildren()){
+                    category_name.add(d.getKey());
+                    category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
+                }
+                setCategoryDialog();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
-    public void setCategoryDialog()
-    {
+    public void setCategoryDialog() {
+
         LayoutInflater inflater = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View customView = inflater.inflate(R.layout.category_dialog, null, false);
         final CustomAdapter_CategoriesList adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
@@ -244,9 +197,11 @@ public class CreateShop extends ActionBarActivity {
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 select_ct_name.add(category_name.get(position));
                 select_ct_url.add(category_url.get(position));
                 category_dialog.dismiss();
+
                 category_name.remove(position);
                 category_url.remove(position);
                 adapter.notifyDataSetChanged();
@@ -256,7 +211,7 @@ public class CreateShop extends ActionBarActivity {
         });
 
         AlertDialog.Builder builder =new AlertDialog.Builder(CreateShop.this);
-        builder.setTitle("Select Category");
+        builder.setTitle("Select Category!!");
         builder.setView(customView);
         category_dialog = builder.create();
         category_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -292,12 +247,18 @@ public class CreateShop extends ActionBarActivity {
         });
     }
 
-    public void setParameters()
-    {
+    public void setCategories() {
+        if(select_ct_name.size()<3)
+            category_dialog.show();
+        else
+            Toast.makeText(CreateShop.this, "You have enough categories selected....", Toast.LENGTH_SHORT).show();
+    }
+
+    public void setParameters() {
+
         name = et_name.getText().toString();
         width = et_width.getText().toString();
         length = et_length.getText().toString();
-        user_Id = userDataModelSingleTon.getId().toString();
         lat = 32.445005;
         lon = 122.344445;
         NW_lat = 0.0;
@@ -319,8 +280,8 @@ public class CreateShop extends ActionBarActivity {
         }
     }
 
-    public void getLocation()
-    {
+    public void getLocation() {
+
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -331,12 +292,53 @@ public class CreateShop extends ActionBarActivity {
         }
     }
 
-    public void setShopDataSingleTon()
-    {
+    public void setEditState() {
+        if(shopDataModelSingleTon.isEdit_Check()) {
+
+            et_name.setText(shopDataModelSingleTon.getName().toString(), TextView.BufferType.EDITABLE);
+            et_width.setText(shopDataModelSingleTon.getWidth().toString(), TextView.BufferType.EDITABLE);
+            et_length.setText(shopDataModelSingleTon.getLength().toString(), TextView.BufferType.EDITABLE);
+
+            if(shopDataModelSingleTon.getCategory2().toString().equals("-")) {
+                select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
+                select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
+                category_name.remove(shopDataModelSingleTon.getCategory1().toString());
+                category_url.remove(shopDataModelSingleTon.getCategory1_url().toString());
+
+            }else if(shopDataModelSingleTon.getCategory3().toString().equals("-")) {
+                select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
+                select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
+                select_ct_name.add(shopDataModelSingleTon.getCategory2().toString());
+                select_ct_url.add(shopDataModelSingleTon.getCategory2_url().toString());
+                category_name.remove(shopDataModelSingleTon.getCategory1().toString());
+                category_url.remove(shopDataModelSingleTon.getCategory1_url().toString());
+                category_name.remove(shopDataModelSingleTon.getCategory2().toString());
+                category_url.remove(shopDataModelSingleTon.getCategory2_url().toString());
+
+            }else {
+                select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
+                select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
+                select_ct_name.add(shopDataModelSingleTon.getCategory2().toString());
+                select_ct_url.add(shopDataModelSingleTon.getCategory2_url().toString());
+                select_ct_name.add(shopDataModelSingleTon.getCategory3().toString());
+                select_ct_url.add(shopDataModelSingleTon.getCategory3_url().toString());
+                category_name.remove(shopDataModelSingleTon.getCategory1().toString());
+                category_url.remove(shopDataModelSingleTon.getCategory1_url().toString());
+                category_name.remove(shopDataModelSingleTon.getCategory2().toString());
+                category_url.remove(shopDataModelSingleTon.getCategory2_url().toString());
+                category_name.remove(shopDataModelSingleTon.getCategory3().toString());
+                category_url.remove(shopDataModelSingleTon.getCategory3_url().toString());
+            }
+            category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
+            setCategoryDialog();
+        }
+    }
+
+    public void setShopDataSingleTon() {
+
         shopDataModelSingleTon.setEdit_Check(true);
         shopDataModelSingleTon.setName(name);
         shopDataModelSingleTon.setMarket_id(market_Id);
-        shopDataModelSingleTon.setUser_id(user_Id);
         shopDataModelSingleTon.setLength(length);
         shopDataModelSingleTon.setWidth(width);
         shopDataModelSingleTon.setCategory1(category1);

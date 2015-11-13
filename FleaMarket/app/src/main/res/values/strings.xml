@@ -14,5 +14,6 @@
     <string name="title_activity_shopkeeper_panel">ShopkeeperPanel</string>
     <string name="title_activity_edit_shopkeeper_panel">EditShopkeeperPanel</string>
     <string name="title_activity_create_shop_map">Map</string>
+    <string name="title_activity_shops_request">ShopsRequest</string>
 
 </resources>
