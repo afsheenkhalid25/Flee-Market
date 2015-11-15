@@ -194,11 +194,9 @@ public class ShopsRequest extends ActionBarActivity {
                                             if(firebaseError!=null){
                                                 Log.d("REMOVE REQUEST.....",firebaseError.getMessage());
                                             } else {
+                                                getRequestList();
                                                 progressDialog.dismiss();
                                                 Toast.makeText(ShopsRequest.this, "Shop is deleted..", Toast.LENGTH_SHORT).show();
-                                                Intent i = new Intent(ShopsRequest.this,ShopkeeperPanel.class);
-                                                startActivity(i);
-
                                             }
                                         }
                                     });
@@ -280,10 +278,9 @@ public class ShopsRequest extends ActionBarActivity {
                     Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    getRequestList();
                     progressDialog.dismiss();
                     Toast.makeText(ShopsRequest.this, "Shop is approved..", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(ShopsRequest.this,ShopkeeperPanel.class);
-                    startActivity(i);
                 }
             }
         });
