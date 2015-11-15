@@ -101,7 +101,6 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                     marketDataModel.setLatitude(lat);
                     marketDataModel.setLongitude(lon);
                     marketDataModel.setAddress(address);
-                    marketDataModel.setImageURL("n/a");
                     //marketDataModel.setAllow_checkbox(allow_checkbox);
                     createMarket(marketDataModel);
                 }
