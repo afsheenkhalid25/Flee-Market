@@ -25,7 +25,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     private TextView tv_name,tv_email,tv_phone,markets_status;
     private ImageView options;
     private ListView market_list;
-    private ArrayList market_id,market_names,market_address,market_imgURL;
+    private ArrayList market_id,market_names,market_address;
     private Firebase firebase;
 
     private MarketDataModel marketDataModel;
@@ -63,7 +63,6 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
 
         market_names=new ArrayList();
         market_address=new ArrayList();
-        market_imgURL=new ArrayList();
         market_id=new ArrayList();
 
         getMarkets();
@@ -73,7 +72,6 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         firebase.child("Admin_Market").child(userDataModelSingleTon.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                market_imgURL.clear();
                 market_address.clear();
                 market_names.clear();
                 if (dataSnapshot.hasChildren()){
@@ -99,13 +97,12 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                 marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
                 market_names.add(marketDataModel.getName());
                 market_address.add(marketDataModel.getAddress());
-                market_imgURL.add(marketDataModel.getImageURL());
 
                 //setting values of market data in MarketDataModelSingleTon class for using it in market details class....
-                marketDataModelSingleTon.setAdmin_id(userDataModelSingleTon.getId());
                 marketDataModelSingleTon.setMarket_id(marketID);
-                marketDataModelSingleTon.setMarket_address(marketDataModel.getAddress());
                 marketDataModelSingleTon.setMarket_name(marketDataModel.getName());
+                marketDataModelSingleTon.setAdmin_id(userDataModelSingleTon.getId());
+                marketDataModelSingleTon.setMarket_address(marketDataModel.getAddress());
 
                 markets_status.setVisibility(View.INVISIBLE);
                 market_list.setAdapter(new CustomAdapter_MarketsList(AdminPanel.this,market_names,market_address));

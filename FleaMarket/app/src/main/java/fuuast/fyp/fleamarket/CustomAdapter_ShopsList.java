@@ -42,8 +42,8 @@ public class CustomAdapter_ShopsList extends BaseAdapter {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.shopslist_listview,null);
 
-        shopName = (TextView) v.findViewById(R.id.shoppanel_tv_shopname);
-        shopMarket = (TextView) v.findViewById(R.id.shoppanel_tv_shopmarket);
+        shopName = (TextView) v.findViewById(R.id.shop_name);
+        shopMarket = (TextView) v.findViewById(R.id.shop_market);
 
         shopName.setText(shop_names.get(position).toString());
         shopMarket.setText(shop_market.get(position).toString());

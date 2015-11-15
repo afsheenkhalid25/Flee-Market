@@ -20,7 +20,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     private TextView tv_market_name,tv_market_address,shops_status;
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
     private ListView shops_list;
-    private ArrayList market_id,market_names,market_address ;
     private Firebase firebase;
     private ImageView options;
 
@@ -52,8 +51,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
-                //Intent j = new Intent(this,Login.class);
-                //startActivity(j);
+                Intent j = new Intent(this,AdminMarketMapView.class);
+                startActivity(j);
                 break;
             case "edit":
                 Log.d("menu item...", "Edit Market");

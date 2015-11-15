@@ -2,9 +2,17 @@ package fuuast.fyp.fleamarket;
 
 public class ShopDataModel {
 
-    String name,market_id,category1,category2,category3,width,length;
+    String name,market_id,user_id,category1,category2,category3,width,length;
 
     double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
     public String getName() {
         return name;

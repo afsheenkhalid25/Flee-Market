@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class CustomAdapter_RequestList extends BaseAdapter {
 
     Context context;
-    ArrayList shop_names,shopkeeper_emails;
-    TextView shop_name,shopkeeper_email;
+    ArrayList shop_names,shop_categories;
+    TextView shop_name,shop_category;
 
     public CustomAdapter_RequestList(Context context, ArrayList names, ArrayList email) {
         this.context = context;
         this.shop_names = names;
-        this.shopkeeper_emails = email;
+        this.shop_categories = email;
     }
 
     @Override
@@ -39,13 +39,13 @@ public class CustomAdapter_RequestList extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.category_listview,null);
+        View v = inflater.inflate(R.layout.shoprequest_listview,null);
 
-        shop_name = (TextView) v.findViewById(R.id.tv_name);
+        shop_name = (TextView) v.findViewById(R.id.shop_name);
         shop_name.setText(shop_names.get(position).toString());
 
-        shopkeeper_email = (TextView) v.findViewById(R.id.tv_name);
-        shopkeeper_email.setText(shopkeeper_emails.get(position).toString());
+        shop_category = (TextView) v.findViewById(R.id.shop_category);
+        shop_category.setText(shop_categories.get(position).toString());
 
         return v;
     }

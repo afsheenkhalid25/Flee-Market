@@ -43,6 +43,7 @@ public class CreateShop extends ActionBarActivity {
     private AlertDialog category_dialog,alert;
 
     private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
+    private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -302,18 +303,12 @@ public class CreateShop extends ActionBarActivity {
             if(shopDataModelSingleTon.getCategory2().toString().equals("-")) {
                 select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
-                category_name.remove(shopDataModelSingleTon.getCategory1().toString());
-                category_url.remove(shopDataModelSingleTon.getCategory1_url().toString());
 
             }else if(shopDataModelSingleTon.getCategory3().toString().equals("-")) {
                 select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory1_url().toString());
                 select_ct_name.add(shopDataModelSingleTon.getCategory2().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory2_url().toString());
-                category_name.remove(shopDataModelSingleTon.getCategory1().toString());
-                category_url.remove(shopDataModelSingleTon.getCategory1_url().toString());
-                category_name.remove(shopDataModelSingleTon.getCategory2().toString());
-                category_url.remove(shopDataModelSingleTon.getCategory2_url().toString());
 
             }else {
                 select_ct_name.add(shopDataModelSingleTon.getCategory1().toString());
@@ -322,12 +317,6 @@ public class CreateShop extends ActionBarActivity {
                 select_ct_url.add(shopDataModelSingleTon.getCategory2_url().toString());
                 select_ct_name.add(shopDataModelSingleTon.getCategory3().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory3_url().toString());
-                category_name.remove(shopDataModelSingleTon.getCategory1().toString());
-                category_url.remove(shopDataModelSingleTon.getCategory1_url().toString());
-                category_name.remove(shopDataModelSingleTon.getCategory2().toString());
-                category_url.remove(shopDataModelSingleTon.getCategory2_url().toString());
-                category_name.remove(shopDataModelSingleTon.getCategory3().toString());
-                category_url.remove(shopDataModelSingleTon.getCategory3_url().toString());
             }
             category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
             setCategoryDialog();
@@ -339,6 +328,7 @@ public class CreateShop extends ActionBarActivity {
         shopDataModelSingleTon.setEdit_Check(true);
         shopDataModelSingleTon.setName(name);
         shopDataModelSingleTon.setMarket_id(market_Id);
+        shopDataModelSingleTon.setUser_id(userDataModelSingleTon.getId().toString());
         shopDataModelSingleTon.setLength(length);
         shopDataModelSingleTon.setWidth(width);
         shopDataModelSingleTon.setCategory1(category1);
