@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:id="@+id/shop_pic"
+        android:src="@drawable/shoppic"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Shop Name"
+        android:paddingLeft="10dp"
+        android:paddingBottom="3dp"
+        android:id="@+id/shop_name"
+        android:textColor="@color/material_blue_grey_800"
+        android:layout_alignTop="@+id/shop_pic"
+        android:layout_toRightOf="@+id/shop_pic"
+        android:layout_toEndOf="@+id/shop_pic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="category1, category2, category3"
+        android:paddingLeft="10dp"
+        android:id="@+id/shop_category"
+        android:paddingBottom="3dp"
+        android:layout_below="@+id/shop_name"
+        android:layout_alignLeft="@+id/shop_name"
+        android:layout_alignStart="@+id/shop_name" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_action_discard"
+        android:id="@+id/img_delete"
+        android:layout_alignBottom="@+id/shop_category"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Market Name"
+        android:paddingLeft="10dp"
+        android:paddingBottom="3dp"
+        android:id="@+id/market_name"
+        android:layout_below="@+id/shop_category"
+        android:layout_alignLeft="@+id/shop_category"
+        android:layout_alignStart="@+id/shop_category" />
+
+</RelativeLayout>
