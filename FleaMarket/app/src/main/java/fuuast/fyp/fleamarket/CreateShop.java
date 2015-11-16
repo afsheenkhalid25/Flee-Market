@@ -66,6 +66,7 @@ public class CreateShop extends ActionBarActivity {
         category_url = new ArrayList();
         select_ct_name = new ArrayList();
         select_ct_url = new ArrayList();
+        setEditState();
         getCategoryList();
 
         btn_cancle = (Button)findViewById(R.id.btn_cancle);
@@ -142,7 +143,7 @@ public class CreateShop extends ActionBarActivity {
         });
 
         //if user came back to create shop activity through create shop map activity....
-        setEditState();
+        //setEditState();
     }
 
     private void getMarketList() {
@@ -176,9 +177,28 @@ public class CreateShop extends ActionBarActivity {
                 category_name.clear();
                 category_url.clear();
                 for(DataSnapshot d:dataSnapshot.getChildren()){
-                    category_name.add(d.getKey());
-                    category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
+                    if (!shopDataModelSingleTon.isEdit_Check()){
+                        category_name.add(d.getKey());
+                        category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
+                    }
+                    else{
+                        Boolean check=false;
+                        for(int x=0;x<select_ct_name.size();x++){
+                            if (d.getKey().equals(select_ct_name.get(x).toString())){
+                                check=true;
+                                break;
+                            }
+                            else {
+                                check=false;
+                            }
+                        }
+                        if (check==false){
+                            category_name.add(d.getKey());
+                            category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
+                        }
+                    }
                 }
+                //setEditState();
                 setCategoryDialog();
             }
 
@@ -318,8 +338,24 @@ public class CreateShop extends ActionBarActivity {
                 select_ct_name.add(shopDataModelSingleTon.getCategory3().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory3_url().toString());
             }
+
+            /*ArrayList templist=new ArrayList();
+            for(int x=0;x<category_name.size();x++){
+                String temp_cat=category_name.get(x).toString();
+                for (int y=0;y<select_ct_name.size();y++){
+                    if(select_ct_name.get(y).toString().equals(temp_cat)){
+                        templist.add(x);
+                        break;
+                    }
+                }
+            }
+            for (int z=0;z<templist.size();z++){
+                category_name.remove(templist.get(z));
+                category_url.remove(templist.get(z));
+            }*/
+
             category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
-            setCategoryDialog();
+            //setCategoryDialog();
         }
     }
 
