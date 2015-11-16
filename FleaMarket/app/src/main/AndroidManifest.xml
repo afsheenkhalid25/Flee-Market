@@ -51,7 +51,7 @@
             android:label="Edit Profile" >
         </activity>
         <activity
-            android:name=".AdminMarketMapView"
+            android:name=".MarketMapView"
             android:label="@string/title_activity_admin_market_map_view" >
         </activity>
         <activity
@@ -69,6 +69,10 @@
         <activity
             android:name=".ShopsRequest"
             android:label="@string/title_activity_shops_request" >
+        </activity>
+        <activity
+            android:name=".PendingShops"
+            android:label="@string/title_activity_pending_shops" >
         </activity>
     </application>
 

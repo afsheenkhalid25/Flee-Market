@@ -42,6 +42,7 @@ public class CreateShop extends ActionBarActivity {
     private ListView category_listview;
     private AlertDialog category_dialog,alert;
 
+    private CustomAdapter_CategoriesList category_adapter,dialog_adapter;
     private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
@@ -66,13 +67,12 @@ public class CreateShop extends ActionBarActivity {
         category_url = new ArrayList();
         select_ct_name = new ArrayList();
         select_ct_url = new ArrayList();
-        setEditState();
-        getCategoryList();
 
         btn_cancle = (Button)findViewById(R.id.btn_cancle);
         btn_cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                shopDataModelSingleTon.setEdit_Check(false);
                 Intent j = new Intent(CreateShop.this, ShopkeeperPanel.class);
                 startActivity(j);
             }
@@ -118,18 +118,17 @@ public class CreateShop extends ActionBarActivity {
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                        //selected listview item will be deleted here and added back to category listview....
-                        category_name.add(select_ct_name.get(position).toString());
-                        category_url.add(select_ct_url.get(position).toString());
+                      category_adapter = new CustomAdapter_CategoriesList(CreateShop.this, select_ct_name, select_ct_url);
+                      dialog_adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
 
-                        CustomAdapter_CategoriesList adapter1 = new CustomAdapter_CategoriesList(CreateShop.this, select_ct_name, select_ct_url);
-                        category_listview.setAdapter(adapter1);
+                      //selected listView item will be deleted here and added back to category listView....
+                      category_name.add(select_ct_name.get(position).toString());
+                      category_url.add(select_ct_url.get(position).toString());
+                      dialog_adapter.notifyDataSetChanged();
 
-                        select_ct_name.remove(position);
-                        select_ct_url.remove(position);
-                        adapter1.notifyDataSetChanged();
-
-                        setCategoryDialog();
+                      select_ct_name.remove(position);
+                      select_ct_url.remove(position);
+                      category_listview.setAdapter(category_adapter);
                     }
                 });
                 builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -142,8 +141,8 @@ public class CreateShop extends ActionBarActivity {
             }
         });
 
-        //if user came back to create shop activity through create shop map activity....
-        //setEditState();
+        setEditState();
+        getCategoryList();
     }
 
     private void getMarketList() {
@@ -174,31 +173,27 @@ public class CreateShop extends ActionBarActivity {
         firebase.child("Catagories").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 category_name.clear();
                 category_url.clear();
-                for(DataSnapshot d:dataSnapshot.getChildren()){
-                    if (!shopDataModelSingleTon.isEdit_Check()){
-                        category_name.add(d.getKey());
-                        category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
-                    }
-                    else{
-                        Boolean check=false;
-                        for(int x=0;x<select_ct_name.size();x++){
-                            if (d.getKey().equals(select_ct_name.get(x).toString())){
-                                check=true;
+                for(DataSnapshot d:dataSnapshot.getChildren()) {
+                    if (shopDataModelSingleTon.isEdit_Check()) {
+                        for(int i=0;i<select_ct_name.size();i++){
+                            if(d.getKey().equals(select_ct_name.get(i).toString())){
+                                Log.d("Position","do nothing with "+d.getKey());
+                                break;
+                            }else{
+                                category_name.add(d.getKey());
+                                category_url.add(((HashMap<String, String>) d.getValue()).get("IMG"));
                                 break;
                             }
-                            else {
-                                check=false;
-                            }
                         }
-                        if (check==false){
-                            category_name.add(d.getKey());
-                            category_url.add(((HashMap<String,String>)d.getValue()).get("IMG"));
-                        }
+                    } else {
+                        Log.d("Position","Adding in normal state");
+                        category_name.add(d.getKey());
+                        category_url.add(((HashMap<String, String>) d.getValue()).get("IMG"));
                     }
                 }
-                //setEditState();
                 setCategoryDialog();
             }
 
@@ -213,9 +208,10 @@ public class CreateShop extends ActionBarActivity {
 
         LayoutInflater inflater = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View customView = inflater.inflate(R.layout.category_dialog, null, false);
-        final CustomAdapter_CategoriesList adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
+
+        dialog_adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
         ListView list = (ListView) customView.findViewById(R.id.category_listview);
-        list.setAdapter(adapter);
+        list.setAdapter(dialog_adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -225,7 +221,7 @@ public class CreateShop extends ActionBarActivity {
 
                 category_name.remove(position);
                 category_url.remove(position);
-                adapter.notifyDataSetChanged();
+                dialog_adapter.notifyDataSetChanged();
 
                 category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
             }
@@ -338,24 +334,7 @@ public class CreateShop extends ActionBarActivity {
                 select_ct_name.add(shopDataModelSingleTon.getCategory3().toString());
                 select_ct_url.add(shopDataModelSingleTon.getCategory3_url().toString());
             }
-
-            /*ArrayList templist=new ArrayList();
-            for(int x=0;x<category_name.size();x++){
-                String temp_cat=category_name.get(x).toString();
-                for (int y=0;y<select_ct_name.size();y++){
-                    if(select_ct_name.get(y).toString().equals(temp_cat)){
-                        templist.add(x);
-                        break;
-                    }
-                }
-            }
-            for (int z=0;z<templist.size();z++){
-                category_name.remove(templist.get(z));
-                category_url.remove(templist.get(z));
-            }*/
-
             category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this,select_ct_name,select_ct_url));
-            //setCategoryDialog();
         }
     }
 

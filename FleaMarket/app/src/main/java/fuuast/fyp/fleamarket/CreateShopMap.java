@@ -122,7 +122,7 @@ public class CreateShopMap extends FragmentActivity {
         });
     }
 
-    public void removeRequest(){
+    public void removeRequest() {
         shops_details.removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -163,12 +163,12 @@ public class CreateShopMap extends FragmentActivity {
         shopDataModel.setSW_lat(shopDataModelSingleTon.getSW_lat());
         shopDataModel.setSW_lon(shopDataModelSingleTon.getSW_lon());
 
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        shopDataModelSingleTon.setEdit_Check(false);
         Intent i = new Intent(CreateShopMap.this,ShopkeeperPanel.class);
         startActivity(i);
     }

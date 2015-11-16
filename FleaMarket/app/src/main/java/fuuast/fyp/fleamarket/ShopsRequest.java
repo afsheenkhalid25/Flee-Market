@@ -38,7 +38,6 @@ public class ShopsRequest extends ActionBarActivity {
     private ProgressDialog progressDialog;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
-    private MarketDataModel marketDataModel = new MarketDataModel();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
 
     @Override
@@ -138,7 +137,7 @@ public class ShopsRequest extends ActionBarActivity {
         });
     }
 
-    private void onAction(String item){
+    private void onAction(String item) {
         switch (item){
             case "view":
                 Log.d("menu item...", "View");
@@ -154,7 +153,7 @@ public class ShopsRequest extends ActionBarActivity {
         }
     }
 
-    private void ApproveShop(){
+    private void ApproveShop() {
         new AlertDialog.Builder(ShopsRequest.this)
                 .setTitle("Approve Shop!!")
                 .setMessage("Do you want to approve this shop for Market?")
@@ -173,10 +172,10 @@ public class ShopsRequest extends ActionBarActivity {
                 .show();
     }
 
-    private void DeleteShop(){
+    private void DeleteShop() {
         new AlertDialog.Builder(ShopsRequest.this)
                 .setTitle("Approve Shop!!")
-                .setMessage("Do you want to approve this shop for Market?")
+                .setMessage("Do you want to delete this shop request")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         progressDialog.show();
@@ -241,7 +240,7 @@ public class ShopsRequest extends ActionBarActivity {
         });
     }
 
-    private void setMarketShopTable(){
+    private void setMarketShopTable() {
         firebase.child("Market_Shops").child(market_id).child(Shop_Id).setValue(shopDataModel, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -268,7 +267,7 @@ public class ShopsRequest extends ActionBarActivity {
         });
     }
 
-    private void setShopkeeperShopTable(){
+    private void setShopkeeperShopTable() {
         HashMap<String,Object> hashMap=new HashMap<String, Object>();
         hashMap.put("market_id",market_id);
         firebase.child("Shopkeeper_Shops").child(User_Id).child(Shop_Id).setValue(hashMap, new Firebase.CompletionListener() {

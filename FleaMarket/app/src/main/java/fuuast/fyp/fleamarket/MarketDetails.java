@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
-import java.util.ArrayList;
-
 public class MarketDetails extends ActionBarActivity implements View.OnClickListener {
 
     private TextView tv_market_name,tv_market_address,shops_status;
@@ -51,7 +49,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
-                Intent j = new Intent(this,AdminMarketMapView.class);
+                Intent j = new Intent(this,MarketMapView.class);
                 startActivity(j);
                 break;
             case "edit":

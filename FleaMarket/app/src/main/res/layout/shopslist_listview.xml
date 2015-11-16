@@ -38,7 +38,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_action_next_item2"
+        android:src="@drawable/ic_action_next_item_dark"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/img_shopdetails" />
