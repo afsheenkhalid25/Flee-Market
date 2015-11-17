@@ -16,17 +16,19 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickListener {
 
     private TextView tv_name,tv_email,tv_phone,shops_status;
     private ImageView img_options;
     private ListView shop_list;
-    private ArrayList shop_id,shop_names,shop_market;
     private Firebase firebase;
-    private String shop_user_id,shop_market_id;
+    private String user_id,category1,category2,category3,categories;
+    private ArrayList shop_id,shop_name,shop_category;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
@@ -44,6 +46,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         tv_email = (TextView) findViewById(R.id.shoppanel_tv_email);
         tv_phone=(TextView) findViewById(R.id.shoppanel_tv_phone);
         shops_status = (TextView) findViewById(R.id.shoppanel_tv_status);
+        shops_status.setVisibility(View.VISIBLE);
 
         img_options = (ImageView) findViewById(R.id.shoppanel_img_options);
         img_options.setOnClickListener(this);
@@ -61,12 +64,47 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         tv_email.setText(userDataModelSingleTon.getEmail_id());
         tv_phone.setText(userDataModelSingleTon.getPhone());
 
+        user_id = userDataModelSingleTon.getId().toString();
 
-        shop_id=new ArrayList();
-        shop_names=new ArrayList();
-        shop_market=new ArrayList();
+        shop_id = new ArrayList();
+        shop_name = new ArrayList();
+        shop_category = new ArrayList();
 
-        //getShops();
+        getShops();
+    }
+
+    private void getShops(){
+
+        shop_id.clear();
+        shop_name.clear();
+        shop_category.clear();
+        firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    shop_id.add(d.getKey());
+                    shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
+                    category1 = ((HashMap<String,String>)d.getValue()).get("category1");
+                    category2 = ((HashMap<String,String>)d.getValue()).get("category2");
+                    category3 = ((HashMap<String,String>)d.getValue()).get("category3");
+                    if(category2.equals("-")){
+                        categories = category1;
+                    } else if(category3.equals("-")){
+                        categories = category1 + ", " + category2;
+                    } else {
+                        categories = category1 + ", " + category2 + ", " + category3;
+                    }
+                    shop_category.add(categories);
+                    shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category));
+                }
+                shops_status.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void onAction (String s) {

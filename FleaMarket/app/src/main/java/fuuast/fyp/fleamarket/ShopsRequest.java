@@ -55,6 +55,7 @@ public class ShopsRequest extends ActionBarActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         status = (TextView)findViewById(R.id.status);
+        status.setVisibility(View.VISIBLE);
         market_name = (TextView) findViewById(R.id.tv_market_name);
         market_name.setText(marketDataModelSingleTon.getMarket_name());
 
@@ -79,6 +80,7 @@ public class ShopsRequest extends ActionBarActivity {
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
+                        popup.dismiss();
                         Log.d("menu item clicked"," "+item);
                         switch (item.getItemId()) {
                             case R.id.view:
@@ -140,7 +142,6 @@ public class ShopsRequest extends ActionBarActivity {
     }
 
     private void onAction(String item) {
-        popup.dismiss();
         switch (item){
             case "view":
                 Log.d("menu item...", "View");
