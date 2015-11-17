@@ -42,7 +42,7 @@ public class CreateShop extends ActionBarActivity {
     private ListView category_listview;
     private AlertDialog category_dialog,alert;
 
-    private CustomAdapter_CategoriesList category_adapter,dialog_adapter;
+    private CustomAdapter_CategoriesList dialog_adapter;
     private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
@@ -118,17 +118,16 @@ public class CreateShop extends ActionBarActivity {
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                      category_adapter = new CustomAdapter_CategoriesList(CreateShop.this, select_ct_name, select_ct_url);
+                      //selected listView item will be deleted here and added back to category listView....
                       dialog_adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
 
-                      //selected listView item will be deleted here and added back to category listView....
                       category_name.add(select_ct_name.get(position).toString());
                       category_url.add(select_ct_url.get(position).toString());
                       dialog_adapter.notifyDataSetChanged();
 
                       select_ct_name.remove(position);
                       select_ct_url.remove(position);
-                      category_listview.setAdapter(category_adapter);
+                      category_listview.setAdapter(new CustomAdapter_CategoriesList(CreateShop.this, select_ct_name, select_ct_url));
                     }
                 });
                 builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -174,19 +173,22 @@ public class CreateShop extends ActionBarActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Boolean check;
                 category_name.clear();
                 category_url.clear();
                 for(DataSnapshot d:dataSnapshot.getChildren()) {
                     if (shopDataModelSingleTon.isEdit_Check()) {
-                        for(int i=0;i<select_ct_name.size();i++){
-                            if(d.getKey().equals(select_ct_name.get(i).toString())){
-                                Log.d("Position","do nothing with "+d.getKey());
-                                break;
-                            }else{
-                                category_name.add(d.getKey());
-                                category_url.add(((HashMap<String, String>) d.getValue()).get("IMG"));
-                                break;
+                        check = true;
+                        for(int x=0;x<select_ct_name.size();x++){
+                            if(d.getKey().equals(select_ct_name.get(x).toString())) {
+                                Log.d("Position", "do nothing with " + d.getKey());
+                                check = false;
                             }
+                        }
+                        if(check){
+                            Log.d("Position","Adding in edit state");
+                            category_name.add(d.getKey());
+                            category_url.add(((HashMap<String, String>) d.getValue()).get("IMG"));
                         }
                     } else {
                         Log.d("Position","Adding in normal state");
