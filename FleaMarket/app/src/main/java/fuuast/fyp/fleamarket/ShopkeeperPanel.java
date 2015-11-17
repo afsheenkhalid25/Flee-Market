@@ -27,7 +27,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private ImageView img_options;
     private ListView shop_list;
     private Firebase firebase;
-    private String user_id,category1,category2,category3,categories;
+    private String market_id,user_id,category1,category2,category3,categories;
     private ArrayList shop_id,shop_name,shop_category;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
@@ -83,7 +83,25 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     shop_id.add(d.getKey());
-                    shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
+                    market_id = ((HashMap<String,String>)d.getValue()).get("market_id");
+                    getShopDetails(d.getKey());
+                }
+                shops_status.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    private void getShopDetails(String id){
+        firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    shop_name.add(((HashMap<String, String>) d.getValue()).get("name"));
                     category1 = ((HashMap<String,String>)d.getValue()).get("category1");
                     category2 = ((HashMap<String,String>)d.getValue()).get("category2");
                     category3 = ((HashMap<String,String>)d.getValue()).get("category3");
@@ -95,9 +113,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                         categories = category1 + ", " + category2 + ", " + category3;
                     }
                     shop_category.add(categories);
-                    shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category));
                 }
-                shops_status.setVisibility(View.INVISIBLE);
+                shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category));
             }
 
             @Override
