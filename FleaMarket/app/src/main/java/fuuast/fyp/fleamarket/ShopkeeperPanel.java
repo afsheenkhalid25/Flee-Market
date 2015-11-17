@@ -97,12 +97,13 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.shoppanel_img_options:
-                PopupMenu popup = new PopupMenu(this, view);
+                final PopupMenu popup = new PopupMenu(this, view);
                 popup.inflate(R.menu.menu_shopkeeper_panel);
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        popup.dismiss();
                         switch (item.getItemId()) {
                             case R.id.shoppanel_opt_editprofile:
                                 onAction("edit_profile");

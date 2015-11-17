@@ -34,9 +34,10 @@ public class ShopsRequest extends ActionBarActivity {
     private TextView market_name,status;
     private ListView request_listview;
     private ArrayList user_id,shop_id,shop_name,shop_categories;
-    private Firebase firebase,request_list,market_shop,pending_shop;
+    private Firebase firebase,request_list,market_shop,pending_shop,shop_details;
     private ProgressDialog progressDialog;
 
+    private PopupMenu popup;
     private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
 
@@ -72,12 +73,13 @@ public class ShopsRequest extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Shop_Id = shop_id.get(position).toString();
                 User_Id = user_id.get(position).toString();
-                PopupMenu popup = new PopupMenu(ShopsRequest.this, view, Gravity.RIGHT);
+                Log.d("Shop_Id",Shop_Id);
+                popup = new PopupMenu(ShopsRequest.this, view, Gravity.RIGHT);
                 popup.inflate(R.menu.menu_shop_request);
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Log.d("Position", "menu item clicked"+item);
+                        Log.d("menu item clicked"," "+item);
                         switch (item.getItemId()) {
                             case R.id.view:
                                 onAction("view");
@@ -109,7 +111,6 @@ public class ShopsRequest extends ActionBarActivity {
                 shop_id.clear();
                 shop_name.clear();
                 shop_categories.clear();
-                status.setVisibility(View.INVISIBLE);
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
 
                     shop_id.add(d.getKey());
@@ -128,6 +129,7 @@ public class ShopsRequest extends ActionBarActivity {
                     shop_categories.add(categories);
                     request_listview.setAdapter(new CustomAdapter_RequestList(ShopsRequest.this,shop_name,shop_categories));
                 }
+                status.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -138,6 +140,7 @@ public class ShopsRequest extends ActionBarActivity {
     }
 
     private void onAction(String item) {
+        popup.dismiss();
         switch (item){
             case "view":
                 Log.d("menu item...", "View");
@@ -160,8 +163,7 @@ public class ShopsRequest extends ActionBarActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         progressDialog.show();
-                        DeleteRequest();
-
+                        getShopDetails();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -172,96 +174,38 @@ public class ShopsRequest extends ActionBarActivity {
                 .show();
     }
 
-    private void DeleteShop() {
-        new AlertDialog.Builder(ShopsRequest.this)
-                .setTitle("Approve Shop!!")
-                .setMessage("Do you want to delete this shop request")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        progressDialog.show();
-                        pending_shop = firebase.child("Shopkeeper_Pending_Shops").child(User_Id).child(Shop_Id);
-                        pending_shop.removeValue(new Firebase.CompletionListener() {
-                            @Override
-                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                if (firebaseError != null) {
-                                    Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    market_shop = firebase.child("Shop_Requests").child(market_id).child(Shop_Id);
-                                    market_shop.removeValue(new Firebase.CompletionListener() {
-                                        @Override
-                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                            if(firebaseError!=null){
-                                                Log.d("REMOVE REQUEST.....",firebaseError.getMessage());
-                                            } else {
-                                                getRequestList();
-                                                progressDialog.dismiss();
-                                                Toast.makeText(ShopsRequest.this, "Shop is deleted..", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d("Delete Dialog", "Cancel click");
-                }                      })
-                .show();
-    }
-
-    private void DeleteRequest() {
-        //first delete record of this pending shop from shopkeeper_Pending_shops table...
-        pending_shop = firebase.child("Shopkeeper_Pending_Shops").child(User_Id).child(Shop_Id);
-        pending_shop.removeValue(new Firebase.CompletionListener() {
+    private void getShopDetails() {
+        shop_details = firebase.child("Shop_Requests").child(market_id);
+        shop_details.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    //when the record is deleted get details of shop from Shop request table for adding it in Market shops table..
-                    market_shop = firebase.child("Shop_Requests").child(market_id).child(Shop_Id);
-                    market_shop.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
-                            //calling this method for adding shoop details in market shop table....
-                            setMarketShopTable();
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    if (Shop_Id.equals(d.getKey().toString())) {
+                        Log.d("Position", "Shop Details " + d.getValue());
+                        shopDataModel = d.getValue(ShopDataModel.class);
+                        setMarketShopTable();
+                    }
                 }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setMarketShopTable() {
-        firebase.child("Market_Shops").child(market_id).child(Shop_Id).setValue(shopDataModel, new Firebase.CompletionListener() {
+        market_shop = firebase.child("Market_Shops").child(market_id).child(Shop_Id);
+        market_shop.setValue(shopDataModel, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError!=null){
                     Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    //when record is added in table successfully delete it from shop request table.......
-                    market_shop.removeValue(new Firebase.CompletionListener() {
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if (firebaseError != null) {
-                                Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.d("Position","Record is deleted from shop request table...");
-                                //now in last add the record in shopkeeper shop table....
-                                setShopkeeperShopTable();
-                            }
-                        }
-                    });
-
+                } else{
+                    Log.d("Position","Record is inserted in Market shop table...");
+                    //now after adding shop details we have to delete it from shop request table...
+                    setShopkeeperShopTable();
                 }
             }
         });
@@ -274,13 +218,65 @@ public class ShopsRequest extends ActionBarActivity {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError!=null){
-                    Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                    Log.d(firebaseError.toString(),"Retrying Again...");
+                    setShopkeeperShopTable();
+                }else {
+                    deleteShopDetails(Shop_Id);
                     getRequestList();
                     progressDialog.dismiss();
                     Toast.makeText(ShopsRequest.this, "Shop is approved..", Toast.LENGTH_SHORT).show();
+
                 }
+            }
+        });
+    }
+
+    private void DeleteShop() {
+        new AlertDialog.Builder(ShopsRequest.this)
+                .setTitle("Delete Shop!!")
+                .setMessage("Do you want to delete this shop request")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.show();
+                        deleteShopDetails(Shop_Id);
+                        getRequestList();
+                        progressDialog.dismiss();
+                        Toast.makeText(ShopsRequest.this, "Shop request is successfully deleted..", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Delete Dialog", "Cancel click");
+                    }                      })
+                .show();
+    }
+
+    private void deleteShopDetails(final String id){
+        shop_details.child(id).removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    Log.d(firebaseError.toString(),"Retrying Again...");
+                    deleteShopDetails(id);
+                } else {
+                    Log.d("Position", "Record is deleted from shop request table...");
+                    //after deleting shop details also delete record from shopkeeper pending shop....
+                    deletePendingShop(id);
+                }
+            }
+        });
+    }
+
+    private void deletePendingShop(final String id) {
+        pending_shop = firebase.child("Shopkeeper_Pending_Shops").child(User_Id).child(id);
+        pending_shop.removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    Log.d(firebaseError.toString(),"Retrying Again...");
+                    deletePendingShop(id);
+                } else
+                    Log.d("Position", "Record is deleted from shopkeeper pending shop table...");
             }
         });
     }
