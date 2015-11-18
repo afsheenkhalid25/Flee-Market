@@ -31,7 +31,6 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private ArrayList shop_id,shop_name,shop_category;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
-    private MarketDataModel marketDataModel = new MarketDataModel();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
@@ -73,7 +72,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         getShops();
     }
 
-    private void getShops(){
+    private void getShops() {
 
         shop_id.clear();
         shop_name.clear();
@@ -81,12 +80,15 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    shop_id.add(d.getKey());
-                    market_id = ((HashMap<String,String>)d.getValue()).get("market_id");
-                    getShopDetails(d.getKey());
+                if (dataSnapshot.hasChildren()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        shop_id.add(d.getKey());
+                        market_id = ((HashMap<String, String>) d.getValue()).get("market_id");
+                        Log.d("Shop_ID", d.getKey().toString());
+                        Log.d("market_ID", market_id);
+                        getShopDetails(d.getKey());
+                    }
                 }
-                shops_status.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -96,25 +98,27 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         });
     }
 
-    private void getShopDetails(String id){
-        firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
+    private void getShopDetails(final String shop_id){
+        firebase.child("Market_Shops").child(market_id).child(shop_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    shop_name.add(((HashMap<String, String>) d.getValue()).get("name"));
-                    category1 = ((HashMap<String,String>)d.getValue()).get("category1");
-                    category2 = ((HashMap<String,String>)d.getValue()).get("category2");
-                    category3 = ((HashMap<String,String>)d.getValue()).get("category3");
-                    if(category2.equals("-")){
-                        categories = category1;
-                    } else if(category3.equals("-")){
-                        categories = category1 + ", " + category2;
-                    } else {
-                        categories = category1 + ", " + category2 + ", " + category3;
-                    }
-                    shop_category.add(categories);
+                Log.d("Position", "Getting shop details");
+                shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
+                shop_name.add(shopDataModel.getName());
+                category1 = (shopDataModel.getCategory1());
+                category2 = (shopDataModel.getCategory2());
+                category3 = (shopDataModel.getCategory3());
+                if(category2.equals("-")){
+                    categories = category1;
+                } else if(category3.equals("-")){
+                    categories = category1 + ", " + category2;
+                } else {
+                    categories = category1 + ", " + category2 + ", " + category3;
                 }
+                shop_category.add(categories);
+
                 shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category));
+                shops_status.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -144,6 +148,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                 break;
             case "pending":
                 Log.d("menu item...", "Pending Shops");
+                Intent l = new Intent(ShopkeeperPanel.this,PendingShops.class);
+                startActivity(l);
                 break;
         }
     }
