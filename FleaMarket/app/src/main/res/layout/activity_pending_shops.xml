@@ -17,11 +17,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingLeft="5dp"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:src="@drawable/ic_action_back"
-            android:clickable="true"
-            android:id="@+id/img_back"
-            android:onClick="showPopup" />
+            android:id="@+id/img_back" />
 
         <TextView
             android:layout_width="wrap_content"

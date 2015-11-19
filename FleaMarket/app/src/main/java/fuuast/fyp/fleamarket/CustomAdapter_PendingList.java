@@ -40,7 +40,7 @@ public class CustomAdapter_PendingList extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.shoprequest_listview,null);
+        View v = inflater.inflate(R.layout.pendinglist_listview,null);
 
         shop_name = (TextView) v.findViewById(R.id.shop_name);
         shop_name.setText(shop_names.get(position).toString());
@@ -48,8 +48,8 @@ public class CustomAdapter_PendingList extends BaseAdapter {
         shop_category = (TextView) v.findViewById(R.id.shop_category);
         shop_category.setText(shop_categories.get(position).toString());
 
-        market_name = (TextView) v.findViewById(R.id.market_name);
-        market_name.setText(shop_categories.get(position).toString());
+        market_name = (TextView) v.findViewById(R.id.mt_name);
+        market_name.setText(market_names.get(position).toString());
 
         return v;
     }

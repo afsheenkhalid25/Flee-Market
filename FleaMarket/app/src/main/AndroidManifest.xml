@@ -55,12 +55,12 @@
             android:label="@string/title_activity_admin_market_map_view" >
         </activity>
         <activity
-            android:name=".CreateShop"
-            android:label="@string/title_activity_create_shop" >
-        </activity>
-        <activity
             android:name=".ShopkeeperPanel"
             android:label="@string/title_activity_shopkeeper_panel" >
+        </activity>
+        <activity
+            android:name=".CreateShop"
+            android:label="@string/title_activity_create_shop" >
         </activity>
         <activity
             android:name=".CreateShopMap"

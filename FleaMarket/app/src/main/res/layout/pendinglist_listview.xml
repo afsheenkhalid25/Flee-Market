@@ -54,7 +54,7 @@
         android:text="Market Name"
         android:paddingLeft="10dp"
         android:paddingBottom="3dp"
-        android:id="@+id/market_name"
+        android:id="@+id/mt_name"
         android:layout_below="@+id/shop_category"
         android:layout_alignLeft="@+id/shop_category"
         android:layout_alignStart="@+id/shop_category" />

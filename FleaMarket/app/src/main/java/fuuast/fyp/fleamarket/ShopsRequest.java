@@ -163,6 +163,7 @@ public class ShopsRequest extends ActionBarActivity {
                 .setMessage("Do you want to approve this shop for Market?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Approve Dialog", "Clicked");
                         progressDialog.show();
                         getShopDetails();
                     }
@@ -182,7 +183,7 @@ public class ShopsRequest extends ActionBarActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     if (Shop_Id.equals(d.getKey().toString())) {
-                        Log.d("Position", "Shop Details " + d.getValue());
+                        Log.d("Position", "In Shop Details");
                         shopDataModel = d.getValue(ShopDataModel.class);
                         setMarketShopTable();
                     }
@@ -222,6 +223,7 @@ public class ShopsRequest extends ActionBarActivity {
                     Log.d(firebaseError.toString(),"Retrying Again...");
                     setShopkeeperShopTable();
                 }else {
+                    Log.d("Position", "Record is inserted in shopkeeper shop table");
                     deleteShopDetails(Shop_Id);
                     getRequestList();
                     progressDialog.dismiss();
@@ -238,6 +240,7 @@ public class ShopsRequest extends ActionBarActivity {
                 .setMessage("Do you want to delete this shop request")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Delete Dialog", "Clicked");
                         progressDialog.show();
                         deleteShopDetails(Shop_Id);
                         getRequestList();
