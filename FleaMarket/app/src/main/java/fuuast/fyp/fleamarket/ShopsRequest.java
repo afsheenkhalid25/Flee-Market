@@ -77,10 +77,8 @@ public class ShopsRequest extends ActionBarActivity {
                 Log.d("Shop_Id",Shop_Id);
                 popup = new PopupMenu(ShopsRequest.this, view, Gravity.RIGHT);
                 popup.inflate(R.menu.menu_shop_request);
-                popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        popup.dismiss();
                         Log.d("menu item clicked"," "+item);
                         switch (item.getItemId()) {
                             case R.id.view:
@@ -243,7 +241,6 @@ public class ShopsRequest extends ActionBarActivity {
                         Log.d("Delete Dialog", "Clicked");
                         progressDialog.show();
                         deleteShopDetails(Shop_Id);
-                        getRequestList();
                         progressDialog.dismiss();
                         Toast.makeText(ShopsRequest.this, "Shop request is successfully deleted..", Toast.LENGTH_SHORT).show();
                     }
@@ -279,8 +276,10 @@ public class ShopsRequest extends ActionBarActivity {
                 if (firebaseError != null) {
                     Log.d(firebaseError.toString(),"Retrying Again...");
                     deletePendingShop(id);
-                } else
+                } else {
                     Log.d("Position", "Record is deleted from shopkeeper pending shop table...");
+                    getRequestList();
+                }
             }
         });
     }

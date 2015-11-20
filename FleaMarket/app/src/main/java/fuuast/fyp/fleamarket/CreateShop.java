@@ -99,7 +99,7 @@ public class CreateShop extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 market_Id = market_id.get(position).toString();
-                Log.d("Position",market_Id);
+                Log.d("Position","get market id on spinner click");
             }
 
             @Override
