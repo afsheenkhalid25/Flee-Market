@@ -27,6 +27,7 @@ import java.util.HashMap;
 public class PendingShops extends ActionBarActivity {
 
     private String user_id,category1,category2,category3,categories;
+    private int item_id;
     private TextView user_name,status;
     private ListView pending_list;
     private ArrayList shop_id,shop_name,shop_categories,market_name,market_id;
@@ -66,6 +67,7 @@ public class PendingShops extends ActionBarActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 progressDialog.show();
+                                item_id = position;
                                 deletePendingShop(shop_id.get(position).toString(),market_id.get(position).toString());
                             }
                         })
@@ -195,7 +197,10 @@ public class PendingShops extends ActionBarActivity {
                     deleteShopDetails(shop_ID,market_ID);
                 } else {
                     Log.d("Position", "Record is deleted from shop request table...");
-                    getPendingList();
+                    shop_name.remove(item_id);
+                    shop_categories.remove(item_id);
+                    market_name.remove(item_id);
+                    pending_list.setAdapter(new CustomAdapter_PendingList(PendingShops.this,shop_name,shop_categories,market_name));
                     progressDialog.dismiss();
                     Toast.makeText(PendingShops.this, "Shop request is successfully deleted..", Toast.LENGTH_SHORT).show();
                 }

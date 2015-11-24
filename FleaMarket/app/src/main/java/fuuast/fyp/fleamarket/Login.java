@@ -202,6 +202,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     @Override
     protected void onPause() {
         super.onPause();
+        progressDialog.dismiss();
         finish();
     }
 }
