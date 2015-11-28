@@ -28,9 +28,10 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private ListView shop_list;
     private Firebase firebase;
     private String market_id,user_id,category1,category2,category3,categories;
-    private ArrayList shop_id,shop_name,shop_category;
+    private ArrayList shop_id,shop_name,shop_category,market_ids;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
+    private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
@@ -54,8 +55,9 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent i = new Intent(ShopkeeperPanel.this,MarketDetails.class);
-                //startActivity(i);
+                setShopDataModelSingleTon(position);
+                Intent i = new Intent(ShopkeeperPanel.this,ShopDetails.class);
+                startActivity(i);
             }
         });
 
@@ -68,6 +70,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_id = new ArrayList();
         shop_name = new ArrayList();
         shop_category = new ArrayList();
+        market_ids = new ArrayList();
 
         getShops();
     }
@@ -77,6 +80,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_id.clear();
         shop_name.clear();
         shop_category.clear();
+        market_ids.clear();
         firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,6 +88,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         shop_id.add(d.getKey());
                         market_id = ((HashMap<String, String>) d.getValue()).get("market_id");
+                        market_ids.add(market_id);
                         Log.d("Shop_ID", d.getKey().toString());
                         Log.d("market_ID", market_id);
                         getShopDetails(d.getKey());
@@ -185,6 +190,12 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                 });
             break;
         }
+    }
+
+    private void setShopDataModelSingleTon(int item){
+        shopDataModelSingleTon.setUser_id(user_id);
+        shopDataModelSingleTon.setShop_id(shop_id.get(item).toString());
+        shopDataModelSingleTon.setMarket_id(market_ids.get(item).toString());
     }
 
     @Override

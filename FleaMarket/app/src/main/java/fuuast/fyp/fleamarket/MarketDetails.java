@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -23,12 +23,13 @@ import java.util.HashMap;
 public class MarketDetails extends ActionBarActivity implements View.OnClickListener {
 
     private String market_id,category1,category2,category3,categories;
-    private ArrayList shop_id,shop_name,shop_category;
+    private ArrayList user_id,shop_id,shop_name,shop_category;
     private TextView tv_market_name,tv_market_address,shops_status;
     private ListView shops_list;
     private Firebase firebase;
     private ImageView options;
 
+    private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
 
     @Override
@@ -52,8 +53,17 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
 
         market_id = marketDataModelSingleTon.getMarket_id().toString();
         shops_list = (ListView)findViewById(R.id.mv_lv_shops);
+        shops_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setShopDataModelSingleTon(position);
+                Intent i = new Intent(MarketDetails.this,ShopDetails.class);
+                startActivity(i);
+            }
+        });
 
         shop_id = new ArrayList();
+        user_id = new ArrayList();
         shop_name = new ArrayList();
         shop_category = new ArrayList();
 
@@ -69,8 +79,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
-                Intent j = new Intent(this,MarketMapView.class);
-                startActivity(j);
                 break;
             case "edit":
                 Log.d("menu item...", "Edit Market");
@@ -84,15 +92,17 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     }
 
     public void getShopList(){
-        shop_id = new ArrayList();
-        shop_name = new ArrayList();
-        shop_category = new ArrayList();
+        user_id.clear();
+        shop_id.clear();
+        shop_name.clear();
+        shop_category.clear();
         firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     shop_id.add(d.getKey());
+                    user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));
                     shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
                     category1 = ((HashMap<String,String>)d.getValue()).get("category1");
                     category2 = ((HashMap<String,String>)d.getValue()).get("category2");
@@ -147,6 +157,13 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 });
                 break;
         }
+    }
+
+    private void setShopDataModelSingleTon(int item){
+
+        shopDataModelSingleTon.setMarket_id(market_id);
+        shopDataModelSingleTon.setShop_id(shop_id.get(item).toString());
+        shopDataModelSingleTon.setUser_id(user_id.get(item).toString());
     }
 
     @Override
