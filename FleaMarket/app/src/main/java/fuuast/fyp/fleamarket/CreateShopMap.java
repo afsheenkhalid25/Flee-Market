@@ -2,29 +2,41 @@ package fuuast.fyp.fleamarket;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CreateShopMap extends FragmentActivity {
+public class CreateShopMap extends FragmentActivity implements OnMapReadyCallback {
 
     private String user_id,market_id,shop_id;
     private GoogleMap mMap;
     private Button btn_done,btn_edit;
     private Firebase firebase,shops_details,pending_shops;
     private ProgressDialog progressDialog;
+    Shop shop;
+    Checker checker;
+
+    ArrayList<Shop> shopsArrayList;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
     private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
@@ -33,12 +45,17 @@ public class CreateShopMap extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_shop_map);
-        setUpMapIfNeeded();
 
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
+        checker=new Checker();
+
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
+
         progressDialog = new ProgressDialog(CreateShopMap.this);
+
+        shopsArrayList=new ArrayList<Shop>();
 
         btn_done = (Button) findViewById(R.id.btn_done);
         btn_done.setOnClickListener(new View.OnClickListener() {
@@ -57,21 +74,108 @@ public class CreateShopMap extends FragmentActivity {
         });
     }
 
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap=googleMap;
+        getAllShops();
     }
 
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    private void getAllShops() {
+        firebase.child("Market_Shops").child(shopDataModelSingleTon.getMarket_id().toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                shopsArrayList.clear();
+                if (dataSnapshot.hasChildren()){
+                    for (DataSnapshot d:dataSnapshot.getChildren()){
+                        ShopDataModel sdm=d.getValue(ShopDataModel.class);
+                        shop=new Shop(sdm.getLat(),sdm.getLon(),Double.parseDouble(sdm.getWidth()),Double.parseDouble(sdm.getLength()));
+                        shopsArrayList.add(shop);
+                        createShop(shop,1);
+                    }
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModelSingleTon.getLat(),shopDataModelSingleTon.getLon()),18));
+                    if (shopsArrayList.size() > 0) {
+                        checkOverlapping(shop);
+                    } else {
+                        createShop();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    private void checkOverlapping(Shop newShop) {
+        Shop temp=newShop;
+        for (int i = 0; i < shopsArrayList.size(); i++){
+            Log.d("Message", "Comparing Shop" + i);
+            Shop oldShop = shopsArrayList.get(i);
+            if(checker.shopOverlapping(newShop, oldShop))
+            {
+                Toast.makeText(CreateShopMap.this, "Can not create shop within another shop.\nChange the location and try again", Toast.LENGTH_LONG).show();
+                break;
+            }
+            else
+            {
+                if (checker.NWOverlapping(newShop, oldShop)) {
+                    Log.d("Message","IN NW OVERLAPPING");
+                    Toast.makeText(CreateShopMap.this, "NW Resizing your shop...", Toast.LENGTH_SHORT).show();
+                    newShop=checker.NWResizing(newShop,oldShop);
+                } else {
+                    if (checker.NEOverlapping(newShop, oldShop)) {
+                        Log.d("Message","IN NE OVERLAPPING");
+                        Toast.makeText(CreateShopMap.this, "NE Resizing your shop...", Toast.LENGTH_SHORT).show();
+                        newShop=checker.NEResizing(newShop,oldShop);
+                    } else {
+                        if (checker.SEOverlapping(newShop, oldShop)) {
+                            Log.d("Message","IN SE OVERLAPPING");
+                            Toast.makeText(CreateShopMap.this, "SE Resizing your shop...", Toast.LENGTH_SHORT).show();
+                            newShop=checker.SEResizing(newShop,oldShop);
+                        } else {
+                            if (checker.SWOverlapping(newShop, oldShop)) {
+                                Log.d("Message","IN SW OVERLAPPING");
+                                Toast.makeText(CreateShopMap.this, "SW Resizing your shop...", Toast.LENGTH_SHORT).show();
+                                newShop=checker.SWResizing(newShop,oldShop);
+                            } else {
+                                //checkIntersecting();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        createShop(temp,2);
+        createShop(newShop,3);
+        mMap.addMarker(new MarkerOptions().position(newShop.getLocation()));
+
+    }
+
+    public void createShop(Shop shop,int i){
+        PolygonOptions rectOptions = new PolygonOptions()
+                .add(shop.getNorthWest())
+                .add(shop.getNorthEast())
+                .add(shop.getSouthEast())
+                .add(shop.getSouthWest())
+                .add(shop.getNorthWest());
+
+        if (i==1){
+            rectOptions.strokeWidth(1);
+            rectOptions.fillColor(Color.LTGRAY);
+        }
+        if (i==2){
+            rectOptions.strokeWidth(1);
+            rectOptions.fillColor(Color.GRAY);
+        }
+        if (i==3){
+            rectOptions.strokeWidth(2);
+            rectOptions.fillColor(Color.GREEN);
+        }
+
+        Polygon polygon = mMap.addPolygon(rectOptions);
     }
 
     public void createShop() {
@@ -154,15 +258,6 @@ public class CreateShopMap extends FragmentActivity {
         shopDataModel.setCategory3(shopDataModelSingleTon.getCategory3().toString());
         shopDataModel.setLat(shopDataModelSingleTon.getLat());
         shopDataModel.setLon(shopDataModelSingleTon.getLon());
-        shopDataModel.setNE_lat(shopDataModelSingleTon.getNE_lat());
-        shopDataModel.setNE_lon(shopDataModelSingleTon.getNE_lon());
-        shopDataModel.setSE_lat(shopDataModelSingleTon.getSE_lat());
-        shopDataModel.setSE_lon(shopDataModelSingleTon.getSE_lon());
-        shopDataModel.setNW_lat(shopDataModelSingleTon.getNW_lat());
-        shopDataModel.setNW_lon(shopDataModelSingleTon.getNW_lon());
-        shopDataModel.setSW_lat(shopDataModelSingleTon.getSW_lat());
-        shopDataModel.setSW_lon(shopDataModelSingleTon.getSW_lon());
-
     }
 
     @Override
@@ -178,4 +273,5 @@ public class CreateShopMap extends FragmentActivity {
         super.onPause();
         finish();
     }
+
 }

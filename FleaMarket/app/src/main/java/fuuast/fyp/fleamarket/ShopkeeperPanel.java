@@ -1,8 +1,8 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -74,12 +73,12 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
 
     private void getShops() {
 
-        shop_id.clear();
-        shop_name.clear();
-        shop_category.clear();
         firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                shop_id.clear();
+                shop_name.clear();
+                shop_category.clear();
                 if (dataSnapshot.hasChildren()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         shop_id.add(d.getKey());

@@ -32,7 +32,7 @@ import java.util.HashMap;
 public class CreateShop extends ActionBarActivity {
 
     private String name,width,length,market_Id,category1,category2,category3,category1_url,category2_url,category3_url;
-    private double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
+    private double lat,lon;
     private ArrayList market_id,market_names,market_address,category_name,category_url,select_ct_name,select_ct_url;
     private EditText et_name,et_width,et_length;
     private Button btn_cancle,btn_next;
@@ -278,17 +278,8 @@ public class CreateShop extends ActionBarActivity {
         name = et_name.getText().toString();
         width = et_width.getText().toString();
         length = et_length.getText().toString();
-        lat = 32.445005;
-        lon = 122.344445;
-        NW_lat = 0.0;
-        NW_lon = 0.0;
-        SW_lat = 0.0;
-        SW_lon = 0.0;
-        NE_lat = 0.0;
-        NE_lon = 0.0;
-        SE_lat = 0.0;
-        SE_lon = 0.0;
-
+        lat = 24.941727;
+        lon = 67.109698;
         //getLocation();
         if (name.equals("") || width.equals("") || length.equals("")||select_ct_name.size()==0) {
             Toast.makeText(CreateShop.this, "First fill complete details..", Toast.LENGTH_SHORT).show();
@@ -341,7 +332,6 @@ public class CreateShop extends ActionBarActivity {
     }
 
     public void setShopDataSingleTon() {
-
         shopDataModelSingleTon.setEdit_Check(true);
         shopDataModelSingleTon.setName(name);
         shopDataModelSingleTon.setMarket_id(market_Id);
@@ -356,14 +346,6 @@ public class CreateShop extends ActionBarActivity {
         shopDataModelSingleTon.setCategory3_url(category3_url);
         shopDataModelSingleTon.setLat(lat);
         shopDataModelSingleTon.setLon(lon);
-        shopDataModelSingleTon.setNE_lat(NE_lat);
-        shopDataModelSingleTon.setNE_lon(NE_lon);
-        shopDataModelSingleTon.setSE_lat(SE_lat);
-        shopDataModelSingleTon.setSE_lon(SE_lon);
-        shopDataModelSingleTon.setNW_lat(NW_lat);
-        shopDataModelSingleTon.setNW_lon(NW_lon);
-        shopDataModelSingleTon.setSW_lat(SW_lat);
-        shopDataModelSingleTon.setSW_lon(SW_lon);
     }
 
     @Override

@@ -4,7 +4,7 @@ public class ShopDataModelSingleTon {
 
     String name,market_id,shop_id,user_id,category1,category2,category3,category1_url,category2_url,category3_url,width,length;
 
-    double lat,lon,NW_lat,NW_lon,NE_lat,NE_lon,SW_lat,SW_lon,SE_lat,SE_lon;
+    double lat,lon;
 
     boolean Edit_Check=false;
 
@@ -128,70 +128,6 @@ public class ShopDataModelSingleTon {
 
     public void setLon(double lon) {
         this.lon = lon;
-    }
-
-    public double getNW_lat() {
-        return NW_lat;
-    }
-
-    public void setNW_lat(double NW_lat) {
-        this.NW_lat = NW_lat;
-    }
-
-    public double getNW_lon() {
-        return NW_lon;
-    }
-
-    public void setNW_lon(double NW_lon) {
-        this.NW_lon = NW_lon;
-    }
-
-    public double getNE_lat() {
-        return NE_lat;
-    }
-
-    public void setNE_lat(double NE_lat) {
-        this.NE_lat = NE_lat;
-    }
-
-    public double getNE_lon() {
-        return NE_lon;
-    }
-
-    public void setNE_lon(double NE_lon) {
-        this.NE_lon = NE_lon;
-    }
-
-    public double getSW_lat() {
-        return SW_lat;
-    }
-
-    public void setSW_lat(double SW_lat) {
-        this.SW_lat = SW_lat;
-    }
-
-    public double getSW_lon() {
-        return SW_lon;
-    }
-
-    public void setSW_lon(double SW_lon) {
-        this.SW_lon = SW_lon;
-    }
-
-    public double getSE_lat() {
-        return SE_lat;
-    }
-
-    public void setSE_lat(double SE_lat) {
-        this.SE_lat = SE_lat;
-    }
-
-    public double getSE_lon() {
-        return SE_lon;
-    }
-
-    public void setSE_lon(double SE_lon) {
-        this.SE_lon = SE_lon;
     }
 
     public static ShopDataModelSingleTon getInstance() {
