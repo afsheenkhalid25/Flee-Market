@@ -50,7 +50,7 @@
             android:layout_height="95dp"
             android:src="@drawable/profilepic"
             android:clickable="true"
-            android:id="@+id/adminpanel_img_profilepic"
+            android:id="@+id/img_cat1"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -63,9 +63,9 @@
             android:id="@+id/adminpanel_tv_name"
             android:paddingTop="5dp"
             android:paddingLeft="10dp"
-            android:layout_alignTop="@+id/adminpanel_img_profilepic"
-            android:layout_toRightOf="@+id/adminpanel_img_profilepic"
-            android:layout_toEndOf="@+id/adminpanel_img_profilepic" />
+            android:layout_alignTop="@+id/img_cat1"
+            android:layout_toRightOf="@+id/img_cat1"
+            android:layout_toEndOf="@+id/img_cat1" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,8 +76,8 @@
             android:id="@+id/adminpanel_tv_email"
             android:paddingLeft="10dp"
             android:layout_below="@+id/adminpanel_tv_name"
-            android:layout_toRightOf="@+id/adminpanel_img_profilepic"
-            android:layout_toEndOf="@+id/adminpanel_img_profilepic" />
+            android:layout_toRightOf="@+id/img_cat1"
+            android:layout_toEndOf="@+id/img_cat1" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,8 +87,8 @@
             android:paddingLeft="10dp"
             android:id="@+id/adminpanel_tv_phone"
             android:layout_below="@+id/adminpanel_tv_email"
-            android:layout_toRightOf="@+id/adminpanel_img_profilepic"
-            android:layout_toEndOf="@+id/adminpanel_img_profilepic" />
+            android:layout_toRightOf="@+id/img_cat1"
+            android:layout_toEndOf="@+id/img_cat1" />
 
     </RelativeLayout>
 

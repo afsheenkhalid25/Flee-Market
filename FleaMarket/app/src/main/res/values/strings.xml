@@ -16,5 +16,6 @@
     <string name="title_activity_create_shop_map">Map</string>
     <string name="title_activity_shops_request">ShopsRequest</string>
     <string name="title_activity_pending_shops">PendingShops</string>
+    <string name="title_activity_shop_details">ShopDetails</string>
 
 </resources>
