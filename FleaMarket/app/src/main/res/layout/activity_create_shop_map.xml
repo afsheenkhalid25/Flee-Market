@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Map View"
+            android:text="Map"
             android:textColor="#FFFFFF"
             android:textSize="23dp"
             android:padding="10dp"
@@ -32,8 +32,7 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_above="@+id/ll"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_marginTop="5dp"/>
+        android:layout_below="@+id/linearLayout2"/>
 
     <LinearLayout
         android:layout_height="wrap_content"

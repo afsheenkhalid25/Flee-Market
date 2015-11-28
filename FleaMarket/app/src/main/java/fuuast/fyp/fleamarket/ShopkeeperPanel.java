@@ -75,14 +75,10 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     }
 
     private void getShops() {
-
-<<<<<<< HEAD
-=======
         shop_id.clear();
         shop_name.clear();
         shop_category.clear();
         market_ids.clear();
->>>>>>> origin/master
         firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

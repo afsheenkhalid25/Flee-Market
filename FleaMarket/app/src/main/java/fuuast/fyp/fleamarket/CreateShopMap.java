@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
@@ -33,7 +34,7 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
     private Button btn_done,btn_edit;
     private Firebase firebase,shops_details,pending_shops;
     private ProgressDialog progressDialog;
-    Shop shop;
+    Shop shop,newShop;
     Checker checker;
 
     ArrayList<Shop> shopsArrayList;
@@ -92,10 +93,12 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
                         shop=new Shop(sdm.getLat(),sdm.getLon(),Double.parseDouble(sdm.getWidth()),Double.parseDouble(sdm.getLength()));
                         shopsArrayList.add(shop);
                         createShop(shop,1);
+                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)));
                     }
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModelSingleTon.getLat(),shopDataModelSingleTon.getLon()),18));
+                    newShop=new Shop(shopDataModelSingleTon.getLat(),shopDataModelSingleTon.getLon(),Double.parseDouble(shopDataModelSingleTon.getWidth()),Double.parseDouble(shopDataModelSingleTon.getLength()));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModelSingleTon.getLat(), shopDataModelSingleTon.getLon()), 23));
                     if (shopsArrayList.size() > 0) {
-                        checkOverlapping(shop);
+                        checkOverlapping();
                     } else {
                         createShop();
                     }
@@ -109,7 +112,7 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
         });
     }
 
-    private void checkOverlapping(Shop newShop) {
+    private void checkOverlapping() {
         Shop temp=newShop;
         for (int i = 0; i < shopsArrayList.size(); i++){
             Log.d("Message", "Comparing Shop" + i);
@@ -150,8 +153,7 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
         }
         createShop(temp,2);
         createShop(newShop,3);
-        mMap.addMarker(new MarkerOptions().position(newShop.getLocation()));
-
+        mMap.addMarker(new MarkerOptions().position(newShop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.currshopflag)));
     }
 
     public void createShop(Shop shop,int i){
@@ -163,15 +165,15 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
                 .add(shop.getNorthWest());
 
         if (i==1){
-            rectOptions.strokeWidth(1);
+            rectOptions.strokeWidth(2);
             rectOptions.fillColor(Color.LTGRAY);
         }
         if (i==2){
-            rectOptions.strokeWidth(1);
+            rectOptions.strokeWidth(2);
             rectOptions.fillColor(Color.GRAY);
         }
         if (i==3){
-            rectOptions.strokeWidth(2);
+            rectOptions.strokeWidth(4);
             rectOptions.fillColor(Color.GREEN);
         }
 
@@ -249,15 +251,15 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
         user_id = shopDataModelSingleTon.getUser_id().toString();
 
         shopDataModel.setName(shopDataModelSingleTon.getName().toString());
-        shopDataModel.setWidth(shopDataModelSingleTon.getWidth().toString());
-        shopDataModel.setLength(shopDataModelSingleTon.getLength().toString());
+        shopDataModel.setWidth(newShop.getWidth().toString());
+        shopDataModel.setLength(newShop.getHeight().toString());
         shopDataModel.setUser_id(user_id);
         shopDataModel.setMarket_id(market_id);
         shopDataModel.setCategory1(shopDataModelSingleTon.getCategory1().toString());
         shopDataModel.setCategory2(shopDataModelSingleTon.getCategory2().toString());
         shopDataModel.setCategory3(shopDataModelSingleTon.getCategory3().toString());
-        shopDataModel.setLat(shopDataModelSingleTon.getLat());
-        shopDataModel.setLon(shopDataModelSingleTon.getLon());
+        shopDataModel.setLat(newShop.getLocation().latitude);
+        shopDataModel.setLon(newShop.getLocation().longitude);
     }
 
     @Override
