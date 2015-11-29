@@ -26,11 +26,12 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
     private ImageView options;
     private ListView market_list;
     private ArrayList market_id,market_names,market_address;
+    private ArrayList<MarketDataModel> allMarkets;
     private Firebase firebase;
 
     private MarketDataModel marketDataModel;
-    private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
+    private MarketDataModelSingleTon marketDataModelSingleTon=MarketDataModelSingleTon.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         market_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setMarketData(position);
                 Intent i = new Intent(AdminPanel.this,MarketDetails.class);
                 startActivity(i);
             }
@@ -64,6 +66,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         market_names=new ArrayList();
         market_address=new ArrayList();
         market_id=new ArrayList();
+        allMarkets=new ArrayList<MarketDataModel>();
 
         getMarkets();
     }
@@ -74,6 +77,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
             public void onDataChange(DataSnapshot dataSnapshot) {
                 market_address.clear();
                 market_names.clear();
+                allMarkets.clear();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot d:dataSnapshot.getChildren()){
                         market_id.add(((HashMap<String,Object>)d.getValue()).get("marketID").toString());
@@ -98,11 +102,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                 market_names.add(marketDataModel.getName());
                 market_address.add(marketDataModel.getAddress());
 
-                //setting values of market data in MarketDataModelSingleTon class for using it in market details class....
-                marketDataModelSingleTon.setMarket_id(marketID);
-                marketDataModelSingleTon.setMarket_name(marketDataModel.getName());
-                marketDataModelSingleTon.setAdmin_id(userDataModelSingleTon.getId());
-                marketDataModelSingleTon.setMarket_address(marketDataModel.getAddress());
+                allMarkets.add(marketDataModel);
 
                 markets_status.setVisibility(View.INVISIBLE);
                 market_list.setAdapter(new CustomAdapter_MarketsList(AdminPanel.this,market_names,market_address));
@@ -113,6 +113,15 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
 
             }
         });
+    }
+
+    private void setMarketData(int i){
+        marketDataModelSingleTon.setMarket_id(market_id.get(i).toString());
+        marketDataModelSingleTon.setAdmin_id(userDataModelSingleTon.getId());
+        marketDataModelSingleTon.setMarket_address(allMarkets.get(i).getAddress());
+        marketDataModelSingleTon.setMarket_lat(allMarkets.get(i).getLatitude());
+        marketDataModelSingleTon.setMarket_lon(allMarkets.get(i).getLongitude());
+        marketDataModelSingleTon.setMarket_name(allMarkets.get(i).getName());
     }
 
     private void onAction (String s) {

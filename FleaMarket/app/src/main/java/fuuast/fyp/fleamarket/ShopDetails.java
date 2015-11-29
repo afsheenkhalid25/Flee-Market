@@ -27,13 +27,13 @@ public class ShopDetails extends FragmentActivity {
     private Firebase firebase;
     private ArrayList category_names,category_url;
     private ImageView img_cat1,img_cat2,img_cat3;
-    private TextView tv_shop_name,tv_shop_market,tv_owner_name,tv_owner_contact,tv_owner_org;
+    private TextView tv_shop_name,tv_shop_market,tv_owner_name,tv_owner_contact;
     private String shop_id,shop_name,user_id,user_name,user_contact,user_org,market_id,market_name;
-
+    Shop currentShop;
+    ArrayList<Shop> allShops;
     private ShopDataModel shopDataModel = new ShopDataModel();
     private UserDataModel userDataModel = new UserDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
-    private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,11 @@ public class ShopDetails extends FragmentActivity {
         tv_owner_name = (TextView)findViewById(R.id.sd_owner);
         tv_owner_contact = (TextView)findViewById(R.id.sd_contact);
 
-        shop_id = shopDataModelSingleTon.getShop_id();
-        user_id = shopDataModelSingleTon.getUser_id();
-        market_id = shopDataModelSingleTon.getMarket_id();
+        allShops=new ArrayList<Shop>();
+
+        Bundle bundle=getIntent().getExtras();
+        shop_id = bundle.getString("shopID");
+        market_id = bundle.getString("marketID");
 
         category_names = new ArrayList();
         category_url = new ArrayList();
@@ -84,7 +86,10 @@ public class ShopDetails extends FragmentActivity {
                     category_names.add(shopDataModel.getCategory2());
                     category_names.add(shopDataModel.getCategory3());
                 }
+                user_id=shopDataModel.getUser_id();
+                currentShop=new Shop(shopDataModel.getLat(),shopDataModel.getLon(),Double.parseDouble(shopDataModel.getWidth()),Double.parseDouble(shopDataModel.getLength()));
                 getCategoryImages();
+
             }
 
             @Override
@@ -95,10 +100,11 @@ public class ShopDetails extends FragmentActivity {
     }
 
     public  void getCategoryImages(){
-       category_url.clear();
+
        firebase.child("Catagories").addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
+               category_url.clear();
                for (DataSnapshot d : dataSnapshot.getChildren()) {
                    for(int i=0;i<category_names.size();i++){
                        if(d.getKey().equals(category_names.get(i).toString())){
@@ -108,6 +114,8 @@ public class ShopDetails extends FragmentActivity {
                            break;
                        }
                    }
+                   if (category_url.size()==3)
+                       break;
                }
                getUserDetails();
            }
@@ -143,7 +151,7 @@ public class ShopDetails extends FragmentActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("Position", "Getting Market Name");
                 marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
-                market_name = marketDataModel.getAddress();
+                market_name = marketDataModel.getName();
                 setData();
             }
 
@@ -174,7 +182,6 @@ public class ShopDetails extends FragmentActivity {
         tv_shop_market.setText(market_name.toString());
         tv_owner_name.setText(user_name.toString());
         tv_owner_contact.setText(user_contact.toString());
-        tv_owner_org.setText(user_org.toString());
     }
 
     @Override

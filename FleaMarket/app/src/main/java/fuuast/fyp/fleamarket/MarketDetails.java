@@ -56,8 +56,9 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         shops_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setShopDataModelSingleTon(position);
                 Intent i = new Intent(MarketDetails.this,ShopDetails.class);
+                i.putExtra("shopID",shop_id.get(position).toString());
+                i.putExtra("marketID",market_id);
                 startActivity(i);
             }
         });
@@ -157,13 +158,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 });
                 break;
         }
-    }
-
-    private void setShopDataModelSingleTon(int item){
-
-        shopDataModelSingleTon.setMarket_id(market_id);
-        shopDataModelSingleTon.setShop_id(shop_id.get(item).toString());
-        shopDataModelSingleTon.setUser_id(user_id.get(item).toString());
     }
 
     @Override
