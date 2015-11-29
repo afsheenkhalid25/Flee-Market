@@ -1,9 +1,8 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.text.style.IconMarginSpan;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,11 +51,10 @@ public class ShopDetails extends FragmentActivity {
         img_cat2.setVisibility(View.INVISIBLE);
         img_cat3.setVisibility(View.INVISIBLE);
 
-        tv_shop_name = (TextView)findViewById(R.id.sd_name);
-        tv_shop_market = (TextView)findViewById(R.id.sd_market);
+        tv_shop_name = (TextView)findViewById(R.id.ll);
+        tv_shop_market = (TextView)findViewById(R.id.textView3);
         tv_owner_name = (TextView)findViewById(R.id.sd_owner);
         tv_owner_contact = (TextView)findViewById(R.id.sd_contact);
-        tv_owner_org = (TextView)findViewById(R.id.sd_org);
 
         shop_id = shopDataModelSingleTon.getShop_id();
         user_id = shopDataModelSingleTon.getUser_id();
@@ -69,11 +67,11 @@ public class ShopDetails extends FragmentActivity {
     }
 
     public void getShopDetails(){
-        category_names.clear();
         firebase.child("Market_Shops").child(market_id).child(shop_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("Position", "Getting shop details");
+                category_names.clear();
                 shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
                 shop_name = shopDataModel.getName();
                 if(shopDataModel.getCategory2().equals("-")){
