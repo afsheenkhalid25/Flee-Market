@@ -85,7 +85,7 @@ public class FragmentShopList extends Fragment {
                 tv_type.setText("Name");
             }
         });
-        img_search = (ImageView)view.findViewById(R.id.back_item);
+        img_search = (ImageView)view.findViewById(R.id.search);
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +154,7 @@ public class FragmentShopList extends Fragment {
                     st_shop_category.add(shop_category.get(i).toString());
                     shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
                     progressDialog.dismiss();
+                    et_search.setEnabled(true);
                     tv_status.setVisibility(View.INVISIBLE);
                 }
             } else {
@@ -167,6 +168,7 @@ public class FragmentShopList extends Fragment {
                         st_shop_category.add(shop_category.get(i).toString());
                         shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
                         progressDialog.dismiss();
+                        et_search.setEnabled(true);
                         tv_status.setVisibility(View.INVISIBLE);
                         break;
                     }
@@ -175,6 +177,7 @@ public class FragmentShopList extends Fragment {
         }
         if(Check){
             progressDialog.dismiss();
+            et_search.setEnabled(true);
             tv_status.setVisibility(View.VISIBLE);
         }
     }
