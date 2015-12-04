@@ -114,7 +114,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                         }).show();
                 break;
             case R.id.login_rl_customers:
-                Toast.makeText(Login.this,"Ready to view Market?",Toast.LENGTH_SHORT).show();
+                Intent j =new Intent(Login.this,CustomerPanel.class);
+                startActivity(j);
                 break;
         }
     }

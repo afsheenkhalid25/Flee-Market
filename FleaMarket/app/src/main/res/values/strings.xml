@@ -3,19 +3,19 @@
 
     <string name="app_name">Flea Market</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_create_account">CreateAccount</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_create_account">CreateAccount</string>
     <string name="title_activity_admin_panel">AdminPanel</string>
-    <string name="title_activity_market_view">MarketView</string>
     <string name="title_activity_edit_admin_profile">EditAdminProfile</string>
-    <string name="title_activity_admin_market_map_view">Map</string>
-    <string name="title_activity_create_shop">CreateShop</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_market_view">MarketView</string>
     <string name="title_activity_shopkeeper_panel">ShopkeeperPanel</string>
-    <string name="title_activity_edit_shopkeeper_panel">EditShopkeeperPanel</string>
-    <string name="title_activity_create_shop_map">Map</string>
+    <string name="title_activity_create_shop">CreateShop</string>
+    <string name="title_activity_create_shop_map">CreateShopMap</string>
     <string name="title_activity_shops_request">ShopsRequest</string>
     <string name="title_activity_pending_shops">PendingShops</string>
     <string name="title_activity_shop_details">ShopDetails</string>
+    <string name="title_activity_customer_panel">CustomerPanel</string>
+    <string name="title_fragment_all_market">FragmentAllMarkets</string>
+    <string name="title_fragment_nearest_market">FragmentNearestMarkets</string>
 
 </resources>

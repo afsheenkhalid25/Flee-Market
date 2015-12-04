@@ -1,5 +1,7 @@
 package fuuast.fyp.fleamarket;
 
+import java.util.ArrayList;
+
 public class MarketDataModel {
 
     private String name, adminID, latitude, longitude, address, allow_checkbox;

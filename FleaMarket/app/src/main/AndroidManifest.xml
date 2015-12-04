@@ -51,10 +51,6 @@
             android:label="Edit Profile" >
         </activity>
         <activity
-            android:name=".ShopDetails"
-            android:label="@string/title_activity_admin_market_map_view" >
-        </activity>
-        <activity
             android:name=".ShopkeeperPanel"
             android:label="@string/title_activity_shopkeeper_panel" >
         </activity>
@@ -74,6 +70,23 @@
             android:name=".PendingShops"
             android:label="@string/title_activity_pending_shops" >
         </activity>
+        <activity
+            android:name=".ShopDetails"
+            android:label="@string/title_activity_shop_details" >
+        </activity>
+        <activity
+            android:name=".CustomerPanel"
+            android:label="@string/title_activity_customer_panel" >
+        </activity>
+        <activity
+            android:name=".FragmentAllMarkets"
+            android:label="@string/title_fragment_all_market" >
+        </activity>
+        <activity
+            android:name=".FragmentNearestMarkets"
+            android:label="@string/title_fragment_nearest_market" >
+        </activity>
     </application>
+
 
 </manifest>
