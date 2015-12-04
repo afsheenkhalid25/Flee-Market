@@ -89,7 +89,6 @@ public class ShopDetails extends FragmentActivity {
                 user_id=shopDataModel.getUser_id();
                 currentShop=new Shop(shopDataModel.getLat(),shopDataModel.getLon(),Double.parseDouble(shopDataModel.getWidth()),Double.parseDouble(shopDataModel.getLength()));
                 getCategoryImages();
-
             }
 
             @Override
