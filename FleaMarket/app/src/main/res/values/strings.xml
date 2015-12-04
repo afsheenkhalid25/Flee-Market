@@ -17,5 +17,7 @@
     <string name="title_activity_customer_panel">CustomerPanel</string>
     <string name="title_fragment_all_market">FragmentAllMarkets</string>
     <string name="title_fragment_nearest_market">FragmentNearestMarkets</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

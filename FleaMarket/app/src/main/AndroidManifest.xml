@@ -86,7 +86,10 @@
             android:name=".FragmentNearestMarkets"
             android:label="@string/title_fragment_nearest_market" >
         </activity>
+        <activity
+            android:name=".MarketView"
+            android:label="@string/title_activity_market_view" >
+        </activity>
     </application>
-
 
 </manifest>

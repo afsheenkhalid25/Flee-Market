@@ -1,22 +1,10 @@
 package fuuast.fyp.fleamarket;
 
-import java.util.ArrayList;
-
 public class MarketDataModelSingleTon {
 
-    private String market_id,admin_id,market_name,market_address,market_lat,market_lon,market_check;
+    private String market_id,admin_id,market_name,market_address,market_lat,market_lon;
 
     static MarketDataModelSingleTon obj = new MarketDataModelSingleTon();
-
-    private ArrayList<MarketDataModel> arrayList;
-
-    public ArrayList<MarketDataModel> getArrayList() {
-        return arrayList;
-    }
-
-    public void setArrayList(ArrayList<MarketDataModel> arrayList) {
-        this.arrayList = arrayList;
-    }
 
     public String getMarket_lat() {
         return market_lat;
@@ -32,14 +20,6 @@ public class MarketDataModelSingleTon {
 
     public void setMarket_lon(String market_lon) {
         this.market_lon = market_lon;
-    }
-
-    public String getMarket_check() {
-        return market_check;
-    }
-
-    public void setMarket_check(String market_check) {
-        this.market_check = market_check;
     }
 
     public String getMarket_id() {
@@ -80,5 +60,4 @@ public class MarketDataModelSingleTon {
         }
         return obj;
     }
-
 }

@@ -1,10 +1,16 @@
 package fuuast.fyp.fleamarket;
 
-import java.util.ArrayList;
-
 public class MarketDataModel {
 
-    private String name, adminID, latitude, longitude, address, allow_checkbox;
+    private String market_id, name, adminID, latitude, longitude, address;
+
+    public String getMarket_id() {
+        return market_id;
+    }
+
+    public void setMarket_id(String market_id) {
+        this.market_id = market_id;
+    }
 
     public String getName() {
         return name;
@@ -12,14 +18,6 @@ public class MarketDataModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAllow_checkbox() {
-        return allow_checkbox;
-    }
-
-    public void setAllow_checkbox(String allow_checkbox) {
-        this.allow_checkbox = allow_checkbox;
     }
 
     public String getAdminID() {

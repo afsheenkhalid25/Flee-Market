@@ -29,7 +29,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     private Firebase firebase;
     private ImageView options;
 
-    private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
 
     @Override
