@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,14 +146,16 @@ public class FragmentShopList extends Fragment {
 
     public void searchItem(String text,String type){
         Boolean Check = true;
+        shops_list.setAdapter(null);
         for(int i=0;i<dataModelList.size();i++) {
             if (type.equals("Name")) {
                 String name = dataModelList.get(i).getName();
                 if(name.equals(text)){
+                    Log.d("Position", "In search by name");
                     Check = false;
                     st_shop_name.add(dataModelList.get(i).getName());
                     st_shop_category.add(shop_category.get(i).toString());
-                    shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
+                    shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),st_shop_name,st_shop_category));
                     progressDialog.dismiss();
                     et_search.setEnabled(true);
                     tv_status.setVisibility(View.INVISIBLE);
@@ -161,21 +164,22 @@ public class FragmentShopList extends Fragment {
                 category_names.add(dataModelList.get(i).getCategory1());
                 category_names.add(dataModelList.get(i).getCategory2());
                 category_names.add(dataModelList.get(i).getCategory3());
-                for(int j=0;i<category_names.size();i++){
+                for(int j=0;j<category_names.size();j++){
                     if(category_names.get(j).equals(text)){
+                        Log.d("Position", "In search by category");
                         Check = false;
                         st_shop_name.add(dataModelList.get(i).getName());
                         st_shop_category.add(shop_category.get(i).toString());
-                        shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
+                        shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),st_shop_name,st_shop_category));
                         progressDialog.dismiss();
                         et_search.setEnabled(true);
                         tv_status.setVisibility(View.INVISIBLE);
-                        break;
                     }
                 }
             }
         }
         if(Check){
+            Log.d("Position", "no result found");
             progressDialog.dismiss();
             et_search.setEnabled(true);
             tv_status.setVisibility(View.VISIBLE);
