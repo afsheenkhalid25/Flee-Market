@@ -209,8 +209,6 @@ public class ShopDetails extends FragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(ShopDetails.this,ShopkeeperPanel.class);
-        startActivity(i);
     }
 
     @Override

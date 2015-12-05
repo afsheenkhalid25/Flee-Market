@@ -1,13 +1,84 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fuuast.fyp.fleamarket.FragmentMapView">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/material_grey_300"
+        android:id="@+id/linearLayout"
+        android:gravity="right"
+        android:baselineAligned="true">
+
+        <ImageView
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_previous_item"
+            android:clickable="true"
+            android:paddingRight="10dp"
+            android:id="@+id/back_item" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name"
+            android:textColor="#ff686868"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:id="@+id/txt_type" />
+
+        <ImageView
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_next_item_dark"
+            android:clickable="true"
+            android:paddingRight="10dp"
+            android:id="@+id/next_item" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/material_grey_300"
+        android:layout_below="@+id/linearLayout"
+        android:id="@+id/linearLayout2"
+        android:gravity="right"
+        android:baselineAligned="true">
+
+        <EditText
+            android:layout_width="334dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:id="@+id/et_search"
+            android:inputType="textCapSentences"
+            android:hint="Search" />
+
+        <ImageView
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_search"
+            android:clickable="true"
+            android:paddingRight="10dp"
+            android:id="@+id/search" />
+
+    </LinearLayout>
+
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_below="@+id/linearLayout2" />
 
-</FrameLayout>
+</RelativeLayout>
+
+

@@ -54,8 +54,9 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setShopDataModelSingleTon(position);
                 Intent i = new Intent(ShopkeeperPanel.this,ShopDetails.class);
+                i.putExtra("shopID",shop_id.get(position).toString());
+                i.putExtra("marketID",market_ids.get(position).toString());
                 startActivity(i);
             }
         });
