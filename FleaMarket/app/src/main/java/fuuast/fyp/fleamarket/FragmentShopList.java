@@ -142,6 +142,7 @@ public class FragmentShopList extends Fragment {
         st_shop_category.clear();
         if(text.equals("")) {
             Check = false;
+            et_search.setEnabled(true);
             shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
         }else {
             for (int i = 0; i < dataModelList.size(); i++) {

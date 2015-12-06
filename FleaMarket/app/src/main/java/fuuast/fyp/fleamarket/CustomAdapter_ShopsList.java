@@ -40,7 +40,7 @@ public class CustomAdapter_ShopsList extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.shopslist_listview,null);
+        View v = inflater.inflate(R.layout.layout_shop_list,null);
 
         shopName = (TextView) v.findViewById(R.id.shop_name);
         shopMarket = (TextView) v.findViewById(R.id.shop_market);

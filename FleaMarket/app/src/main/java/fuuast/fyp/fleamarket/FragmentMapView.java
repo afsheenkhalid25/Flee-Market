@@ -1,16 +1,13 @@
 package fuuast.fyp.fleamarket;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -112,6 +109,7 @@ public class FragmentMapView extends Fragment {
         selected_shopList.clear();
         if(text.equals("")) {
             Check = false;
+            et_search.setEnabled(true);
             //yahan py jb bagair kch dalay search k btn py click ho tw sari shops ajaen by default
         }else {
             for (int i = 0; i < dataModelList.size(); i++) {

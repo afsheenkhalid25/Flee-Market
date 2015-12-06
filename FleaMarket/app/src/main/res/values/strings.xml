@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Flea Market</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_create_account">CreateAccount</string>
     <string name="title_activity_admin_panel">AdminPanel</string>
-    <string name="title_activity_edit_admin_profile">EditAdminProfile</string>
+    <string name="title_activity_edit_profile">EditProfile</string>
+    <string name="title_activity_create_market">CreateMarket</string>
+    <string name="title_activity_market_details">MarketDetails</string>
     <string name="title_activity_market_view">MarketView</string>
     <string name="title_activity_shopkeeper_panel">ShopkeeperPanel</string>
     <string name="title_activity_create_shop">CreateShop</string>
@@ -17,7 +18,8 @@
     <string name="title_activity_customer_panel">CustomerPanel</string>
     <string name="title_fragment_all_market">FragmentAllMarkets</string>
     <string name="title_fragment_nearest_market">FragmentNearestMarkets</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_fragment_market_details">FragmentMarketDetails</string>
+    <string name="title_fragment_shop_list">FragmentShopList</string>
+    <string name="title_fragment_map_view">FragmentMapView</string>
 
 </resources>
