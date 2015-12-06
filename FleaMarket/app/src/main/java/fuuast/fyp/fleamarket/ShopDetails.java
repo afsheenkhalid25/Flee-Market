@@ -1,6 +1,6 @@
 package fuuast.fyp.fleamarket;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -12,18 +12,23 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ShopDetails extends FragmentActivity {
+public class ShopDetails extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private GoogleMap mMap=null;
     private Firebase firebase;
     private ArrayList category_names,category_url;
     private ImageView img_cat1,img_cat2,img_cat3;
@@ -32,14 +37,18 @@ public class ShopDetails extends FragmentActivity {
     Shop currentShop;
     ArrayList<Shop> allShops;
     private ShopDataModel shopDataModel = new ShopDataModel();
+    private ShopDataModel shopDataModel2 = new ShopDataModel();
     private UserDataModel userDataModel = new UserDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
+    private UserDataModelSingleTon userDataModelSingleTon=UserDataModelSingleTon.getInstance();
+    Boolean isShopPlaced=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_details);
-        setUpMapIfNeeded();
+
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
@@ -87,7 +96,6 @@ public class ShopDetails extends FragmentActivity {
                     category_names.add(shopDataModel.getCategory3());
                 }
                 user_id=shopDataModel.getUser_id();
-                currentShop=new Shop(shopDataModel.getLat(),shopDataModel.getLon(),Double.parseDouble(shopDataModel.getWidth()),Double.parseDouble(shopDataModel.getLength()));
                 getCategoryImages();
             }
 
@@ -116,7 +124,16 @@ public class ShopDetails extends FragmentActivity {
                    if (category_url.size()==3)
                        break;
                }
-               getUserDetails();
+               if(shopDataModel.getUser_id().toString().equals(userDataModelSingleTon.getId().toString())){
+                   user_name = userDataModelSingleTon.getName();
+                   user_contact = userDataModelSingleTon.getPhone();
+                   user_org = userDataModelSingleTon.getOrg_name();
+                   getMarketName();
+               }
+               else {
+                   getUserDetails();
+               }
+
            }
 
            @Override
@@ -184,29 +201,6 @@ public class ShopDetails extends FragmentActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
-
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
-    }
-
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
@@ -215,5 +209,67 @@ public class ShopDetails extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         finish();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap=googleMap;
+        getCurrentShop();
+    }
+
+    private void getAllShops(){
+        firebase.child("Market_Shops").child(market_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    HashMap<String, Object> hashMap = (HashMap<String, Object>) d.getValue();
+                    Shop shop = new Shop(((Double) hashMap.get("lat")), ((Double) hashMap.get("lon")), ((Double) hashMap.get("width")), ((Double) hashMap.get("length")));
+                    createShop(shop, 1);
+                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(hashMap.get("name").toString()));
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                getAllShops();
+            }
+        });
+    }
+
+    private void getCurrentShop(){
+        firebase.child("Market_Shops").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                shopDataModel2 = dataSnapshot.getValue(ShopDataModel.class);
+                currentShop = new Shop(shopDataModel2.getLat(), shopDataModel2.getLon(), Double.parseDouble(shopDataModel2.getWidth()), Double.parseDouble(shopDataModel2.getLength()));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(shopDataModel2.getLat(),shopDataModel2.getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(shopDataModel2.getName()));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModel2.getLat(), shopDataModel2.getLon()), 23));
+                createShop(currentShop, 2);
+                getAllShops();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                getCurrentShop();
+            }
+        });
+    }
+
+    public void createShop(Shop shop,int i){
+        PolygonOptions rectOptions = new PolygonOptions()
+                .add(shop.getNorthWest())
+                .add(shop.getNorthEast())
+                .add(shop.getSouthEast())
+                .add(shop.getSouthWest())
+                .add(shop.getNorthWest())
+                .strokeWidth(3);
+        if(i==1){
+            rectOptions.fillColor(Color.GRAY);
+        }
+        if(i==2){
+            rectOptions.fillColor(Color.GREEN);
+        }
+
+        Polygon polygon = mMap.addPolygon(rectOptions);
     }
 }

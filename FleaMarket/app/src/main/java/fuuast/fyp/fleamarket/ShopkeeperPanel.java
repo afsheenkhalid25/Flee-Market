@@ -30,7 +30,6 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private ArrayList shop_id,shop_name,shop_category,market_ids;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
-    private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
@@ -192,12 +191,6 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                 });
             break;
         }
-    }
-
-    private void setShopDataModelSingleTon(int item){
-        shopDataModelSingleTon.setUser_id(user_id);
-        shopDataModelSingleTon.setShop_id(shop_id.get(item).toString());
-        shopDataModelSingleTon.setMarket_id(market_ids.get(item).toString());
     }
 
     @Override
