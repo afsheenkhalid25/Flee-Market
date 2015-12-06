@@ -214,7 +214,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap=googleMap;
-        getCurrentShop();
+        getAllShops();
     }
 
     private void getAllShops(){
@@ -223,10 +223,11 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     HashMap<String, Object> hashMap = (HashMap<String, Object>) d.getValue();
-                    Shop shop = new Shop(((Double) hashMap.get("lat")), ((Double) hashMap.get("lon")), ((Double) hashMap.get("width")), ((Double) hashMap.get("length")));
+                    Shop shop = new Shop(Double.parseDouble(hashMap.get("lat").toString()), Double.parseDouble(hashMap.get("lon").toString()), Double.parseDouble(hashMap.get("width").toString()), Double.parseDouble(hashMap.get("length").toString()));
                     createShop(shop, 1);
                     mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(hashMap.get("name").toString()));
                 }
+                getCurrentShop();
             }
 
             @Override
@@ -243,9 +244,8 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                 shopDataModel2 = dataSnapshot.getValue(ShopDataModel.class);
                 currentShop = new Shop(shopDataModel2.getLat(), shopDataModel2.getLon(), Double.parseDouble(shopDataModel2.getWidth()), Double.parseDouble(shopDataModel2.getLength()));
                 mMap.addMarker(new MarkerOptions().position(new LatLng(shopDataModel2.getLat(),shopDataModel2.getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(shopDataModel2.getName()));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModel2.getLat(), shopDataModel2.getLon()), 23));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModel2.getLat(), shopDataModel2.getLon()), 18));
                 createShop(currentShop, 2);
-                getAllShops();
             }
 
             @Override
