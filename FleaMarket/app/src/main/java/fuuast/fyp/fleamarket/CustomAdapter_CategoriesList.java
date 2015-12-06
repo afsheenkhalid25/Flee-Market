@@ -44,7 +44,7 @@ public class CustomAdapter_CategoriesList extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.category_listview,null);
+        View v = inflater.inflate(R.layout.layout_category_list,null);
 
         category_name = (TextView) v.findViewById(R.id.tv_name);
         category_name.setText(category_names.get(position).toString());

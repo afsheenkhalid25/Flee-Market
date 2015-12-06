@@ -4,7 +4,6 @@
     <string name="google_maps_key_instructions">
         <!--
     TODO: Before you run your application, you need a Google Maps API key.
-
     To get one, follow this link, follow the directions and press "Create" at the end:
 
 https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=3D:EF:DF:1A:3D:27:26:67:23:0C:E3:56:9C:CE:4C:54:89:04:FF:A1%3Bfuuast.fyp.fleamarket

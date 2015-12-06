@@ -40,7 +40,7 @@ public class CustomAdapter_PendingList extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.pendinglist_listview,null);
+        View v = inflater.inflate(R.layout.layout_pending_list,null);
 
         shop_name = (TextView) v.findViewById(R.id.shop_name);
         shop_name.setText(shop_names.get(position).toString());

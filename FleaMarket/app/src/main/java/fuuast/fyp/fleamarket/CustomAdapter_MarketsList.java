@@ -40,7 +40,7 @@ public class CustomAdapter_MarketsList extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.marketslist_listview,null);
+        View v = inflater.inflate(R.layout.layout_market_list,null);
 
         marketName = (TextView) v.findViewById(R.id.adminpanel_tv_marketname);
         marketArea = (TextView) v.findViewById(R.id.adminpanel_tv_marketarea);

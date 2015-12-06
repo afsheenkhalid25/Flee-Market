@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:name=".CreateMarket"
-            android:label="Create Market" >
+            android:label="@string/title_activity_create_market" >
         </activity>
         <activity
             android:name=".MarketDetails"
@@ -48,7 +48,7 @@
         </activity>
         <activity
             android:name=".EditProfile"
-            android:label="Edit Profile" >
+            android:label="@string/title_activity_edit_profile" >
         </activity>
         <activity
             android:name=".ShopkeeperPanel"
@@ -77,14 +77,6 @@
         <activity
             android:name=".CustomerPanel"
             android:label="@string/title_activity_customer_panel" >
-        </activity>
-        <activity
-            android:name=".FragmentAllMarkets"
-            android:label="@string/title_fragment_all_market" >
-        </activity>
-        <activity
-            android:name=".FragmentNearestMarkets"
-            android:label="@string/title_fragment_nearest_market" >
         </activity>
         <activity
             android:name=".MarketView"
