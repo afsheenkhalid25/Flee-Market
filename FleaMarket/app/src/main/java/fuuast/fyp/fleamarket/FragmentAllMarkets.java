@@ -1,9 +1,8 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class FragmentAllMarkets extends Fragment {
@@ -62,8 +60,8 @@ public class FragmentAllMarkets extends Fragment {
                     market_id.add(d.getKey().toString());
                     marketDataModel = d.getValue(MarketDataModel.class);
                     dataModelList.add(marketDataModel);
-                    market_names.add(((HashMap<String,Object>)d.getValue()).get("name").toString());
-                    market_area.add(((HashMap<String,Object>)d.getValue()).get("address").toString());
+                    market_names.add(marketDataModel.getName());
+                    market_area.add(marketDataModel.getAddress());
                     market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area));
                 }
             }
