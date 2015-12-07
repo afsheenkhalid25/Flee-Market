@@ -1,6 +1,9 @@
 package fuuast.fyp.fleamarket;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -24,6 +28,9 @@ public class FragmentNearestMarkets extends Fragment {
     private ArrayList<MarketDataModel> dataModelList;
     private Firebase firebase;
     private ListView market_list;
+    private LocationManager locationManager;
+    private Location location;
+    private double cr_lat=25.3667,cr_lon=68.3667;
 
     private MarketDataModel marketDataModel = new MarketDataModel();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
@@ -33,6 +40,8 @@ public class FragmentNearestMarkets extends Fragment {
 
         Firebase.setAndroidContext(getActivity());
         firebase=new Firebase("https://flee-market.firebaseio.com/");
+
+        //getLocation();
 
         dataModelList = new ArrayList<>();
         market_names = new ArrayList();
@@ -58,12 +67,14 @@ public class FragmentNearestMarkets extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot d:dataSnapshot.getChildren()){
-                    market_id.add(d.getKey().toString());
                     marketDataModel = d.getValue(MarketDataModel.class);
-                    dataModelList.add(marketDataModel);
-                    market_names.add(((HashMap<String,Object>)d.getValue()).get("name").toString());
-                    market_area.add(((HashMap<String,Object>)d.getValue()).get("address").toString());
-                    market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area));
+                    if(checkDistance(marketDataModel.getLatitude(), marketDataModel.getLongitude())) {
+                        market_id.add(d.getKey().toString());
+                        market_names.add(marketDataModel.getName());
+                        market_area.add(marketDataModel.getAddress());
+                        dataModelList.add(marketDataModel);
+                        market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(), market_names, market_area));
+                    }
                 }
             }
 
@@ -72,6 +83,32 @@ public class FragmentNearestMarkets extends Fragment {
 
             }
         });
+    }
+
+    public Boolean checkDistance(String lat,String lon){
+        Location CL = new Location("Current Location");
+        CL.setLatitude(cr_lat);
+        CL.setLongitude(cr_lon);
+        Location ML = new Location("Market Location");
+        ML.setLatitude(Double.parseDouble(lat));
+        ML.setLongitude(Double.parseDouble(lon));
+        double distance = CL.distanceTo(ML);
+        double dist = distance/1000;
+        if(dist<200)
+            return true;
+        else
+            return false;
+    }
+
+    public void getLocation() {
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            cr_lat = location.getLatitude();
+            cr_lon = location.getLongitude();
+        }else{
+            Toast.makeText(getActivity(), "Network is not Enabled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void setMarketDataModelSingleTon(int i){
