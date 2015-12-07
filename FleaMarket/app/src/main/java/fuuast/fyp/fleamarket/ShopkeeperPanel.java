@@ -56,6 +56,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                 Intent i = new Intent(ShopkeeperPanel.this,ShopDetails.class);
                 i.putExtra("shopID",shop_id.get(position).toString());
                 i.putExtra("marketID",market_ids.get(position).toString());
+                i.putExtra("parentActivity","ShopkeeperPanel");
                 startActivity(i);
             }
         });

@@ -1,5 +1,6 @@
 package fuuast.fyp.fleamarket;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -33,7 +34,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     private ArrayList category_names,category_url;
     private ImageView img_cat1,img_cat2,img_cat3;
     private TextView tv_shop_name,tv_shop_market,tv_owner_name,tv_owner_contact;
-    private String shop_id,shop_name,user_id,user_name,user_contact,user_org,market_id,market_name;
+    private String shop_id,shop_name,user_id,user_name,user_contact,user_org,market_id,market_name,parentActivity;
     Shop currentShop;
     ArrayList<Shop> allShops;
     private ShopDataModel shopDataModel = new ShopDataModel();
@@ -70,6 +71,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
         Bundle bundle=getIntent().getExtras();
         shop_id = bundle.getString("shopID");
         market_id = bundle.getString("marketID");
+        parentActivity=bundle.getString("parentActivity");
 
         category_names = new ArrayList();
         category_url = new ArrayList();
@@ -202,7 +204,24 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        switch (parentActivity){
+            case "ShopkeeperPanel":
+                Intent i1=new Intent(ShopDetails.this,ShopkeeperPanel.class);
+                startActivity(i1);
+                break;
+            case "PendingShops":
+                Intent i2=new Intent(ShopDetails.this,PendingShops.class);
+                startActivity(i2);
+                break;
+            case "MarketDetails":
+                Intent i3=new Intent(ShopDetails.this,MarketDetails.class);
+                startActivity(i3);
+                break;
+            case "ShopRequest":
+                Intent i4=new Intent(ShopDetails.this,ShopsRequest.class);
+                startActivity(i4);
+                break;
+        }
     }
 
     @Override
@@ -222,10 +241,12 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    HashMap<String, Object> hashMap = (HashMap<String, Object>) d.getValue();
-                    Shop shop = new Shop(Double.parseDouble(hashMap.get("lat").toString()), Double.parseDouble(hashMap.get("lon").toString()), Double.parseDouble(hashMap.get("width").toString()), Double.parseDouble(hashMap.get("length").toString()));
-                    createShop(shop, 1);
-                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(hashMap.get("name").toString()));
+                    if(!d.getKey().equals(shop_id)){
+                        HashMap<String, Object> hashMap = (HashMap<String, Object>) d.getValue();
+                        Shop shop = new Shop(Double.parseDouble(hashMap.get("lat").toString()), Double.parseDouble(hashMap.get("lon").toString()), Double.parseDouble(hashMap.get("width").toString()), Double.parseDouble(hashMap.get("length").toString()));
+                        createShop(shop, 1);
+                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(hashMap.get("name").toString()));
+                    }
                 }
                 getCurrentShop();
             }
@@ -244,7 +265,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                 shopDataModel2 = dataSnapshot.getValue(ShopDataModel.class);
                 currentShop = new Shop(shopDataModel2.getLat(), shopDataModel2.getLon(), Double.parseDouble(shopDataModel2.getWidth()), Double.parseDouble(shopDataModel2.getLength()));
                 mMap.addMarker(new MarkerOptions().position(new LatLng(shopDataModel2.getLat(),shopDataModel2.getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(shopDataModel2.getName()));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModel2.getLat(), shopDataModel2.getLon()), 18));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModel2.getLat(), shopDataModel2.getLon()), 20));
                 createShop(currentShop, 2);
             }
 
@@ -262,7 +283,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                 .add(shop.getSouthEast())
                 .add(shop.getSouthWest())
                 .add(shop.getNorthWest())
-                .strokeWidth(3);
+                .strokeWidth(2);
         if(i==1){
             rectOptions.fillColor(Color.GRAY);
         }
