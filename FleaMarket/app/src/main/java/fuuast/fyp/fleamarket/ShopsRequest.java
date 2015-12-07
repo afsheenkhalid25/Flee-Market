@@ -5,12 +5,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -143,8 +142,11 @@ public class ShopsRequest extends ActionBarActivity {
         switch (item){
             case "view":
                 Log.d("menu item...", "View");
-                //Intent i = new Intent(this,EditProfile.class);
-                //startActivity(i);
+                Intent i = new Intent(this,ShopDetails.class);
+                i.putExtra("shopID",Shop_Id);
+                i.putExtra("marketID",market_id);
+                i.putExtra("parentActivity","ShopRequest");
+                startActivity(i);
                 break;
             case "approve":
                 ApproveShop();

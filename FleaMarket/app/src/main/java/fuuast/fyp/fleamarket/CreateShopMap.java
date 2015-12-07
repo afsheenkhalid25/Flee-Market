@@ -93,7 +93,7 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
                         shop=new Shop(sdm.getLat(),sdm.getLon(),Double.parseDouble(sdm.getWidth()),Double.parseDouble(sdm.getLength()));
                         shopsArrayList.add(shop);
                         createShop(shop,1);
-                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)));
+                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(sdm.getName()));
                     }
                     newShop=new Shop(shopDataModelSingleTon.getLat(),shopDataModelSingleTon.getLon(),Double.parseDouble(shopDataModelSingleTon.getWidth()),Double.parseDouble(shopDataModelSingleTon.getLength()));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModelSingleTon.getLat(), shopDataModelSingleTon.getLon()), 23));
@@ -153,7 +153,7 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
         }
         createShop(temp,2);
         createShop(newShop,3);
-        mMap.addMarker(new MarkerOptions().position(newShop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.currshopflag)));
+        mMap.addMarker(new MarkerOptions().position(newShop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(shopDataModelSingleTon.getName()));
     }
 
     public void createShop(Shop shop,int i){

@@ -1,8 +1,8 @@
 package fuuast.fyp.fleamarket;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +58,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 Intent i = new Intent(MarketDetails.this,ShopDetails.class);
                 i.putExtra("shopID",shop_id.get(position).toString());
                 i.putExtra("marketID",market_id);
+                i.putExtra("parentActivity","MarketDetails");
                 startActivity(i);
             }
         });
@@ -79,6 +80,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
+                Intent i2 = new Intent(this,MarketMap.class);
+                startActivity(i2);
                 break;
             case "edit":
                 Log.d("menu item...", "Edit Market");
