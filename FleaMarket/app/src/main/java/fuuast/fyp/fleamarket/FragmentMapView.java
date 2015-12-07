@@ -1,8 +1,8 @@
 package fuuast.fyp.fleamarket;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +14,24 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
 
-public class FragmentMapView extends Fragment {
+public class FragmentMapView extends Fragment implements OnMapReadyCallback {
 
-    private String market_id,search_text,search_type;
-    private ArrayList shop_id,category_names;
-    private ArrayList<ShopDataModel> dataModelList,selected_shopList;
-    private ImageView img_next,img_back,img_search;
+    private String market_id, search_text, search_type;
+    private ArrayList all_shop_id, selected_shop_id;
+    private ArrayList<ShopDataModel> all_shop_list, selected_shop_list;
+    private ImageView img_next, img_back, img_search;
     private TextView tv_type;
     private EditText et_search;
     private Firebase firebase;
@@ -37,19 +45,29 @@ public class FragmentMapView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Firebase.setAndroidContext(getActivity());
-        firebase=new Firebase("https://flee-market.firebaseio.com/");
+        firebase = new Firebase("https://flee-market.firebaseio.com/");
 
-        shop_id = new ArrayList();
-        category_names = new ArrayList();
-        dataModelList = new ArrayList<>();
-        selected_shopList = new ArrayList<>();
+        all_shop_id = new ArrayList();
+        selected_shop_id = new ArrayList();
+        all_shop_list = new ArrayList<ShopDataModel>();
+        selected_shop_list = new ArrayList<ShopDataModel>();
 
         market_id = marketDataModelSingleTon.getMarket_id();
 
-        View view =  inflater.inflate(R.layout.fragment_map_view, container, false);
-        tv_type = (TextView)view.findViewById(R.id.txt_type);
-        et_search = (EditText)view.findViewById(R.id.et_search);
-        img_next = (ImageView)view.findViewById(R.id.next_item);
+        ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map2)).getMapAsync(this);
+
+        View view = inflater.inflate(R.layout.fragment_map_view, container, false);
+
+        tv_type = (TextView) view.findViewById(R.id.txt_type);
+        et_search = (EditText) view.findViewById(R.id.et_search);
+
+        img_back.setEnabled(false);
+        img_back.setImageResource(R.drawable.ic_action_previous_item);
+        img_next.setEnabled(true);
+        img_next.setImageResource(R.drawable.ic_action_next_item_dark);
+        tv_type.setText("Name");
+
+        img_next = (ImageView) view.findViewById(R.id.next_item);
         img_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +78,8 @@ public class FragmentMapView extends Fragment {
                 tv_type.setText("Category");
             }
         });
-        img_back = (ImageView)view.findViewById(R.id.back_item);
+
+        img_back = (ImageView) view.findViewById(R.id.back_item);
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +90,8 @@ public class FragmentMapView extends Fragment {
                 tv_type.setText("Name");
             }
         });
-        img_search = (ImageView)view.findViewById(R.id.search);
+
+        img_search = (ImageView) view.findViewById(R.id.search);
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,71 +101,100 @@ public class FragmentMapView extends Fragment {
                 searchItem(search_text, search_type);
             }
         });
-        getShopList();
+        img_search.setEnabled(false);
         return view;
     }
 
-    public void getShopList(){
-        shop_id.clear();
-        dataModelList.clear();
+    public void getShopList() {
         firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                all_shop_id.clear();
+                all_shop_list.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    shop_id.add(d.getKey());
+                    all_shop_id.add(d.getKey());
                     shopDataModel = d.getValue(ShopDataModel.class);
-                    dataModelList.add(shopDataModel);
+                    all_shop_list.add(d.getValue(ShopDataModel.class));
+                    Shop shop = new Shop(shopDataModel.getLat(), shopDataModel.getLon(), Double.parseDouble(shopDataModel.getWidth()), Double.parseDouble(shopDataModel.getLength()));
+                    createShop(shop);
+                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(shopDataModel.getName() + "\n" + shopDataModel.getCategory1() + "\n" + shopDataModel.getCategory2() + "\n" + shopDataModel.getCategory3()));
                 }
+                img_search.setEnabled(true);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                getShopList();
             }
         });
     }
 
-    public void searchItem(String text,String type){
-        selected_shopList.clear();
-        if(text.equals("")) {
-            Check = false;
-            et_search.setEnabled(true);
-            //yahan py jb bagair kch dalay search k btn py click ho tw sari shops ajaen by default
-        }else {
-            for (int i = 0; i < dataModelList.size(); i++) {
-                if (type.equals("Name")) {
-                    Log.d("Position", "In search by name");
-                    String name = dataModelList.get(i).getName();
-                    if (name.equals(text)) {
-                        Log.d("Position", "Name found");
-                        Check = false;
-                        et_search.setEnabled(true);
-                        selected_shopList.add(dataModelList.get(i));
-                        //yahan py jb name wise shop mil jae tw wo map py show karani hai
+    public void searchItem(String text, String type) {
+        selected_shop_id.clear();
+        selected_shop_list.clear();
+        if (tv_type.getText().toString().equals("Name")) {
+            if (!et_search.getText().toString().equals("")) {
+                //Show Searched Shops
+                String tempShopName = et_search.getText().toString().toUpperCase();
+                for (int i = 0; i < all_shop_list.size(); i++) {
+                    if (tempShopName.equals(all_shop_list.get(i).getName().toUpperCase())) {
+                        selected_shop_id.add(all_shop_id.get(i).toString());
+                        selected_shop_list.add(all_shop_list.get(i));
                     }
-                } else {
-                    Log.d("Position", "In search by category");
-                    category_names.clear();
-                    category_names.add(dataModelList.get(i).getCategory1());
-                    category_names.add(dataModelList.get(i).getCategory2());
-                    category_names.add(dataModelList.get(i).getCategory3());
-                    for (int j = 0; j < category_names.size(); j++) {
-                        if (category_names.get(j).equals(text)) {
-                            Log.d("Position", "category found ");
-                            Check = false;
-                            et_search.setEnabled(true);
-                            selected_shopList.add(dataModelList.get(i));
-                            //yahan py jb category wise shop mil jae tw wo map py show karani hai.
+                }
+                mMap.clear();
+                for (int i = 0; i < all_shop_list.size(); i++) {
+                    Boolean check = false;
+                    for (int j = 0; j < selected_shop_list.size(); j++) {
+                        if (all_shop_id.get(i).toString().equals(selected_shop_id.get(j).toString())) {
+                            check = true;
                             break;
                         }
                     }
+                    if (!check) {
+                        Shop shop = new Shop(all_shop_list.get(i).getLat(), all_shop_list.get(i).getLon(), Double.parseDouble(all_shop_list.get(i).getWidth()), Double.parseDouble(all_shop_list.get(i).getLength()));
+                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
+                        createShop(shop);
+                    }
                 }
+                for (int i = 0; i < selected_shop_list.size(); i++) {
+                    Shop shop = new Shop(selected_shop_list.get(i).getLat(), selected_shop_list.get(i).getLon(), Double.parseDouble(selected_shop_list.get(i).getWidth()), Double.parseDouble(selected_shop_list.get(i).getLength()));
+                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(selected_shop_list.get(i).getName() + "\n" + selected_shop_list.get(i).getCategory1() + "\n" + selected_shop_list.get(i).getCategory2() + "\n" + selected_shop_list.get(i).getCategory3()));
+                    createShop(shop);
+                }
+
+            }
+        } else {
+            mMap.clear();
+            for (int i = 0; i < all_shop_list.size(); i++) {
+                    Shop shop = new Shop(all_shop_list.get(i).getLat(), all_shop_list.get(i).getLon(), Double.parseDouble(all_shop_list.get(i).getWidth()), Double.parseDouble(all_shop_list.get(i).getLength()));
+                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
+                    createShop(shop);
             }
         }
-        if(Check){
-            Log.d("Position", "no result found");
-            et_search.setEnabled(true);
-            //yahan py jb enter kiye hue text k hsb sy koi b shop na hw tw map blank show karana hai
+        if(tv_type.getText().toString().equals("Category")){
+
         }
+    }
+
+    public void createShop(Shop shop) {
+        PolygonOptions rectOptions = new PolygonOptions()
+                .add(shop.getNorthWest())
+                .add(shop.getNorthEast())
+                .add(shop.getSouthEast())
+                .add(shop.getSouthWest())
+                .add(shop.getNorthWest())
+                .strokeWidth(2)
+                .strokeColor(Color.parseColor("#D9FFF8DC"))
+                .fillColor(Color.parseColor("#D9F0E68C"));
+
+        Polygon polygon = mMap.addPolygon(rectOptions);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap=googleMap;
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(marketDataModelSingleTon.getMarket_lat()), Double.parseDouble(marketDataModelSingleTon.getMarket_lon())), 20));
+        getShopList();
     }
 }
