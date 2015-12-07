@@ -80,6 +80,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "view_on_map":
                 Log.d("menu item...", "View On Map");
+                Intent i2 = new Intent(this,MarketMap.class);
+                startActivity(i2);
                 break;
             case "edit":
                 Log.d("menu item...", "Edit Market");

@@ -283,13 +283,9 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                 .add(shop.getSouthEast())
                 .add(shop.getSouthWest())
                 .add(shop.getNorthWest())
-                .strokeWidth(2);
-        if(i==1){
-            rectOptions.fillColor(Color.GRAY);
-        }
-        if(i==2){
-            rectOptions.fillColor(Color.GREEN);
-        }
+                .strokeWidth(2)
+                .strokeColor(Color.parseColor("#D9FFF8DC"))
+                .fillColor(Color.parseColor("#D9F0E68C"));
 
         Polygon polygon = mMap.addPolygon(rectOptions);
     }

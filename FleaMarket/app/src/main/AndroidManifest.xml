@@ -82,6 +82,10 @@
             android:name=".MarketView"
             android:label="@string/title_activity_market_view" >
         </activity>
+        <activity
+            android:name="fuuast.fyp.fleamarket.MarketMap"
+            android:label="@string/title_activity_market_map">
+        </activity>
     </application>
 
 </manifest>
