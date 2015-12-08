@@ -37,6 +37,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     private String shop_id,shop_name,user_id,user_name,user_contact,user_org,market_id,market_name,parentActivity;
     Shop currentShop;
     ArrayList<Shop> allShops;
+    ArrayList<ShopDataModel> dataModelList;
     private ShopDataModel shopDataModel = new ShopDataModel();
     private ShopDataModel shopDataModel2 = new ShopDataModel();
     private UserDataModel userDataModel = new UserDataModel();
@@ -67,25 +68,64 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
         tv_owner_contact = (TextView)findViewById(R.id.sd_contact);
 
         allShops=new ArrayList<Shop>();
+        dataModelList = new ArrayList<ShopDataModel>();
 
         Bundle bundle=getIntent().getExtras();
         shop_id = bundle.getString("shopID");
         market_id = bundle.getString("marketID");
         parentActivity=bundle.getString("parentActivity");
+        Log.d("Values",shop_id+" "+market_id);
 
         category_names = new ArrayList();
         category_url = new ArrayList();
 
-        getShopDetails();
+        if(parentActivity.equals("PendingShops")||parentActivity.equals("ShopRequest"))
+            getPendingShopDetails();
+        else
+            getShopDetails();
+    }
+
+    public void getPendingShopDetails(){
+        dataModelList.clear();
+        firebase.child("Shop_Requests").child(market_id).child(shop_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    Log.d("Position", "Getting shop details");
+                    shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
+                    dataModelList.add(shopDataModel);
+                    shop_name =  shopDataModel.getName().toString();
+                    if(shopDataModel.getCategory2().equals("-")){
+                        category_names.add(shopDataModel.getCategory1());
+                    } else if(shopDataModel.getCategory3().equals("-")){
+                        category_names.add(shopDataModel.getCategory1());
+                        category_names.add(shopDataModel.getCategory2());
+                    } else {
+                        category_names.add(shopDataModel.getCategory1());
+                        category_names.add(shopDataModel.getCategory2());
+                        category_names.add(shopDataModel.getCategory3());
+                    }
+                    user_id=shopDataModel.getUser_id();
+                    getCategoryImages();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public void getShopDetails(){
+        dataModelList.clear();
         firebase.child("Market_Shops").child(market_id).child(shop_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("Position", "Getting shop details");
                 category_names.clear();
                 shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
+                dataModelList.add(shopDataModel);
                 shop_name = shopDataModel.getName();
                 if(shopDataModel.getCategory2().equals("-")){
                     category_names.add(shopDataModel.getCategory1());
@@ -109,7 +149,6 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public  void getCategoryImages(){
-
        firebase.child("Catagories").addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,7 +174,6 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                else {
                    getUserDetails();
                }
-
            }
 
            @Override
@@ -259,21 +297,10 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     }
 
     private void getCurrentShop(){
-        firebase.child("Market_Shops").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                shopDataModel2 = dataSnapshot.getValue(ShopDataModel.class);
-                currentShop = new Shop(shopDataModel2.getLat(), shopDataModel2.getLon(), Double.parseDouble(shopDataModel2.getWidth()), Double.parseDouble(shopDataModel2.getLength()));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(shopDataModel2.getLat(),shopDataModel2.getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(shopDataModel2.getName()));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModel2.getLat(), shopDataModel2.getLon()), 20));
-                createShop(currentShop, 2);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                getCurrentShop();
-            }
-        });
+        currentShop = new Shop(dataModelList.get(0).getLat(), dataModelList.get(0).getLon(), Double.parseDouble(dataModelList.get(0).getWidth()), Double.parseDouble(dataModelList.get(0).getLength()));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(dataModelList.get(0).getLat(),dataModelList.get(0).getLon())).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(dataModelList.get(0).getName()));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dataModelList.get(0).getLat(), dataModelList.get(0).getLon()), 20));
+        createShop(currentShop, 2);
     }
 
     public void createShop(Shop shop,int i){

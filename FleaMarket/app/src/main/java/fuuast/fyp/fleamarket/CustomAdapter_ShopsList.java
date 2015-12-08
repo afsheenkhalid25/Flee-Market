@@ -12,18 +12,19 @@ import java.util.ArrayList;
 public class CustomAdapter_ShopsList extends BaseAdapter {
 
     Context context;
-    ArrayList shop_names,shop_market;
-    TextView shopName,shopMarket;
+    ArrayList shop_names,shop_categories,market_names;
+    TextView shop_name,shop_category,market_name;
 
-    public CustomAdapter_ShopsList(Context context, ArrayList names, ArrayList shop) {
+    public CustomAdapter_ShopsList(Context context, ArrayList names, ArrayList categories, ArrayList market_name) {
         this.context = context;
         this.shop_names = names;
-        this.shop_market = shop;
+        this.shop_categories = categories;
+        this.market_names = market_name;
     }
 
     @Override
     public int getCount() {
-        return shop_market.size();
+        return shop_names.size();
     }
 
     @Override
@@ -37,16 +38,21 @@ public class CustomAdapter_ShopsList extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.layout_shop_list,null);
 
-        shopName = (TextView) v.findViewById(R.id.shop_name);
-        shopMarket = (TextView) v.findViewById(R.id.shop_market);
+        shop_name = (TextView) v.findViewById(R.id.shop_name);
+        shop_name.setText(shop_names.get(position).toString());
 
-        shopName.setText(shop_names.get(position).toString());
-        shopMarket.setText(shop_market.get(position).toString());
+        shop_category = (TextView) v.findViewById(R.id.shop_category);
+        shop_category.setText(shop_categories.get(position).toString());
+
+        market_name = (TextView) v.findViewById(R.id.mt_name);
+        if(market_names == null)
+            market_name.setVisibility(View.INVISIBLE);
+        else
+            market_name.setText(market_names.get(position).toString());
 
         return v;
     }

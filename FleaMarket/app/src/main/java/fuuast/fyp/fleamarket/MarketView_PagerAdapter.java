@@ -23,9 +23,6 @@ public class MarketView_PagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 FragmentShopList tab2 = new FragmentShopList();
                 return tab2;
-            case 2:
-                FragmentMapView tab3 = new FragmentMapView();
-                return tab3;
             default:
                 return null;
         }

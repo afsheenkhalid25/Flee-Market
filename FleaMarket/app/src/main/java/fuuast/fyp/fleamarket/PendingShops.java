@@ -1,17 +1,20 @@
 package fuuast.fyp.fleamarket;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Menu;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ public class PendingShops extends ActionBarActivity {
     private ArrayList shop_id,shop_name,shop_categories,market_name,market_id;
     private Firebase firebase,pending_shop,shop_details;
     private ProgressDialog progressDialog;
+    private PopupMenu popup;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
@@ -43,7 +47,7 @@ public class PendingShops extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_shops);
 
-        Firebase.setAndroidContext(this);
+    Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
         progressDialog = new ProgressDialog(PendingShops.this);
@@ -57,34 +61,43 @@ public class PendingShops extends ActionBarActivity {
 
         user_id = userDataModelSingleTon.getId().toString();
 
-        pending_list = (ListView)findViewById(R.id.pendingShops_list);
-        pending_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                new AlertDialog.Builder(PendingShops.this)
-                        .setTitle("Delete Shop!!")
-                        .setMessage("Do you want to delete this shop request")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                progressDialog.show();
-                                item_id = position;
-                                deletePendingShop(shop_id.get(position).toString(),market_id.get(position).toString());
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d("Delete Dialog", "Cancel click");
-                            }
-                        })
-                        .show();
-            }
-        });
-
         shop_id = new ArrayList();
         shop_name = new ArrayList();
         shop_categories = new ArrayList();
         market_id = new ArrayList();
         market_name = new ArrayList();
+
+        pending_list = (ListView)findViewById(R.id.pendingShops_list);
+        pending_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                popup = new PopupMenu(PendingShops.this, view, Gravity.RIGHT);
+                popup.inflate(R.menu.menu_pending_shops);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Log.d("menu item clicked"," "+item);
+                        switch (item.getItemId()) {
+                            case R.id.view:
+                                Intent i = new Intent(PendingShops.this,ShopDetails.class);
+                                i.putExtra("shopID",shop_id.get(position).toString());
+                                i.putExtra("marketID",market_id.get(position).toString());
+                                i.putExtra("parentActivity","PendingShops");
+                                startActivity(i);
+                                return true;
+                            case R.id.delete:
+                                item_id = position;
+                                DeleteShop(shop_id.get(position).toString(),market_id.get(position).toString());
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.show();
+            }
+        });
+
         getPendingList();
     }
 
@@ -157,9 +170,8 @@ public class PendingShops extends ActionBarActivity {
                 marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
                 market_name.add(marketDataModel.getName());
                 Log.d("Market_name", marketDataModel.getName());
-
                 if(shop_name.size()==market_name.size())
-                    pending_list.setAdapter(new CustomAdapter_PendingList(PendingShops.this,shop_name,shop_categories,market_name));
+                    pending_list.setAdapter(new CustomAdapter_ShopsList(PendingShops.this,shop_name,shop_categories,market_name));
                 else
                     Log.d("Position","waiting for listview");
             }
@@ -169,6 +181,24 @@ public class PendingShops extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void DeleteShop(final String shop_ID, final String market_ID){
+        new AlertDialog.Builder(PendingShops.this)
+                .setTitle("Delete Shop!!")
+                .setMessage("Do you want to delete this shop request")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.show();
+                        deletePendingShop(shop_ID,market_ID);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Delete Dialog", "Cancel click");
+                    }
+                })
+                .show();
     }
 
     private void deletePendingShop(final String shop_ID,final String market_ID) {
@@ -200,7 +230,7 @@ public class PendingShops extends ActionBarActivity {
                     shop_name.remove(item_id);
                     shop_categories.remove(item_id);
                     market_name.remove(item_id);
-                    pending_list.setAdapter(new CustomAdapter_PendingList(PendingShops.this,shop_name,shop_categories,market_name));
+                    pending_list.setAdapter(new CustomAdapter_ShopsList(PendingShops.this,shop_name,shop_categories,market_name));
                     progressDialog.dismiss();
                     Toast.makeText(PendingShops.this, "Shop request is successfully deleted..", Toast.LENGTH_SHORT).show();
                 }

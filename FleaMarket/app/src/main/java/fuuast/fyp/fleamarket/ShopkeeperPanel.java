@@ -1,9 +1,12 @@
 package fuuast.fyp.fleamarket;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,9 +30,10 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private ListView shop_list;
     private Firebase firebase;
     private String market_id,user_id,category1,category2,category3,categories;
-    private ArrayList shop_id,shop_name,shop_category,market_ids;
+    private ArrayList shop_id,shop_name,shop_category,market_ids,market_name;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
+    private MarketDataModel marketDataModel = new MarketDataModel();
     private UserDataModelSingleTon userDataModelSingleTon = UserDataModelSingleTon.getInstance();
 
     @Override
@@ -51,13 +55,32 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
 
         shop_list=(ListView) findViewById(R.id.shoppanel_lv_shops);
         shop_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(ShopkeeperPanel.this,ShopDetails.class);
-                i.putExtra("shopID",shop_id.get(position).toString());
-                i.putExtra("marketID",market_ids.get(position).toString());
-                i.putExtra("parentActivity","ShopkeeperPanel");
-                startActivity(i);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final PopupMenu popup = new PopupMenu(ShopkeeperPanel.this,view, Gravity.RIGHT);
+                popup.inflate(R.menu.menu_pending_shops);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        popup.dismiss();
+                        switch (item.getItemId()) {
+                            case R.id.view:
+                                Intent i = new Intent(ShopkeeperPanel.this,ShopDetails.class);
+                                i.putExtra("shopID",shop_id.get(position).toString());
+                                i.putExtra("marketID",market_ids.get(position).toString());
+                                i.putExtra("parentActivity", "ShopkeeperPanel");
+                                startActivity(i);
+                                return true;
+                            case R.id.delete:
+                                //DeleteShop(shop_ID, market_ID);
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.show();
             }
         });
 
@@ -71,6 +94,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_name = new ArrayList();
         shop_category = new ArrayList();
         market_ids = new ArrayList();
+        market_name = new ArrayList();
 
         getShops();
     }
@@ -80,6 +104,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shop_name.clear();
         shop_category.clear();
         market_ids.clear();
+        market_name.clear();
         firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -94,6 +119,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                         Log.d("Shop_ID", d.getKey().toString());
                         Log.d("market_ID", market_id);
                         getShopDetails(d.getKey());
+                        shops_status.setVisibility(View.INVISIBLE);
                     }
                 }
             }
@@ -123,9 +149,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     categories = category1 + ", " + category2 + ", " + category3;
                 }
                 shop_category.add(categories);
-
-                shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category));
-                shops_status.setVisibility(View.INVISIBLE);
+                getMarketName();
             }
 
             @Override
@@ -135,30 +159,24 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         });
     }
 
-    private void onAction (String s) {
-        switch (s){
-            case "edit_profile":
-                Log.d("menu item...", "Edit Profile");
-                Intent i = new Intent(this,EditProfile.class );
-                startActivity(i);
-                break;
-            case "logout":
-                Log.d("menu item...", "Logout");
-                firebase.unauth();
-                Intent j = new Intent(this,Login.class);
-                startActivity(j);
-                break;
-            case "create":
-                Log.d("menu item...", "Create Shop");
-                Intent k = new Intent(ShopkeeperPanel.this,CreateShop.class);
-                startActivity(k);
-                break;
-            case "pending":
-                Log.d("menu item...", "Pending Shops");
-                Intent l = new Intent(ShopkeeperPanel.this,PendingShops.class);
-                startActivity(l);
-                break;
-        }
+    private void getMarketName(){
+        firebase.child("Markets").child(market_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Position", "Getting Market Name");
+                marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
+                market_name.add(marketDataModel.getName());
+                if(shop_name.size()==market_name.size())
+                    shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category,market_name));
+                else
+                    Log.d("Shopkeeper panel", "waiting for shops_list");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -191,6 +209,32 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     }
                 });
             break;
+        }
+    }
+
+    private void onAction (String s) {
+        switch (s){
+            case "edit_profile":
+                Log.d("menu item...", "Edit Profile");
+                Intent i = new Intent(this,EditProfile.class );
+                startActivity(i);
+                break;
+            case "logout":
+                Log.d("menu item...", "Logout");
+                firebase.unauth();
+                Intent j = new Intent(this,Login.class);
+                startActivity(j);
+                break;
+            case "create":
+                Log.d("menu item...", "Create Shop");
+                Intent k = new Intent(ShopkeeperPanel.this,CreateShop.class);
+                startActivity(k);
+                break;
+            case "pending":
+                Log.d("menu item...", "Pending Shops");
+                Intent l = new Intent(ShopkeeperPanel.this,PendingShops.class);
+                startActivity(l);
+                break;
         }
     }
 

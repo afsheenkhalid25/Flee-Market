@@ -118,7 +118,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                         categories = category1 + ", " + category2 + ", " + category3;
                     }
                     shop_category.add(categories);
-                    shops_list.setAdapter(new CustomAdapter_ShopsList(MarketDetails.this,shop_name,shop_category));
+                    shops_list.setAdapter(new CustomAdapter_ShopsList(MarketDetails.this,shop_name,shop_category,null));
                 }
                 shops_status.setVisibility(View.INVISIBLE);
             }

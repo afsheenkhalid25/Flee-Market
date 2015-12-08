@@ -31,7 +31,6 @@ public class MarketView extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Details"));
         tabLayout.addTab(tabLayout.newTab().setText("Shops"));
-        tabLayout.addTab(tabLayout.newTab().setText("Map View"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);

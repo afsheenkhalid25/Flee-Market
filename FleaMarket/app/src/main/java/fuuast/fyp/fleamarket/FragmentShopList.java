@@ -125,7 +125,7 @@ public class FragmentShopList extends Fragment {
                         categories = category1 + ", " + category2 + ", " + category3;
                     }
                     shop_category.add(categories);
-                    shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
+                    shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category,null));
                 }
             }
 
@@ -143,7 +143,7 @@ public class FragmentShopList extends Fragment {
         if(text.equals("")) {
             Check = false;
             et_search.setEnabled(true);
-            shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category));
+            shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(),shop_name,shop_category,null));
         }else {
             for (int i = 0; i < dataModelList.size(); i++) {
                 if (type.equals("Name")) {
@@ -155,7 +155,7 @@ public class FragmentShopList extends Fragment {
                         et_search.setEnabled(true);
                         st_shop_name.add(dataModelList.get(i).getName());
                         st_shop_category.add(shop_category.get(i).toString());
-                        shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(), st_shop_name, st_shop_category));
+                        shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(), st_shop_name, st_shop_category,null));
                     }
                 } else {
                     Log.d("Position", "In search by category");
@@ -170,7 +170,7 @@ public class FragmentShopList extends Fragment {
                             et_search.setEnabled(true);
                             st_shop_name.add(dataModelList.get(i).getName());
                             st_shop_category.add(shop_category.get(i).toString());
-                            shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(), st_shop_name, st_shop_category));
+                            shops_list.setAdapter(new CustomAdapter_ShopsList(getActivity(), st_shop_name, st_shop_category,null));
                             break;
                         }
                     }
