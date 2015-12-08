@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="google_maps_key_instructions">
         <!--
     TODO: Before you run your application, you need a Google Maps API key.
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=61:52:C3:29:70:AA:07:FC:FB:70:B4:FD:62:16:B2:2F:28:73:9B:A7%3Bfuuast.fyp.fleamarket
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=61:52:C3:29:70:AA:07:FC:FB:70:B4:FD:62:16:B2:2F:28:73:9B:A7%3Bfuuast.fyp.fleamarket
 
     You can also add your credentials to an existing key, using this line:
     61:52:C3:29:70:AA:07:FC:FB:70:B4:FD:62:16:B2:2F:28:73:9B:A7;fuuast.fyp.fleamarket

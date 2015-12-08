@@ -2,10 +2,8 @@ package fuuast.fyp.fleamarket;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +15,7 @@ import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -25,8 +24,9 @@ import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
 
-public class FragmentMapView extends Fragment implements OnMapReadyCallback {
+public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCallback {
 
+    private GoogleMap mMap;
     private String market_id, search_text, search_type;
     private ArrayList all_shop_id, selected_shop_id;
     private ArrayList<ShopDataModel> all_shop_list, selected_shop_list;
@@ -34,16 +34,16 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
     private TextView tv_type;
     private EditText et_search;
     private Firebase firebase;
-    private Boolean Check = true;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
 
-    private GoogleMap mMap;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Firebase.setAndroidContext(getActivity());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_market_map_customer);
+
+        Firebase.setAndroidContext(this);
         firebase = new Firebase("https://flee-market.firebaseio.com/");
 
         all_shop_id = new ArrayList();
@@ -53,18 +53,14 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
 
         market_id = marketDataModelSingleTon.getMarket_id();
 
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2)).getMapAsync(this);
 
+        tv_type = (TextView) findViewById(R.id.ammc_txt_type);
+        et_search = (EditText) findViewById(R.id.ammc_et_search);
 
-        View view = inflater.inflate(R.layout.fragment_map_view, container, false);
-
-        //((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map2)).getMapAsync(this);
-
-        tv_type = (TextView) view.findViewById(R.id.txt_type);
-        et_search = (EditText) view.findViewById(R.id.et_search);
-
-        img_next = (ImageView) view.findViewById(R.id.next_item);
-        img_back = (ImageView) view.findViewById(R.id.back_item);
-        img_search = (ImageView) view.findViewById(R.id.search);
+        img_next = (ImageView) findViewById(R.id.ammc_next_item);
+        img_back = (ImageView) findViewById(R.id.ammc_back_item);
+        img_search = (ImageView) findViewById(R.id.ammc_search);
 
         img_back.setEnabled(false);
         img_back.setImageResource(R.drawable.ic_action_previous_item);
@@ -104,7 +100,6 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
             }
         });
         img_search.setEnabled(false);
-        return view;
     }
 
     public void getShopList() {
@@ -129,6 +124,13 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
                 getShopList();
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap=googleMap;
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(marketDataModelSingleTon.getMarket_lat()), Double.parseDouble(marketDataModelSingleTon.getMarket_lon())), 20));
+        getShopList();
     }
 
     public void searchItem(String text, String type) {
@@ -169,9 +171,9 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
         } else {
             mMap.clear();
             for (int i = 0; i < all_shop_list.size(); i++) {
-                    Shop shop = new Shop(all_shop_list.get(i).getLat(), all_shop_list.get(i).getLon(), Double.parseDouble(all_shop_list.get(i).getWidth()), Double.parseDouble(all_shop_list.get(i).getLength()));
-                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
-                    createShop(shop);
+                Shop shop = new Shop(all_shop_list.get(i).getLat(), all_shop_list.get(i).getLon(), Double.parseDouble(all_shop_list.get(i).getWidth()), Double.parseDouble(all_shop_list.get(i).getLength()));
+                mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
+                createShop(shop);
             }
         }
         if(tv_type.getText().toString().equals("Category")){
@@ -191,12 +193,5 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
                 .fillColor(Color.parseColor("#D9F0E68C"));
 
         Polygon polygon = mMap.addPolygon(rectOptions);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap=googleMap;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(marketDataModelSingleTon.getMarket_lat()), Double.parseDouble(marketDataModelSingleTon.getMarket_lon())), 20));
-        getShopList();
     }
 }

@@ -86,6 +86,10 @@
             android:name="fuuast.fyp.fleamarket.MarketMap"
             android:label="@string/title_activity_market_map">
         </activity>
+        <activity
+            android:name="fuuast.fyp.fleamarket.MarketMapCustomer"
+            android:label="@string/title_activity_market_map_customer">
+        </activity>
     </application>
 
 </manifest>

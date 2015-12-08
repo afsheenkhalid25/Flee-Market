@@ -23,5 +23,6 @@
     <string name="title_fragment_shop_list">FragmentShopList</string>
     <string name="title_fragment_map_view">FragmentMapView</string>
     <string name="title_activity_market_map">Map</string>
+    <string name="title_activity_market_map_customer">Map</string>
 
 </resources>
