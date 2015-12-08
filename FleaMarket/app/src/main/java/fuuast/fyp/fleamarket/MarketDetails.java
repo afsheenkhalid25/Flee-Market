@@ -1,9 +1,12 @@
 package fuuast.fyp.fleamarket;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,13 +56,32 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         market_id = marketDataModelSingleTon.getMarket_id().toString();
         shops_list = (ListView)findViewById(R.id.mv_lv_shops);
         shops_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(MarketDetails.this,ShopDetails.class);
-                i.putExtra("shopID",shop_id.get(position).toString());
-                i.putExtra("marketID",market_id);
-                i.putExtra("parentActivity","MarketDetails");
-                startActivity(i);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final PopupMenu popup = new PopupMenu(MarketDetails.this,view, Gravity.RIGHT);
+                popup.inflate(R.menu.menu_shop_list);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        popup.dismiss();
+                        switch (item.getItemId()) {
+                            case R.id.view:
+                                Intent i = new Intent(MarketDetails.this,ShopDetails.class);
+                                i.putExtra("shopID",shop_id.get(position).toString());
+                                i.putExtra("marketID",market_id);
+                                i.putExtra("parentActivity","MarketDetails");
+                                startActivity(i);
+                                return true;
+                            case R.id.delete:
+                                //DeleteShop(shop_ID, market_ID);
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.show();
             }
         });
 
@@ -102,7 +124,6 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     shop_id.add(d.getKey());
                     user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));

@@ -53,7 +53,7 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
 
         market_id = marketDataModelSingleTon.getMarket_id();
 
-        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2)).getMapAsync(this);
+        //((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2)).getMapAsync(this);
 
         tv_type = (TextView) findViewById(R.id.ammc_txt_type);
         et_search = (EditText) findViewById(R.id.ammc_et_search);

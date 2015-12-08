@@ -75,7 +75,7 @@ public class ShopsRequest extends ActionBarActivity {
                 User_Id = user_id.get(position).toString();
                 Log.d("Shop_Id",Shop_Id);
                 popup = new PopupMenu(ShopsRequest.this, view, Gravity.RIGHT);
-                popup.inflate(R.menu.menu_shop_request);
+                popup.inflate(R.menu.menu_request_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         Log.d("menu item clicked"," "+item);
@@ -126,7 +126,7 @@ public class ShopsRequest extends ActionBarActivity {
                         categories = category1 + ", " + category2 + ", " + category3;
                     }
                     shop_categories.add(categories);
-                    request_listview.setAdapter(new CustomAdapter_RequestList(ShopsRequest.this,shop_name,shop_categories));
+                    request_listview.setAdapter(new CustomAdapter_ShopsList(ShopsRequest.this,shop_name,shop_categories,null));
                 }
                 status.setVisibility(View.INVISIBLE);
             }

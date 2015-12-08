@@ -209,7 +209,7 @@ public class CreateShop extends ActionBarActivity {
     public void setCategoryDialog() {
 
         LayoutInflater inflater = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-        View customView = inflater.inflate(R.layout.category_dialog, null, false);
+        View customView = inflater.inflate(R.layout.dialog_category_list, null, false);
 
         dialog_adapter = new CustomAdapter_CategoriesList(CreateShop.this,category_name,category_url);
         ListView list = (ListView) customView.findViewById(R.id.category_listview);

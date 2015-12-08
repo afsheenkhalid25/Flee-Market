@@ -59,7 +59,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final PopupMenu popup = new PopupMenu(ShopkeeperPanel.this,view, Gravity.RIGHT);
-                popup.inflate(R.menu.menu_pending_shops);
+                popup.inflate(R.menu.menu_shop_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

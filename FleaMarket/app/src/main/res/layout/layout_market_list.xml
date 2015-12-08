@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="15dp">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <ImageView
         android:layout_width="50dp"
@@ -36,11 +36,12 @@
         android:layout_toEndOf="@+id/shoppic" />
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_action_next_item_dark"
+        android:id="@+id/adminpanel_img_marketdetails"
+        android:layout_alignTop="@+id/adminpanel_tv_marketname"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/adminpanel_img_marketdetails" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

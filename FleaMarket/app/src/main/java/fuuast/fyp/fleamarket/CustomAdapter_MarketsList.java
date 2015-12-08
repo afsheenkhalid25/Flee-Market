@@ -48,6 +48,8 @@ public class CustomAdapter_MarketsList extends BaseAdapter {
         marketName.setText(market_names.get(position).toString());
         marketArea.setText(market_area.get(position).toString());
 
+        
+
         return v;
     }
 }

@@ -73,7 +73,7 @@ public class PendingShops extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 popup = new PopupMenu(PendingShops.this, view, Gravity.RIGHT);
-                popup.inflate(R.menu.menu_pending_shops);
+                popup.inflate(R.menu.menu_shop_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         Log.d("menu item clicked"," "+item);
