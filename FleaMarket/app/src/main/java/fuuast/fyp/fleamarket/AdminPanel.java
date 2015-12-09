@@ -93,7 +93,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         });
     }
 
-    private void getMarketData(final String marketID){
+    private void getMarketData(final String marketID) {
         firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -105,7 +105,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
                 allMarkets.add(marketDataModel);
 
                 markets_status.setVisibility(View.INVISIBLE);
-                market_list.setAdapter(new CustomAdapter_MarketsList(AdminPanel.this,market_names,market_address));
+                market_list.setAdapter(new CustomAdapter_MarketsList(AdminPanel.this,market_names,market_address,null));
             }
 
             @Override
@@ -115,13 +115,14 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         });
     }
 
-    private void setMarketData(int i){
+    private void setMarketData(int i) {
         marketDataModelSingleTon.setMarket_id(market_id.get(i).toString());
         marketDataModelSingleTon.setAdmin_id(userDataModelSingleTon.getId());
         marketDataModelSingleTon.setMarket_address(allMarkets.get(i).getAddress());
         marketDataModelSingleTon.setMarket_lat(allMarkets.get(i).getLatitude());
         marketDataModelSingleTon.setMarket_lon(allMarkets.get(i).getLongitude());
         marketDataModelSingleTon.setMarket_name(allMarkets.get(i).getName());
+        marketDataModelSingleTon.setDay(allMarkets.get(i).getDay());
     }
 
     private void onAction (String s) {

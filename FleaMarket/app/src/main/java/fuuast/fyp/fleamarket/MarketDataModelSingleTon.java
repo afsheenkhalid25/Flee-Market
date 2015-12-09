@@ -2,9 +2,17 @@ package fuuast.fyp.fleamarket;
 
 public class MarketDataModelSingleTon {
 
-    private String market_id,admin_id,market_name,market_address,market_lat,market_lon;
+    private String market_id,admin_id,market_name,market_address,market_lat,market_lon,day;
 
     static MarketDataModelSingleTon obj = new MarketDataModelSingleTon();
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 
     public String getMarket_lat() {
         return market_lat;

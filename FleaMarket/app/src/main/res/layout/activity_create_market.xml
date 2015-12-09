@@ -60,27 +60,26 @@
         android:textColor="#000000"
         android:layout_below="@+id/relativeLayout" />
 
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Allow shopkeeper to create shop"
-        android:id="@+id/cm_checkbox"
-        android:layout_below="@+id/et_marketname"
-        android:layout_alignLeft="@+id/et_marketname"
-        android:layout_alignStart="@+id/et_marketname"
-        android:checked="false"
-        android:textSize="18dp" />
-
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/createmarket_map"
-        android:layout_marginTop="10dp"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/cm_checkbox"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/sp_day"
+        android:layout_margin="5dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sp_day"
+        android:layout_below="@+id/et_marketname"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dialog"
+        android:layout_margin="5dp" />
 
 </RelativeLayout>
 

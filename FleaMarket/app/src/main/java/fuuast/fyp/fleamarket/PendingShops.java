@@ -37,6 +37,7 @@ public class PendingShops extends ActionBarActivity {
     private Firebase firebase,pending_shop,shop_details;
     private ProgressDialog progressDialog;
     private PopupMenu popup;
+    private Boolean DataCheck = true;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
@@ -47,7 +48,7 @@ public class PendingShops extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_shops);
 
-    Firebase.setAndroidContext(this);
+        Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
         progressDialog = new ProgressDialog(PendingShops.this);
@@ -120,6 +121,7 @@ public class PendingShops extends ActionBarActivity {
                         market_id.add(market_ID);
                         getShopDetails(d.getKey(),market_ID);
                         status.setVisibility(View.INVISIBLE);
+                        DataCheck = false;
                     }
                 }
             }
@@ -129,7 +131,10 @@ public class PendingShops extends ActionBarActivity {
 
             }
         });
-
+        if(DataCheck){
+            status.setVisibility(View.VISIBLE);
+            pending_list.setBackgroundResource(R.drawable.ic_action_done);
+        }
     }
 
     private void getShopDetails(final String shop_ID,final String market_ID) {

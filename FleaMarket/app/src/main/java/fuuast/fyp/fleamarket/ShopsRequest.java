@@ -35,6 +35,7 @@ public class ShopsRequest extends ActionBarActivity {
     private ArrayList user_id,shop_id,shop_name,shop_categories;
     private Firebase firebase,request_list,market_shop,pending_shop,shop_details;
     private ProgressDialog progressDialog;
+    private Boolean DataCheck = true;
 
     private PopupMenu popup;
     private ShopDataModel shopDataModel = new ShopDataModel();
@@ -54,7 +55,6 @@ public class ShopsRequest extends ActionBarActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         status = (TextView)findViewById(R.id.status);
-        status.setVisibility(View.VISIBLE);
         market_name = (TextView) findViewById(R.id.tv_market_name);
         market_name.setText(marketDataModelSingleTon.getMarket_name());
 
@@ -64,7 +64,6 @@ public class ShopsRequest extends ActionBarActivity {
         shop_id = new ArrayList();
         shop_name = new ArrayList();
         shop_categories = new ArrayList();
-        getRequestList();
 
         request_listview = (ListView)findViewById(R.id.requests_list);
         request_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,21 +96,21 @@ public class ShopsRequest extends ActionBarActivity {
                 popup.show();
             }
         });
+
+        getRequestList();
     }
 
     public void getRequestList() {
-
         request_list = firebase.child("Shop_Requests").child(market_id);
         request_list.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 user_id.clear();
                 shop_id.clear();
                 shop_name.clear();
                 shop_categories.clear();
+                request_listview.setAdapter(null);
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-
                     shop_id.add(d.getKey());
                     user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));
                     shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
@@ -127,8 +126,9 @@ public class ShopsRequest extends ActionBarActivity {
                     }
                     shop_categories.add(categories);
                     request_listview.setAdapter(new CustomAdapter_ShopsList(ShopsRequest.this,shop_name,shop_categories,null));
+                    status.setVisibility(View.INVISIBLE);
+                    DataCheck = false;
                 }
-                status.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -136,6 +136,10 @@ public class ShopsRequest extends ActionBarActivity {
 
             }
         });
+        if(DataCheck){
+            status.setVisibility(View.VISIBLE);
+            request_listview.setBackgroundResource(R.drawable.ic_action_done);
+        }
     }
 
     private void onAction(String item) {
@@ -206,7 +210,6 @@ public class ShopsRequest extends ActionBarActivity {
                     Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
                 } else{
                     Log.d("Position","Record is inserted in Market shop table...");
-                    //now after adding shop details we have to delete it from shop request table...
                     setShopkeeperShopTable();
                 }
             }
@@ -254,7 +257,7 @@ public class ShopsRequest extends ActionBarActivity {
                 .show();
     }
 
-    private void deleteShopDetails(final String id){
+    private void deleteShopDetails(final String id) {
         shop_details.child(id).removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -263,7 +266,6 @@ public class ShopsRequest extends ActionBarActivity {
                     deleteShopDetails(id);
                 } else {
                     Log.d("Position", "Record is deleted from shop request table...");
-                    //after deleting shop details also delete record from shopkeeper pending shop....
                     deletePendingShop(id);
                 }
             }

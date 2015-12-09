@@ -156,7 +156,7 @@ public class CreateShop extends ActionBarActivity {
                     market_id.add(d.getKey());
                     market_names.add(((HashMap<String,String>)d.getValue()).get("name"));
                     market_address.add(((HashMap<String,String>)d.getValue()).get("address"));
-                    mySpinner.setAdapter(new CustomAdapter_MarketsList(CreateShop.this,market_names,market_address));
+                    mySpinner.setAdapter(new CustomAdapter_MarketsList(CreateShop.this,market_names,market_address,null));
                 }
             }
 

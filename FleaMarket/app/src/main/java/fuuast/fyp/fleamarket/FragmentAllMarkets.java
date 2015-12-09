@@ -62,7 +62,7 @@ public class FragmentAllMarkets extends Fragment {
                     dataModelList.add(marketDataModel);
                     market_names.add(marketDataModel.getName());
                     market_area.add(marketDataModel.getAddress());
-                    market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area));
+                    market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area,null));
                 }
             }
 

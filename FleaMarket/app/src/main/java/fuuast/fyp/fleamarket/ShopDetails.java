@@ -105,7 +105,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                         category_names.add(shopDataModel.getCategory2());
                         category_names.add(shopDataModel.getCategory3());
                     }
-                    user_id=shopDataModel.getUser_id();
+                    user_id = shopDataModel.getUser_id();
                     getCategoryImages();
                 }
             }

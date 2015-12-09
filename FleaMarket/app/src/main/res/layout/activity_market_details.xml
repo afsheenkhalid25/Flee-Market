@@ -79,6 +79,18 @@
             android:layout_toRightOf="@+id/marketview_img_profilepic"
             android:layout_toEndOf="@+id/marketview_img_profilepic" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Market_Day"
+            android:id="@+id/tv_day"
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/marketview_tv_area"
+            android:layout_toRightOf="@+id/marketview_img_profilepic"
+            android:layout_toEndOf="@+id/marketview_img_profilepic" />
+
     </RelativeLayout>
 
     <TextView

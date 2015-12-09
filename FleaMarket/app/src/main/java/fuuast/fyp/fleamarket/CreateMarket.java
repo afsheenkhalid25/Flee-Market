@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -20,13 +23,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CreateMarket extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener{
 
-    private String lat=null,lon=null,address=null,name=null,allow_checkbox="Not_Allowed";
+    private String lat=null,lon=null,address=null,name=null,day;
     private EditText et_name;
-    private CheckBox cb_allow;
+    private Spinner sp;
     private ImageView img;
     private MarketDataModel marketDataModel;
     private UserDataModelSingleTon userDataModelSingleTon;
@@ -45,8 +50,6 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         progressDialog = new ProgressDialog(CreateMarket.this);
 
         et_name = (EditText) findViewById(R.id.et_marketname);
-        cb_allow = (CheckBox) findViewById(R.id.cm_checkbox);
-        cb_allow.setOnClickListener(this);
 
         img = (ImageView) findViewById(R.id.cm_img);
         img.setOnClickListener(this);
@@ -57,8 +60,35 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         marketDataModel=new MarketDataModel();
         userDataModelSingleTon=UserDataModelSingleTon.getInstance();
 
+        setSpinner();
+
         Toast.makeText(this,"Please Wait For Map",Toast.LENGTH_LONG).show();
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.createmarket_map)).getMapAsync(this);
+    }
+
+    public void setSpinner(){
+        sp = (Spinner) findViewById(R.id.sp_day);
+        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                day = sp.getSelectedItem().toString();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        List<String> list = new ArrayList<String>();
+        list.add("<Select Market Day>");
+        list.add("Monday");
+        list.add("Tuesday");
+        list.add("Wednesday");
+        list.add("Thursday");
+        list.add("Friday");
+        list.add("Saturday");
+        list.add("Sunday");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setAdapter(dataAdapter);
     }
 
     @Override
@@ -93,35 +123,22 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         switch(view.getId()){
             case R.id.cm_img:
                 Log.d("CREATE MARKET.....","CLICKED");
-                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals(""))
-                {
+                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")&&!sp.getSelectedItem().equals("<Select Market Day>")) {
                     img.setEnabled(false);
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());
                     marketDataModel.setLatitude(lat);
                     marketDataModel.setLongitude(lon);
                     marketDataModel.setAddress(address);
-                    //marketDataModel.setAllow_checkbox(allow_checkbox);
+                    marketDataModel.setDay(day);
                     createMarket(marketDataModel);
-                }
-                else {
+                }else
                     Toast.makeText(this,"Data Incomplete",Toast.LENGTH_LONG).show();
-                }
-                break;
-            case R.id.cm_checkbox:
-                if(cb_allow.isChecked()){
-                    allow_checkbox="Allowed";
-                    Log.d("CREATE MARKET.....","checkbox is checked");
-                }else{
-                    allow_checkbox="Not_Allowed";
-                    Log.d("CREATE MARKET.....","checkbox is not checked");
-                }
                 break;
         }
     }
 
-    private void createMarket(MarketDataModel marketDataModel)
-    {
+    private void createMarket(MarketDataModel marketDataModel) {
         progressDialog.setMessage("\tCreating...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -144,8 +161,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void addMarketToAdmin(String adminID, final String marketID)
-    {
+    private void addMarketToAdmin(String adminID, final String marketID) {
         HashMap<String,Object> hashMap=new HashMap<String, Object>();
         hashMap.put("marketID",marketID);
 
@@ -166,7 +182,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void removeMarket(){
+    private void removeMarket() {
         markets.removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {

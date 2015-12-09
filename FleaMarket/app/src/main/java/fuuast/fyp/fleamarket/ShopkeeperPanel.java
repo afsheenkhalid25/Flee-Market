@@ -1,10 +1,13 @@
 package fuuast.fyp.fleamarket;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -28,7 +32,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private TextView tv_name,tv_email,tv_phone,shops_status;
     private ImageView img_options;
     private ListView shop_list;
-    private Firebase firebase;
+    private Firebase firebase,shopkeeper_shop,shop_details;
+    private ProgressDialog progressDialog;
     private String market_id,user_id,category1,category2,category3,categories;
     private ArrayList shop_id,shop_name,shop_category,market_ids,market_name;
 
@@ -43,6 +48,11 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
 
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
+
+        progressDialog = new ProgressDialog(ShopkeeperPanel.this);
+        progressDialog.setMessage("\tDeleting...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         tv_name = (TextView) findViewById(R.id.shoppanel_tv_name);
         tv_email = (TextView) findViewById(R.id.shoppanel_tv_email);
@@ -73,7 +83,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                                 startActivity(i);
                                 return true;
                             case R.id.delete:
-                                //DeleteShop(shop_ID, market_ID);
+                                DeleteShop(shop_id.get(position).toString(), market_ids.get(position).toString());
                                 return true;
                             default:
                                 return false;
@@ -175,6 +185,57 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
+            }
+        });
+    }
+
+    public void DeleteShop(final String shopID, final String marketID){
+        new AlertDialog.Builder(ShopkeeperPanel.this)
+                .setTitle("Delete Shop!!")
+                .setMessage("Do you want to delete this shop request")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.show();
+                        deleteShopkeeperShop(shopID, marketID);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Delete Dialog", "Cancel click");
+                    }
+                })
+                .show();
+    }
+
+    private void deleteShopkeeperShop(final String shop_ID,final String market_ID) {
+        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(user_id).child(shop_ID);
+        shopkeeper_shop.removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    Log.d(firebaseError.toString(),"Retrying Again...");
+                    deleteShopkeeperShop(shop_ID, market_ID);
+                } else{
+                    Log.d("Position", "Record is deleted from shopkeeper shop table...");
+                    deleteShopDetails(shop_ID,market_ID);
+                }
+            }
+        });
+    }
+
+    private void deleteShopDetails(final String shop_ID,final String market_ID){
+        shop_details = firebase.child("Market_Shops").child(market_ID).child(shop_ID);
+        shop_details.removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    Log.d(firebaseError.toString(), "Retrying Again...");
+                    deleteShopDetails(shop_ID,market_ID);
+                } else {
+                    Log.d("Position", "Record is deleted from market shop table...");
+                    progressDialog.dismiss();
+                    Toast.makeText(ShopkeeperPanel.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

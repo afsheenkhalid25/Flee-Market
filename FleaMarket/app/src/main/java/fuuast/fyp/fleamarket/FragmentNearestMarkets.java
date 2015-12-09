@@ -73,7 +73,7 @@ public class FragmentNearestMarkets extends Fragment {
                         market_names.add(marketDataModel.getName());
                         market_area.add(marketDataModel.getAddress());
                         dataModelList.add(marketDataModel);
-                        market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(), market_names, market_area));
+                        market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(), market_names, market_area,null));
                     }
                 }
             }

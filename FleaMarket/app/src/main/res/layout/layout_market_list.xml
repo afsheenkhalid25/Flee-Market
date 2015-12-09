@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="12dp"
+    android:id="@+id/rl">
 
     <ImageView
         android:layout_width="50dp"
@@ -18,7 +21,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Market Name"
         android:paddingLeft="10dp"
-        android:id="@+id/adminpanel_tv_marketname"
+        android:id="@+id/tv_name"
         android:textColor="@color/material_blue_grey_800"
         android:layout_alignTop="@+id/shoppic"
         android:layout_toRightOf="@+id/shoppic"
@@ -30,18 +33,32 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="area"
         android:paddingLeft="10dp"
-        android:id="@+id/adminpanel_tv_marketarea"
-        android:layout_below="@+id/adminpanel_tv_marketname"
-        android:layout_toRightOf="@+id/shoppic"
-        android:layout_toEndOf="@+id/shoppic" />
+        android:id="@+id/tv_area"
+        android:paddingTop="1dp"
+        android:layout_below="@+id/tv_name"
+        android:layout_alignLeft="@+id/tv_name"
+        android:layout_alignStart="@+id/tv_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="new Request"
+        android:paddingLeft="10dp"
+        android:id="@+id/no_req"
+        android:paddingTop="1dp"
+        android:layout_below="@+id/tv_area"
+        android:layout_alignLeft="@+id/tv_area"
+        android:layout_alignStart="@+id/tv_area" />
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_action_next_item_dark"
-        android:id="@+id/adminpanel_img_marketdetails"
-        android:layout_alignTop="@+id/adminpanel_tv_marketname"
+        android:id="@+id/img_next"
+        android:layout_alignTop="@+id/tv_name"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/shoppic" />
 
 </RelativeLayout>
