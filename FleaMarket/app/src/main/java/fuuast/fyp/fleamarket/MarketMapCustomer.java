@@ -177,9 +177,6 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
                 mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(selected_shop_list.get(i).getName() + "\n" + selected_shop_list.get(i).getCategory1() + "\n" + selected_shop_list.get(i).getCategory2() + "\n" + selected_shop_list.get(i).getCategory3()));
                 createShop(shop);
             }
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(marketDataModelSingleTon.getMarket_lat()), Double.parseDouble(marketDataModelSingleTon.getMarket_lon())), 18));
-
-
         } else {
             mMap.clear();
             for (int i = 0; i < all_shop_list.size(); i++) {
