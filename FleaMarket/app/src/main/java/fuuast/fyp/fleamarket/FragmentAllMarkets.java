@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,8 @@ public class FragmentAllMarkets extends Fragment {
                     marketLocation.setLatitude(Double.parseDouble(marketDataModel.getLatitude()));
                     marketLocation.setLongitude(Double.parseDouble(marketDataModel.getLongitude()));
 
+                    Log.d("MARKET",marketDataModel.getName());
+                    Log.d("DISTANCE",(currentLocation.distanceTo(marketLocation))+"");
                     distance.add(currentLocation.distanceTo(marketLocation));
                 }
 
@@ -149,11 +152,11 @@ public class FragmentAllMarkets extends Fragment {
                 dataModelList.clear();
 
                 for (int k=0;k<datamodelArray.length;k++){
-                    dataModelList.add(datamodelArray[i]);
-                    market_id.add(market_id_array[i]);
-                    market_names.add(market_names_array[i]);
-                    market_area.add(market_area_array[i]);
-                    distance.add(distanceArray[i]);
+                    dataModelList.add(datamodelArray[k]);
+                    market_id.add(market_id_array[k]);
+                    market_names.add(market_names_array[k]);
+                    market_area.add(market_area_array[k]);
+                    distance.add(distanceArray[k]);
                 }
                 market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area,null));
             }

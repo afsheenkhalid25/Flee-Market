@@ -2,10 +2,18 @@ package fuuast.fyp.fleamarket;
 
 public class MarketDataModel {
 
-    private String market_id, name, adminID, latitude, longitude, address, day;
+    private String market_id, name, adminID, latitude, longitude, address, day, radius;
 
     public String getDay() {
         return day;
+    }
+
+    public String getRadius() {
+        return radius;
+    }
+
+    public void setRadius(String radius) {
+        this.radius = radius;
     }
 
     public void setDay(String day) {
