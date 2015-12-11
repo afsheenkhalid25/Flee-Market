@@ -45,7 +45,7 @@ public class MarketMap extends FragmentActivity implements OnMapReadyCallback {
                         ShopDataModel sdm = d.getValue(ShopDataModel.class);
                         shop = new Shop(sdm.getLat(), sdm.getLon(), Double.parseDouble(sdm.getWidth()), Double.parseDouble(sdm.getLength()));
                         createShop(shop);
-                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(sdm.getName()));
+                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(sdm.getName()+"\n"+sdm.getCategory1()+"\n"+sdm.getCategory2()+"\n"+sdm.getCategory3()));
                     }
                 }
             }

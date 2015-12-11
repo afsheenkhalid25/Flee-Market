@@ -8,6 +8,14 @@ public class MarketDataModel {
         return day;
     }
 
+    public String getRadius() {
+        return radius;
+    }
+
+    public void setRadius(String radius) {
+        this.radius = radius;
+    }
+
     public void setDay(String day) {
         this.day = day;
     }

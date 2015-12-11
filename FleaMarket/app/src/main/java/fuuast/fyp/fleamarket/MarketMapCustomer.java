@@ -53,7 +53,7 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
 
         market_id = marketDataModelSingleTon.getMarket_id();
 
-        //((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2)).getMapAsync(this);
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.ammc_map)).getMapAsync(this);
 
         tv_type = (TextView) findViewById(R.id.ammc_txt_type);
         et_search = (EditText) findViewById(R.id.ammc_et_search);
@@ -129,6 +129,10 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap=googleMap;
+        //mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(marketDataModelSingleTon.getMarket_lat()), Double.parseDouble(marketDataModelSingleTon.getMarket_lon())), 20));
         getShopList();
     }
@@ -136,9 +140,10 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
     public void searchItem(String text, String type) {
         selected_shop_id.clear();
         selected_shop_list.clear();
-        if (tv_type.getText().toString().equals("Name")) {
-            if (!et_search.getText().toString().equals("")) {
-                //Show Searched Shops
+
+        if (!et_search.getText().toString().equals("")) {
+
+            if (tv_type.getText().toString().equals("Name")) {
                 String tempShopName = et_search.getText().toString().toUpperCase();
                 for (int i = 0; i < all_shop_list.size(); i++) {
                     if (tempShopName.equals(all_shop_list.get(i).getName().toUpperCase())) {
@@ -146,27 +151,35 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
                         selected_shop_list.add(all_shop_list.get(i));
                     }
                 }
-                mMap.clear();
+            }
+            if(tv_type.getText().toString().equals("Category")){
+                String tempCatName = et_search.getText().toString().toUpperCase();
                 for (int i = 0; i < all_shop_list.size(); i++) {
-                    Boolean check = false;
-                    for (int j = 0; j < selected_shop_list.size(); j++) {
-                        if (all_shop_id.get(i).toString().equals(selected_shop_id.get(j).toString())) {
-                            check = true;
-                            break;
-                        }
-                    }
-                    if (!check) {
-                        Shop shop = new Shop(all_shop_list.get(i).getLat(), all_shop_list.get(i).getLon(), Double.parseDouble(all_shop_list.get(i).getWidth()), Double.parseDouble(all_shop_list.get(i).getLength()));
-                        mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
-                        createShop(shop);
+                    if (tempCatName.equals(all_shop_list.get(i).getCategory1().toUpperCase())||tempCatName.equals(all_shop_list.get(i).getCategory2().toUpperCase())||tempCatName.equals(all_shop_list.get(i).getCategory3().toUpperCase())) {
+                        selected_shop_id.add(all_shop_id.get(i).toString());
+                        selected_shop_list.add(all_shop_list.get(i));
                     }
                 }
-                for (int i = 0; i < selected_shop_list.size(); i++) {
-                    Shop shop = new Shop(selected_shop_list.get(i).getLat(), selected_shop_list.get(i).getLon(), Double.parseDouble(selected_shop_list.get(i).getWidth()), Double.parseDouble(selected_shop_list.get(i).getLength()));
-                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(selected_shop_list.get(i).getName() + "\n" + selected_shop_list.get(i).getCategory1() + "\n" + selected_shop_list.get(i).getCategory2() + "\n" + selected_shop_list.get(i).getCategory3()));
+            }
+            mMap.clear();
+            for (int i = 0; i < all_shop_list.size(); i++) {
+                Boolean check = false;
+                for (int j = 0; j < selected_shop_list.size(); j++) {
+                    if (all_shop_id.get(i).toString().equals(selected_shop_id.get(j).toString())) {
+                        check = true;
+                        break;
+                    }
+                }
+                if (!check) {
+                    Shop shop = new Shop(all_shop_list.get(i).getLat(), all_shop_list.get(i).getLon(), Double.parseDouble(all_shop_list.get(i).getWidth()), Double.parseDouble(all_shop_list.get(i).getLength()));
+                    mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
                     createShop(shop);
                 }
-
+            }
+            for (int i = 0; i < selected_shop_list.size(); i++) {
+                Shop shop = new Shop(selected_shop_list.get(i).getLat(), selected_shop_list.get(i).getLon(), Double.parseDouble(selected_shop_list.get(i).getWidth()), Double.parseDouble(selected_shop_list.get(i).getLength()));
+                mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(selected_shop_list.get(i).getName() + "\n" + selected_shop_list.get(i).getCategory1() + "\n" + selected_shop_list.get(i).getCategory2() + "\n" + selected_shop_list.get(i).getCategory3()));
+                createShop(shop);
             }
         } else {
             mMap.clear();
@@ -175,10 +188,9 @@ public class MarketMapCustomer extends FragmentActivity implements OnMapReadyCal
                 mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.shopicon_c)).title(all_shop_list.get(i).getName() + "\n" + all_shop_list.get(i).getCategory1() + "\n" + all_shop_list.get(i).getCategory2() + "\n" + all_shop_list.get(i).getCategory3()));
                 createShop(shop);
             }
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(marketDataModelSingleTon.getMarket_lat()), Double.parseDouble(marketDataModelSingleTon.getMarket_lon())), 20));
         }
-        if(tv_type.getText().toString().equals("Category")){
-
-        }
+        et_search.setEnabled(true);
     }
 
     public void createShop(Shop shop) {

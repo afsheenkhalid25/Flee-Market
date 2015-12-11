@@ -2,7 +2,7 @@ package fuuast.fyp.fleamarket;
 
 public class MarketDataModelSingleTon {
 
-    private String market_id,admin_id,market_name,market_address,market_lat,market_lon,day,market_radius;
+    private String market_id,admin_id,market_name,market_address,market_lat,market_lon,day,radius;
 
     static MarketDataModelSingleTon obj = new MarketDataModelSingleTon();
 
@@ -14,12 +14,12 @@ public class MarketDataModelSingleTon {
         this.day = day;
     }
 
-    public String getMarket_radius() {
-        return market_radius;
+    public String getRadius() {
+        return radius;
     }
 
-    public void setMarket_radius(String market_radius) {
-        this.market_radius = market_radius;
+    public void setRadius(String radius) {
+        this.radius = radius;
     }
 
     public String getMarket_lat() {

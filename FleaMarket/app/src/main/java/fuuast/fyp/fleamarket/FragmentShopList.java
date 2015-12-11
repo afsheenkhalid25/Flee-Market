@@ -95,6 +95,7 @@ public class FragmentShopList extends Fragment {
                 Intent i = new Intent(getActivity(),ShopDetails.class);
                 i.putExtra("shopID",shop_id.get(position).toString());
                 i.putExtra("marketID",market_id);
+                i.putExtra("parentActivity","customer");
                 startActivity(i);
             }
         });

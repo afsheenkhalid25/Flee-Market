@@ -235,7 +235,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     deleteShopkeeperShop(shop_ID, market_ID);
                 } else{
                     Log.d("Position", "Record is deleted from shopkeeper shop table...");
-                    getShops();
+                    //getShops();
                     progressDialog.dismiss();
                 }
             }
