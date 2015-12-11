@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class FragmentNearestMarkets extends Fragment {
 
-    private ArrayList market_names,market_area,market_id;
+    private ArrayList market_names,market_area,market_day,market_id;
     private ArrayList<MarketDataModel> dataModelList;
     private Firebase firebase;
     private ListView market_list;
@@ -46,6 +46,7 @@ public class FragmentNearestMarkets extends Fragment {
         dataModelList = new ArrayList<>();
         market_names = new ArrayList();
         market_area = new ArrayList();
+        market_day = new ArrayList();
         market_id = new ArrayList();
 
         View view =  inflater.inflate(R.layout.fragment_nearest_markets, container, false);
@@ -63,6 +64,10 @@ public class FragmentNearestMarkets extends Fragment {
     }
 
     public void setDetails(){
+        market_id.clear();
+        market_names.clear();
+        market_area.clear();
+        market_day.clear();
         firebase.child("Markets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,8 +77,9 @@ public class FragmentNearestMarkets extends Fragment {
                         market_id.add(d.getKey().toString());
                         market_names.add(marketDataModel.getName());
                         market_area.add(marketDataModel.getAddress());
+                        market_day.add(marketDataModel.getDay());
                         dataModelList.add(marketDataModel);
-                        market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(), market_names, market_area,null));
+                        market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(), market_names, market_area,market_day));
                     }
                 }
             }
@@ -118,5 +124,6 @@ public class FragmentNearestMarkets extends Fragment {
         marketDataModelSingleTon.setMarket_lat(dataModelList.get(i).getLatitude());
         marketDataModelSingleTon.setMarket_lon(dataModelList.get(i).getLongitude());
         marketDataModelSingleTon.setMarket_name(dataModelList.get(i).getName());
+        marketDataModelSingleTon.setDay(dataModelList.get(i).getDay());
     }
 }

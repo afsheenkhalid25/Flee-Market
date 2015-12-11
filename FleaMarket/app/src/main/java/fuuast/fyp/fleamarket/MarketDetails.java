@@ -111,6 +111,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         shop_id.clear();
         shop_name.clear();
         shop_category.clear();
+        shops_list.setAdapter(null);
         firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -148,7 +149,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         progressDialog.show();
-                        deleteShopkeeperShop(shopID, marketID);
+                        deleteShopDetails(shopID,marketID);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -157,6 +158,23 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                     }
                 })
                 .show();
+    }
+
+    private void deleteShopDetails(final String shopID,final String marketID){
+        shop_details = firebase.child("Market_Shops").child(marketID).child(shopID);
+        shop_details.removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    Log.d(firebaseError.toString(), "Retrying Again...");
+                    deleteShopDetails(shopID,marketID);
+                } else {
+                    Log.d("Position", "Record is deleted from market shop table...");
+                    deleteShopkeeperShop(shopID, marketID);
+                    Toast.makeText(MarketDetails.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void deleteShopkeeperShop(final String shop_ID,final String market_ID) {
@@ -169,24 +187,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                     deleteShopkeeperShop(shop_ID, market_ID);
                 } else{
                     Log.d("Position", "Record is deleted from shopkeeper shop table...");
-                    deleteShopDetails(shop_ID,market_ID);
-                }
-            }
-        });
-    }
-
-    private void deleteShopDetails(final String shop_ID,final String market_ID){
-        shop_details = firebase.child("Market_Shops").child(market_ID).child(shop_ID);
-        shop_details.removeValue(new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    Log.d(firebaseError.toString(), "Retrying Again...");
-                    deleteShopDetails(shop_ID,market_ID);
-                } else {
-                    Log.d("Position", "Record is deleted from market shop table...");
+                    getShopList();
                     progressDialog.dismiss();
-                    Toast.makeText(MarketDetails.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
                 }
             }
         });

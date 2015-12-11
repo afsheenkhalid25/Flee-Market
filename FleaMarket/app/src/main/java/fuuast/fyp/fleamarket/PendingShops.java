@@ -26,7 +26,6 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class PendingShops extends ActionBarActivity {
 
     private String user_id,category1,category2,category3,categories;
@@ -108,6 +107,7 @@ public class PendingShops extends ActionBarActivity {
         shop_categories.clear();
         market_id.clear();
         market_name.clear();
+        pending_list.setAdapter(null);
         firebase.child("Shopkeeper_Pending_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -133,7 +133,6 @@ public class PendingShops extends ActionBarActivity {
         });
         if(DataCheck){
             status.setVisibility(View.VISIBLE);
-            pending_list.setBackgroundResource(R.drawable.ic_action_done);
         }
     }
 

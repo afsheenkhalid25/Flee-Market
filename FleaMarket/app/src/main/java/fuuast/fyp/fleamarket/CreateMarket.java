@@ -30,7 +30,7 @@ import java.util.List;
 public class CreateMarket extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener{
 
     private String lat=null,lon=null,address=null,name=null,day;
-    private EditText et_name;
+    private EditText et_name,et_radius;
     private Spinner sp;
     private ImageView img;
     private MarketDataModel marketDataModel;
@@ -50,17 +50,20 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         progressDialog = new ProgressDialog(CreateMarket.this);
 
         et_name = (EditText) findViewById(R.id.et_marketname);
+        et_radius = (EditText) findViewById(R.id.et_radius);
 
         img = (ImageView) findViewById(R.id.cm_img);
         img.setOnClickListener(this);
-
-        et_name.setEnabled(false);
-        img.setEnabled(false);
 
         marketDataModel=new MarketDataModel();
         userDataModelSingleTon=UserDataModelSingleTon.getInstance();
 
         setSpinner();
+
+        et_name.setEnabled(false);
+        et_radius.setEnabled(false);
+        img.setEnabled(false);
+        sp.setEnabled(false);
 
         Toast.makeText(this,"Please Wait For Map",Toast.LENGTH_LONG).show();
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.createmarket_map)).getMapAsync(this);
@@ -98,7 +101,8 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapClickListener(this);
         et_name.setEnabled(true);
-        img.setEnabled(true);
+        et_radius.setEnabled(true);
+        sp.setEnabled(true);
     }
 
     @Override
@@ -123,10 +127,11 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         switch(view.getId()){
             case R.id.cm_img:
                 Log.d("CREATE MARKET.....","CLICKED");
-                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")&&!sp.getSelectedItem().equals("<Select Market Day>")) {
+                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")&&!et_radius.getText().toString().equals("")&&!sp.getSelectedItem().equals("<Select Market Day>")) {
                     img.setEnabled(false);
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());
+                    marketDataModel.setRadius(et_radius.getText().toString());
                     marketDataModel.setLatitude(lat);
                     marketDataModel.setLongitude(lon);
                     marketDataModel.setAddress(address);

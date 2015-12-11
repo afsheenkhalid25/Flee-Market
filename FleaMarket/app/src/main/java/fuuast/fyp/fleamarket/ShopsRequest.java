@@ -138,7 +138,6 @@ public class ShopsRequest extends ActionBarActivity {
         });
         if(DataCheck){
             status.setVisibility(View.VISIBLE);
-            request_listview.setBackgroundResource(R.drawable.ic_action_done);
         }
     }
 
@@ -258,6 +257,7 @@ public class ShopsRequest extends ActionBarActivity {
     }
 
     private void deleteShopDetails(final String id) {
+        shop_details = firebase.child("Shop_Requests").child(market_id);
         shop_details.child(id).removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
