@@ -37,6 +37,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     private ImageView options;
     private ProgressDialog progressDialog;
 
+    private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModelSingleTon marketDataModelSingleTon = MarketDataModelSingleTon.getInstance();
 
     @Override
@@ -66,6 +67,12 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         tv_market_day.setText(marketDataModelSingleTon.getDay());
 
         market_id = marketDataModelSingleTon.getMarket_id().toString();
+
+        shop_id = new ArrayList();
+        user_id = new ArrayList();
+        shop_name = new ArrayList();
+        shop_category = new ArrayList();
+
         shops_list = (ListView)findViewById(R.id.mv_lv_shops);
         shops_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -95,43 +102,42 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                     }
                 });
                 popup.show();
-            }
+               }
         });
-
-        shop_id = new ArrayList();
-        user_id = new ArrayList();
-        shop_name = new ArrayList();
-        shop_category = new ArrayList();
 
         getShopList();
     }
 
-    public void getShopList(){
-        user_id.clear();
-        shop_id.clear();
-        shop_name.clear();
-        shop_category.clear();
-        shops_list.setAdapter(null);
+    private void getShopList() {
         firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    shop_id.add(d.getKey());
-                    user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));
-                    shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
-                    category1 = ((HashMap<String,String>)d.getValue()).get("category1");
-                    category2 = ((HashMap<String,String>)d.getValue()).get("category2");
-                    category3 = ((HashMap<String,String>)d.getValue()).get("category3");
-                    if(category2.equals("-")){
-                        categories = category1;
-                    } else if(category3.equals("-")){
-                        categories = category1 + ", " + category2;
-                    } else {
-                        categories = category1 + ", " + category2 + ", " + category3;
+                user_id.clear();
+                shop_id.clear();
+                shop_name.clear();
+                shop_category.clear();
+                shops_list.setAdapter(null);
+                if (dataSnapshot.hasChildren()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        Log.d("In MarketDetails", "Getting shops list");
+                        shop_id.add(d.getKey());
+                        shopDataModel = d.getValue(ShopDataModel.class);
+                        user_id.add(shopDataModel.getUser_id());
+                        shop_name.add(shopDataModel.getName());
+                        category1 = (shopDataModel.getCategory1());
+                        category2 = (shopDataModel.getCategory2());
+                        category3 = (shopDataModel.getCategory3());
+                        if (category2.equals("-"))
+                            categories = category1;
+                        else if (category3.equals("-"))
+                            categories = category1 + ", " + category2;
+                        else
+                            categories = category1 + ", " + category2 + ", " + category3;
+
+                        shop_category.add(categories);
+                        shops_list.setAdapter(new CustomAdapter_ShopsList(MarketDetails.this, shop_name, shop_category, null));
+                        shops_status.setVisibility(View.INVISIBLE);
                     }
-                    shop_category.add(categories);
-                    shops_list.setAdapter(new CustomAdapter_ShopsList(MarketDetails.this,shop_name,shop_category,null));
-                    shops_status.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -142,12 +148,14 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         });
     }
 
-    public void DeleteShop(final String shopID, final String marketID){
+    private void DeleteShop(final String shopID, final String marketID){
+        Log.d("In MarketDetails","Delete shop dialog");
         new AlertDialog.Builder(MarketDetails.this)
                 .setTitle("Delete Shop!!")
                 .setMessage("Do you want to delete this shop request")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Delete Dialog", "OK click");
                         progressDialog.show();
                         deleteShopDetails(shopID,marketID);
                     }
@@ -169,9 +177,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                     Log.d(firebaseError.toString(), "Retrying Again...");
                     deleteShopDetails(shopID,marketID);
                 } else {
-                    Log.d("Position", "Record is deleted from market shop table...");
+                    Log.d("In MarketDetails", "Record is deleted from market shop table...");
                     deleteShopkeeperShop(shopID, marketID);
-                    Toast.makeText(MarketDetails.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -186,9 +193,9 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                     Log.d(firebaseError.toString(),"Retrying Again...");
                     deleteShopkeeperShop(shop_ID, market_ID);
                 } else{
-                    Log.d("Position", "Record is deleted from shopkeeper shop table...");
-                    getShopList();
+                    Log.d("In MarketDetails", "Record is deleted from shopkeeper shop table...");
                     progressDialog.dismiss();
+                    Toast.makeText(MarketDetails.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
                 }
             }
         });

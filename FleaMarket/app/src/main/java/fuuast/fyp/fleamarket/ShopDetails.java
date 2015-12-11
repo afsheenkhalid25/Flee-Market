@@ -35,15 +35,14 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     private ImageView img_cat1,img_cat2,img_cat3;
     private TextView tv_shop_name,tv_shop_market,tv_owner_name,tv_owner_contact;
     private String shop_id,shop_name,user_id,user_name,user_contact,user_org,market_id,market_name,parentActivity;
+
     Shop currentShop;
     ArrayList<Shop> allShops;
-    ArrayList<ShopDataModel> dataModelList;
     private ShopDataModel shopDataModel = new ShopDataModel();
     private ShopDataModel shopDataModel2 = new ShopDataModel();
     private UserDataModel userDataModel = new UserDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
     private UserDataModelSingleTon userDataModelSingleTon=UserDataModelSingleTon.getInstance();
-    Boolean isShopPlaced=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,6 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
         tv_owner_contact = (TextView)findViewById(R.id.sd_contact);
 
         allShops=new ArrayList<Shop>();
-        dataModelList = new ArrayList<ShopDataModel>();
 
         Bundle bundle=getIntent().getExtras();
         shop_id = bundle.getString("shopID");
@@ -86,47 +84,43 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void getPendingShopDetails(){
-        dataModelList.clear();
-        firebase.child("Shop_Requests").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                                                           @Override
-                                                                                                           public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                                               if (dataSnapshot.hasChildren()) {
-                                                                                                                   Log.d("Position", "Getting shop details");
-                                                                                                                   shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
-                                                                                                                   //dataModelList.add(shopDataModel);
-                                                                                                                   shop_name = shopDataModel.getName().toString();
-                                                                                                                   if (shopDataModel.getCategory2().equals("-")) {
-                                                                                                                       category_names.add(shopDataModel.getCategory1());
-                                                                                                                   } else if (shopDataModel.getCategory3().equals("-")) {
-                                                                                                                       category_names.add(shopDataModel.getCategory1());
-                                                                                                                       category_names.add(shopDataModel.getCategory2());
-                                                                                                                   } else {
-                                                                                                                       category_names.add(shopDataModel.getCategory1());
-                                                                                                                       category_names.add(shopDataModel.getCategory2());
-                                                                                                                       category_names.add(shopDataModel.getCategory3());
-                                                                                                                   }
-                                                                                                                   user_id = shopDataModel.getUser_id();
-                                                                                                                   getCategoryImages();
-                                                                                                               }
-                                                                                                           }
+        firebase.child("Shop_Requests").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    Log.d("Position", "Getting shop details");
+                    shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
+                    shop_name = shopDataModel.getName().toString();
+                    if (shopDataModel.getCategory2().equals("-")) {
+                        category_names.add(shopDataModel.getCategory1());
+                    } else if (shopDataModel.getCategory3().equals("-")) {
+                        category_names.add(shopDataModel.getCategory1());
+                        category_names.add(shopDataModel.getCategory2());
+                    } else {
+                        category_names.add(shopDataModel.getCategory1());
+                        category_names.add(shopDataModel.getCategory2());
+                        category_names.add(shopDataModel.getCategory3());
+                    }
+                    user_id = shopDataModel.getUser_id();
+                    getCategoryImages();
+                }
+            }
 
-                                                                                                           @Override
-                                                                                                           public void onCancelled(FirebaseError firebaseError) {
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
-                                                                                                           }
-                                                                                                       }
-        );
+            }
+        });
     }
 
     public void getShopDetails(){
-        dataModelList.clear();
         firebase.child("Market_Shops").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("Position", "Getting shop details");
                 category_names.clear();
                 shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
-                //dataModelList.add(shopDataModel);
                 shop_name = shopDataModel.getName();
                 if (shopDataModel.getCategory2().equals("-")) {
                     category_names.add(shopDataModel.getCategory1());

@@ -60,8 +60,20 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         shops_status = (TextView) findViewById(R.id.shoppanel_tv_status);
         shops_status.setVisibility(View.VISIBLE);
 
+        tv_name.setText(userDataModelSingleTon.getName());
+        tv_email.setText(userDataModelSingleTon.getEmail_id());
+        tv_phone.setText(userDataModelSingleTon.getPhone());
+
+        user_id = userDataModelSingleTon.getId().toString();
+
         img_options = (ImageView) findViewById(R.id.shoppanel_img_options);
         img_options.setOnClickListener(this);
+
+        shop_id = new ArrayList();
+        shop_name = new ArrayList();
+        shop_category = new ArrayList();
+        market_id = new ArrayList();
+        market_name = new ArrayList();
 
         shop_list=(ListView) findViewById(R.id.shoppanel_lv_shops);
         shop_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -94,43 +106,27 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
             }
         });
 
-        tv_name.setText(userDataModelSingleTon.getName());
-        tv_email.setText(userDataModelSingleTon.getEmail_id());
-        tv_phone.setText(userDataModelSingleTon.getPhone());
-
-        user_id = userDataModelSingleTon.getId().toString();
-
-        shop_id = new ArrayList();
-        shop_name = new ArrayList();
-        shop_category = new ArrayList();
-        market_id = new ArrayList();
-        market_name = new ArrayList();
-
-        getShops();
+        getShopList();
     }
 
-    private void getShops() {
-        shop_id.clear();
-        shop_name.clear();
-        shop_category.clear();
-        market_id.clear();
-        market_name.clear();
-        shop_list.setAdapter(null);
+    private void getShopList() {
         firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 shop_id.clear();
                 shop_name.clear();
                 shop_category.clear();
+                market_id.clear();
+                market_name.clear();
+                shop_list.setAdapter(null);
                 if (dataSnapshot.hasChildren()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        Log.d("In ShopkeeperPanel", "Getting shopkeeper shops list");
                         shop_id.add(d.getKey());
-                        shopDataModel = d.getValue(ShopDataModel.class);
-                        market_id.add(shopDataModel.getMarket_id());
-                        Log.d("Shop_ID", d.getKey().toString());
-                        Log.d("market_ID", shopDataModel.getMarket_id());
-                        getShopDetails(d.getKey(),shopDataModel.getMarket_id());
-                        shops_status.setVisibility(View.INVISIBLE);
+                        String marketID = ((HashMap<String,String>)d.getValue()).get("market_id");
+                        market_id.add(marketID);
+                        Log.d("Shop_ID and Market_ID", d.getKey().toString()+" "+marketID);
+                        getShopDetails(d.getKey(),marketID);
                     }
                 }
             }
@@ -146,21 +142,23 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         firebase.child("Market_Shops").child(marketID).child(shopID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Position", "Getting shop details");
-                shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
-                         shop_name.add(shopDataModel.getName());
-                category1 = (shopDataModel.getCategory1());
-                category2 = (shopDataModel.getCategory2());
-                category3 = (shopDataModel.getCategory3());
-                if(category2.equals("-"))
-                    categories = category1;
-                else if(category3.equals("-"))
-                    categories = category1 + ", " + category2;
-                else
-                    categories = category1 + ", " + category2 + ", " + category3;
+                if (dataSnapshot.hasChildren()) {
+                    Log.d("In ShopkeeperPanel", "Getting shop details");
+                    shopDataModel = dataSnapshot.getValue(ShopDataModel.class);
+                    shop_name.add(shopDataModel.getName());
+                    category1 = (shopDataModel.getCategory1());
+                    category2 = (shopDataModel.getCategory2());
+                    category3 = (shopDataModel.getCategory3());
+                    if (category2.equals("-"))
+                        categories = category1;
+                    else if (category3.equals("-"))
+                        categories = category1 + ", " + category2;
+                    else
+                        categories = category1 + ", " + category2 + ", " + category3;
 
-                shop_category.add(categories);
-                getMarketName(marketID);
+                    shop_category.add(categories);
+                    getMarketName(marketID);
+                }
             }
 
             @Override
@@ -174,13 +172,16 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Position", "Getting Market Name");
-                marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
-                market_name.add(marketDataModel.getName());
-                if(shop_name.size()==market_name.size())
-                    shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this,shop_name,shop_category,market_name));
-                else
-                    Log.d("Shopkeeper panel", "waiting for shops_list");
+                if (dataSnapshot.hasChildren()) {
+                    Log.d("In ShopkeeperPanel", "Getting Market Name");
+                    marketDataModel = dataSnapshot.getValue(MarketDataModel.class);
+                    market_name.add(marketDataModel.getName());
+                    if (shop_name.size() == market_name.size())
+                        shop_list.setAdapter(new CustomAdapter_ShopsList(ShopkeeperPanel.this, shop_name, shop_category, market_name));
+                    else
+                        Log.d("In ShopkeeperPanel", "waiting for shops_list");
+                    shops_status.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -191,13 +192,15 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     }
 
     public void DeleteShop(final String shopID, final String marketID){
+        Log.d("In ShopkeeperPanel","Delete shop dialog");
         new AlertDialog.Builder(ShopkeeperPanel.this)
                 .setTitle("Delete Shop!!")
                 .setMessage("Do you want to delete this shop request")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Delete Dialog", "OK click");
                         progressDialog.show();
-                        deleteShopDetails(shopID,marketID);
+                        deleteShopkeeperShop(shopID,marketID);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -206,6 +209,22 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     }
                 })
                 .show();
+    }
+
+    private void deleteShopkeeperShop(final String shopID,final String marketID) {
+        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(user_id).child(shopID);
+        shopkeeper_shop.removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    Log.d(firebaseError.toString(),"Retrying Again...");
+                    deleteShopkeeperShop(shopID, marketID);
+                } else{
+                    Log.d("In ShopkeeperPanel", "Record is deleted from shopkeeper shop table...");
+                    deleteShopDetails(shopID,marketID);
+                }
+            }
+        });
     }
 
     private void deleteShopDetails(final String shopID,final String marketID){
@@ -217,26 +236,9 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                     Log.d(firebaseError.toString(), "Retrying Again...");
                     deleteShopDetails(shopID,marketID);
                 } else {
-                    Log.d("Position", "Record is deleted from market shop table...");
-                    deleteShopkeeperShop(shopID, marketID);
-                    Toast.makeText(ShopkeeperPanel.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void deleteShopkeeperShop(final String shop_ID,final String market_ID) {
-        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(user_id).child(shop_ID);
-        shopkeeper_shop.removeValue(new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    Log.d(firebaseError.toString(),"Retrying Again...");
-                    deleteShopkeeperShop(shop_ID, market_ID);
-                } else{
-                    Log.d("Position", "Record is deleted from shopkeeper shop table...");
-                    //getShops();
+                    Log.d("In ShopkeeperPanel", "Record is deleted from market shop table...");
                     progressDialog.dismiss();
+                    Toast.makeText(ShopkeeperPanel.this, "Shop is successfully deleted..", Toast.LENGTH_SHORT).show();
                 }
             }
         });

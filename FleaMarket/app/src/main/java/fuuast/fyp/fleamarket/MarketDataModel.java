@@ -20,14 +20,6 @@ public class MarketDataModel {
         this.day = day;
     }
 
-    public String getRadius() {
-        return radius;
-    }
-
-    public void setRadius(String radius) {
-        this.radius = radius;
-    }
-
     public String getMarket_id() {
         return market_id;
     }

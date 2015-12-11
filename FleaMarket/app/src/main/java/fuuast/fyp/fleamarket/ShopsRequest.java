@@ -50,7 +50,6 @@ public class ShopsRequest extends ActionBarActivity {
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
         progressDialog = new ProgressDialog(ShopsRequest.this);
-        progressDialog.setMessage("\tApproving...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
 
@@ -72,12 +71,10 @@ public class ShopsRequest extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Shop_Id = shop_id.get(position).toString();
                 User_Id = user_id.get(position).toString();
-                Log.d("Shop_Id",Shop_Id);
                 popup = new PopupMenu(ShopsRequest.this, view, Gravity.RIGHT);
                 popup.inflate(R.menu.menu_request_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Log.d("menu item clicked"," "+item);
                         switch (item.getItemId()) {
                             case R.id.view:
                                 onAction("view");
@@ -111,6 +108,7 @@ public class ShopsRequest extends ActionBarActivity {
                 shop_categories.clear();
                 request_listview.setAdapter(null);
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    Log.d("In ShopRequest", "Getting shops request list");
                     shop_id.add(d.getKey());
                     user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));
                     shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
@@ -144,7 +142,6 @@ public class ShopsRequest extends ActionBarActivity {
     private void onAction(String item) {
         switch (item){
             case "view":
-                Log.d("menu item...", "View");
                 Intent i = new Intent(this,ShopDetails.class);
                 i.putExtra("shopID",Shop_Id);
                 i.putExtra("marketID",market_id);
@@ -161,12 +158,14 @@ public class ShopsRequest extends ActionBarActivity {
     }
 
     private void ApproveShop() {
+        Log.d("In ShopRequest", "Approve Dialog");
         new AlertDialog.Builder(ShopsRequest.this)
                 .setTitle("Approve Shop!!")
                 .setMessage("Do you want to approve this shop for Market?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("Approve Dialog", "Clicked");
+                        Log.d("Approve Dialog", "OK click");
+                        progressDialog.setMessage("\tApproving...");
                         progressDialog.show();
                         getShopDetails();
                     }
@@ -186,7 +185,7 @@ public class ShopsRequest extends ActionBarActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     if (Shop_Id.equals(d.getKey().toString())) {
-                        Log.d("Position", "In Shop Details");
+                        Log.d("In ShopRequest", "Getting shop details to approve");
                         shopDataModel = d.getValue(ShopDataModel.class);
                         setMarketShopTable();
                     }
@@ -208,7 +207,7 @@ public class ShopsRequest extends ActionBarActivity {
                 if (firebaseError!=null){
                     Toast.makeText(ShopsRequest.this, "Network Error!!", Toast.LENGTH_SHORT).show();
                 } else{
-                    Log.d("Position","Record is inserted in Market shop table...");
+                    Log.d("In ShopRequest","Record is inserted in Market shop table...");
                     setShopkeeperShopTable();
                 }
             }
@@ -225,27 +224,25 @@ public class ShopsRequest extends ActionBarActivity {
                     Log.d(firebaseError.toString(),"Retrying Again...");
                     setShopkeeperShopTable();
                 }else {
-                    Log.d("Position", "Record is inserted in shopkeeper shop table");
+                    Log.d("In ShopRequest", "Record is inserted in shopkeeper shop table");
                     deleteShopDetails(Shop_Id);
-                    getRequestList();
-                    progressDialog.dismiss();
                     Toast.makeText(ShopsRequest.this, "Shop is approved..", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
     }
 
     private void DeleteShop() {
+        Log.d("In ShopRequest", "Delete Dialog");
         new AlertDialog.Builder(ShopsRequest.this)
                 .setTitle("Delete Shop!!")
                 .setMessage("Do you want to delete this shop request")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("Delete Dialog", "Clicked");
+                        Log.d("Delete Dialog", "OK click");
+                        progressDialog.setMessage("\tDeleting...");
                         progressDialog.show();
                         deleteShopDetails(Shop_Id);
-                        progressDialog.dismiss();
                         Toast.makeText(ShopsRequest.this, "Shop request is successfully deleted..", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -257,15 +254,15 @@ public class ShopsRequest extends ActionBarActivity {
     }
 
     private void deleteShopDetails(final String id) {
-        shop_details = firebase.child("Shop_Requests").child(market_id);
-        shop_details.child(id).removeValue(new Firebase.CompletionListener() {
+        shop_details = firebase.child("Shop_Requests").child(market_id).child(id);
+        shop_details.removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
                     Log.d(firebaseError.toString(),"Retrying Again...");
                     deleteShopDetails(id);
                 } else {
-                    Log.d("Position", "Record is deleted from shop request table...");
+                    Log.d("In ShopRequest", "Record is deleted from shop request table...");
                     deletePendingShop(id);
                 }
             }
@@ -281,8 +278,8 @@ public class ShopsRequest extends ActionBarActivity {
                     Log.d(firebaseError.toString(),"Retrying Again...");
                     deletePendingShop(id);
                 } else {
-                    Log.d("Position", "Record is deleted from shopkeeper pending shop table...");
-                    getRequestList();
+                    Log.d("In ShopRequest", "Record is deleted from shopkeeper pending shop table...");
+                    progressDialog.dismiss();
                 }
             }
         });

@@ -123,7 +123,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
         marketDataModelSingleTon.setMarket_lon(allMarkets.get(i).getLongitude());
         marketDataModelSingleTon.setMarket_name(allMarkets.get(i).getName());
         marketDataModelSingleTon.setDay(allMarkets.get(i).getDay());
-        marketDataModelSingleTon.setMarket_radius(allMarkets.get(i).getRadius());
+        marketDataModelSingleTon.setRadius(allMarkets.get(i).getRadius());
     }
 
     private void onAction (String s) {
