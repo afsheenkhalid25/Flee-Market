@@ -45,8 +45,7 @@ public class Shop {
         return height;
     }
 
-    public void setShopParam(){
-
+    public void setShopParam() {
         Change_latitude=0.00000625*(height/2);
         Change_longitude=0.00000666*(width/2);
 

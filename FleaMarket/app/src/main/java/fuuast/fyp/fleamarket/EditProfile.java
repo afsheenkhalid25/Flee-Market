@@ -114,7 +114,7 @@ public class EditProfile extends ActionBarActivity{
         address=userDataModelSingleTon.getAddress();
         nic=userDataModelSingleTon.getNic();
         org_name=userDataModelSingleTon.getOrg_name();
-        org_cntct=userDataModelSingleTon.getOrg_cntct();
+        org_cntct=userDataModelSingleTon.getOrg_contact();
         org_type=userDataModelSingleTon.getOrg_typ();
         user_type=userDataModelSingleTon.getType();
     }
@@ -234,7 +234,7 @@ public class EditProfile extends ActionBarActivity{
         userDataModel.setAddress(address);
         userDataModel.setNic(nic);
         userDataModel.setOrg_name(org_name);
-        userDataModel.setOrg_cntct(org_cntct);
+        userDataModel.setOrg_contact(org_cntct);
         userDataModel.setOrg_typ(org_type);
     }
 

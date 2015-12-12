@@ -32,8 +32,9 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     private String market_id,category1,category2,category3,categories,userID;
     private ArrayList user_id,shop_id,shop_name,shop_category;
     private TextView tv_market_name,tv_market_address,tv_market_day,shops_status;
-    private ListView shops_list;
-    private Firebase firebase,shopkeeper_shop,shop_details;
+    private ListView shop_list;
+    private Firebase firebase,shopkeeper_shop,shop_details,shops_list;
+    private ValueEventListener VEL;
     private ImageView options;
     private ProgressDialog progressDialog;
 
@@ -57,7 +58,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         tv_market_address = (TextView) findViewById(R.id.marketview_tv_area);
         tv_market_day = (TextView) findViewById(R.id.tv_day);
         shops_status = (TextView) findViewById(R.id.marketview_tv_status);
-        shops_status.setVisibility(View.VISIBLE);
+        shops_status.setVisibility(View.INVISIBLE);
 
         options = (ImageView) findViewById(R.id.marketdetails_img_options);
         options.setOnClickListener(this);
@@ -73,8 +74,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         shop_name = new ArrayList();
         shop_category = new ArrayList();
 
-        shops_list = (ListView)findViewById(R.id.mv_lv_shops);
-        shops_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        shop_list = (ListView)findViewById(R.id.mv_lv_shops);
+        shop_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -109,14 +110,16 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     }
 
     private void getShopList() {
-        firebase.child("Market_Shops").child(market_id).addValueEventListener(new ValueEventListener() {
+        shops_list = firebase.child("Market_Shops").child(market_id);
+        shops_list.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                VEL = this;
                 user_id.clear();
                 shop_id.clear();
                 shop_name.clear();
                 shop_category.clear();
-                shops_list.setAdapter(null);
+                shop_list.setAdapter(null);
                 if (dataSnapshot.hasChildren()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         Log.d("In MarketDetails", "Getting shops list");
@@ -135,10 +138,11 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                             categories = category1 + ", " + category2 + ", " + category3;
 
                         shop_category.add(categories);
-                        shops_list.setAdapter(new CustomAdapter_ShopsList(MarketDetails.this, shop_name, shop_category, null));
+                        shop_list.setAdapter(new CustomAdapter_ShopsList(MarketDetails.this, shop_name, shop_category, null));
                         shops_status.setVisibility(View.INVISIBLE);
                     }
-                }
+                }else
+                    shops_status.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -184,14 +188,14 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         });
     }
 
-    private void deleteShopkeeperShop(final String shop_ID,final String market_ID) {
-        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(userID).child(shop_ID);
+    private void deleteShopkeeperShop(final String shopID,final String marketID) {
+        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(userID).child(shopID);
         shopkeeper_shop.removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
                     Log.d(firebaseError.toString(),"Retrying Again...");
-                    deleteShopkeeperShop(shop_ID, market_ID);
+                    deleteShopkeeperShop(shopID, marketID);
                 } else{
                     Log.d("In MarketDetails", "Record is deleted from shopkeeper shop table...");
                     progressDialog.dismiss();
@@ -266,6 +270,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
+        if(VEL != null)
+            shops_list.removeEventListener(VEL);
         finish();
     }
 }

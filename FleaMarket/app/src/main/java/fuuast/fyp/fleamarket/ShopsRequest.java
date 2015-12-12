@@ -34,8 +34,8 @@ public class ShopsRequest extends ActionBarActivity {
     private ListView request_listview;
     private ArrayList user_id,shop_id,shop_name,shop_categories;
     private Firebase firebase,request_list,market_shop,pending_shop,shop_details;
+    private ValueEventListener VEL1,VEL2;
     private ProgressDialog progressDialog;
-    private Boolean DataCheck = true;
 
     private PopupMenu popup;
     private ShopDataModel shopDataModel = new ShopDataModel();
@@ -54,6 +54,7 @@ public class ShopsRequest extends ActionBarActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         status = (TextView)findViewById(R.id.status);
+        status.setVisibility(View.INVISIBLE);
         market_name = (TextView) findViewById(R.id.tv_market_name);
         market_name.setText(marketDataModelSingleTon.getMarket_name());
 
@@ -107,25 +108,30 @@ public class ShopsRequest extends ActionBarActivity {
                 shop_name.clear();
                 shop_categories.clear();
                 request_listview.setAdapter(null);
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    Log.d("In ShopRequest", "Getting shops request list");
-                    shop_id.add(d.getKey());
-                    user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));
-                    shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
-                    category1 = ((HashMap<String,String>)d.getValue()).get("category1");
-                    category2 = ((HashMap<String,String>)d.getValue()).get("category2");
-                    category3 = ((HashMap<String,String>)d.getValue()).get("category3");
-                    if(category2.equals("-")){
-                        categories = category1;
-                    } else if(category3.equals("-")){
-                        categories = category1 + ", " + category2;
-                    } else {
-                        categories = category1 + ", " + category2 + ", " + category3;
+                VEL1 = this;
+                if (dataSnapshot.hasChildren()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        Log.d("In ShopRequest", "Getting shops request list");
+                        shop_id.add(d.getKey());
+                        user_id.add(((HashMap<String,String>)d.getValue()).get("user_id"));
+                        shop_name.add(((HashMap<String,String>)d.getValue()).get("name"));
+                        category1 = ((HashMap<String,String>)d.getValue()).get("category1");
+                        category2 = ((HashMap<String,String>)d.getValue()).get("category2");
+                        category3 = ((HashMap<String,String>)d.getValue()).get("category3");
+                        if(category2.equals("-"))
+                            categories = category1;
+                        else if(category3.equals("-"))
+                            categories = category1 + ", " + category2;
+                        else
+                            categories = category1 + ", " + category2 + ", " + category3;
+
+                        shop_categories.add(categories);
+                        request_listview.setAdapter(new CustomAdapter_ShopsList(ShopsRequest.this,shop_name,shop_categories,null));
+                        status.setVisibility(View.INVISIBLE);
                     }
-                    shop_categories.add(categories);
-                    request_listview.setAdapter(new CustomAdapter_ShopsList(ShopsRequest.this,shop_name,shop_categories,null));
-                    status.setVisibility(View.INVISIBLE);
-                    DataCheck = false;
+                } else {
+                    status.setVisibility(View.VISIBLE);
+                    request_listview.setBackgroundResource(R.drawable.ic_action_done);
                 }
             }
 
@@ -134,9 +140,6 @@ public class ShopsRequest extends ActionBarActivity {
 
             }
         });
-        if(DataCheck){
-            status.setVisibility(View.VISIBLE);
-        }
     }
 
     private void onAction(String item) {
@@ -183,6 +186,7 @@ public class ShopsRequest extends ActionBarActivity {
         shop_details.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                VEL2 = this;
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     if (Shop_Id.equals(d.getKey().toString())) {
                         Log.d("In ShopRequest", "Getting shop details to approve");
@@ -295,6 +299,10 @@ public class ShopsRequest extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if(VEL1!=null)
+            request_list.removeEventListener(VEL1);
+        if(VEL2!=null)
+            shop_details.removeEventListener(VEL2);
         finish();
     }
 }

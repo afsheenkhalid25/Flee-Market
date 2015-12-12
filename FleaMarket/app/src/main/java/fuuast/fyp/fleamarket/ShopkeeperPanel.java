@@ -32,7 +32,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     private TextView tv_name,tv_email,tv_phone,shops_status;
     private ImageView img_options;
     private ListView shop_list;
-    private Firebase firebase,shopkeeper_shop,shop_details;
+    private Firebase firebase,shopkeeper_shop,shop_details,delete_shopkeeper_shop;
+    private ValueEventListener VEL;
     private ProgressDialog progressDialog;
     private String user_id,category1,category2,category3,categories;
     private ArrayList shop_id,shop_name,shop_category,market_id,market_name;
@@ -58,7 +59,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
         tv_email = (TextView) findViewById(R.id.shoppanel_tv_email);
         tv_phone=(TextView) findViewById(R.id.shoppanel_tv_phone);
         shops_status = (TextView) findViewById(R.id.shoppanel_tv_status);
-        shops_status.setVisibility(View.VISIBLE);
+        shops_status.setVisibility(View.INVISIBLE);
 
         tv_name.setText(userDataModelSingleTon.getName());
         tv_email.setText(userDataModelSingleTon.getEmail_id());
@@ -110,9 +111,11 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     }
 
     private void getShopList() {
-        firebase.child("Shopkeeper_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
+        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(user_id);
+        shopkeeper_shop.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                VEL = this;
                 shop_id.clear();
                 shop_name.clear();
                 shop_category.clear();
@@ -128,7 +131,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
                         Log.d("Shop_ID and Market_ID", d.getKey().toString()+" "+marketID);
                         getShopDetails(d.getKey(),marketID);
                     }
-                }
+                } else
+                    shops_status.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -139,7 +143,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     }
 
     private void getShopDetails(final String shopID, final String marketID){
-        firebase.child("Market_Shops").child(marketID).child(shopID).addValueEventListener(new ValueEventListener() {
+        firebase.child("Market_Shops").child(marketID).child(shopID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
@@ -169,7 +173,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     }
 
     private void getMarketName(String marketID){
-        firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
+        firebase.child("Markets").child(marketID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
@@ -212,8 +216,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     }
 
     private void deleteShopkeeperShop(final String shopID,final String marketID) {
-        shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(user_id).child(shopID);
-        shopkeeper_shop.removeValue(new Firebase.CompletionListener() {
+        delete_shopkeeper_shop = firebase.child("Shopkeeper_Shops").child(user_id).child(shopID);
+        delete_shopkeeper_shop.removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
@@ -312,6 +316,8 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
     @Override
     protected void onPause() {
         super.onPause();
+        if(VEL != null)
+            shopkeeper_shop.removeEventListener(VEL);
         finish();
     }
 }

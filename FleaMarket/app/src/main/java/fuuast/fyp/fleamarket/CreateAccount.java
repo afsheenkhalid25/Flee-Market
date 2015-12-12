@@ -219,7 +219,7 @@ public class CreateAccount extends ActionBarActivity
         userDataModel.setNic(nic);
         userDataModel.setOrg_name(org_name);
         userDataModel.setOrg_typ(org_typ);
-        userDataModel.setOrg_cntct(org_cntct);
+        userDataModel.setOrg_contact(org_cntct);
 
         //for class UserDataModelSingleTon
         userDataModelSingleTon.setName(userDataModel.getName());
@@ -230,7 +230,7 @@ public class CreateAccount extends ActionBarActivity
         userDataModelSingleTon.setNic(userDataModel.getNic());
         userDataModelSingleTon.setOrg_name(userDataModel.getOrg_name());
         userDataModelSingleTon.setOrg_typ(userDataModel.getOrg_typ());
-        userDataModelSingleTon.setOrg_cntct(userDataModel.getOrg_cntct());
+        userDataModelSingleTon.setOrg_contact(userDataModel.getOrg_contact());
     }
 
     @Override

@@ -84,8 +84,7 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void getPendingShopDetails(){
-        firebase.child("Shop_Requests").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener()
-        {
+        firebase.child("Shop_Requests").child(market_id).child(shop_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
@@ -256,18 +255,6 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap=googleMap;
-        getAllShops();
-    }
-
     private void getAllShops(){
         firebase.child("Market_Shops").child(market_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -338,5 +325,17 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                 .fillColor(Color.parseColor("#D9F0E68C"));
 
         Polygon polygon = mMap.addPolygon(rectOptions);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap=googleMap;
+        getAllShops();
     }
 }

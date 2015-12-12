@@ -171,7 +171,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 data.setNic(ud.getNic());
                 data.setOrg_name(ud.getOrg_name());
                 data.setOrg_typ(ud.getOrg_typ());
-                data.setOrg_cntct(ud.getOrg_cntct());
+                data.setOrg_contact(ud.getOrg_contact());
 
                 ac_type = ud.getType().toString();
 

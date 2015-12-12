@@ -32,10 +32,10 @@ public class PendingShops extends ActionBarActivity {
     private TextView user_name,status;
     private ListView pending_list;
     private ArrayList shop_id,shop_name,shop_categories,market_name,market_id;
-    private Firebase firebase,pending_shop,shop_details;
+    private Firebase firebase,pending_shop,shop_details,delete_pending_shop;
+    private ValueEventListener VEL;
     private ProgressDialog progressDialog;
     private PopupMenu popup;
-    private Boolean DataCheck = true;
 
     private ShopDataModel shopDataModel = new ShopDataModel();
     private MarketDataModel marketDataModel = new MarketDataModel();
@@ -55,6 +55,7 @@ public class PendingShops extends ActionBarActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         status = (TextView)findViewById(R.id.status);
+        status.setVisibility(View.INVISIBLE);
         user_name = (TextView) findViewById(R.id.tv_shopkeeper_name);
         user_name.setText(userDataModelSingleTon.getName().toString());
 
@@ -99,9 +100,11 @@ public class PendingShops extends ActionBarActivity {
     }
 
     private void getPendingList() {
-        firebase.child("Shopkeeper_Pending_Shops").child(user_id).addValueEventListener(new ValueEventListener() {
+        pending_shop = firebase.child("Shopkeeper_Pending_Shops").child(user_id);
+        pending_shop.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                VEL = this;
                 shop_id.clear();
                 shop_name.clear();
                 shop_categories.clear();
@@ -116,9 +119,11 @@ public class PendingShops extends ActionBarActivity {
                         market_id.add(marketID);
                         Log.d("Shop_ID and Market_ID", d.getKey().toString()+" "+marketID);
                         getShopDetails(d.getKey(),marketID);
-                        status.setVisibility(View.INVISIBLE);
-                        DataCheck = false;
+
                     }
+                } else {
+                    status.setVisibility(View.VISIBLE);
+                    pending_list.setBackgroundResource(R.drawable.ic_action_done);
                 }
             }
 
@@ -127,13 +132,10 @@ public class PendingShops extends ActionBarActivity {
 
             }
         });
-        if(DataCheck){
-            status.setVisibility(View.VISIBLE);
-        }
     }
 
     private void getShopDetails(final String shop_ID,final String market_ID) {
-        firebase.child("Shop_Requests").child(market_ID).child(shop_ID).addValueEventListener(new ValueEventListener() {
+        firebase.child("Shop_Requests").child(market_ID).child(shop_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
@@ -163,7 +165,7 @@ public class PendingShops extends ActionBarActivity {
     }
 
     private void getMarketName(final String marketID){
-        firebase.child("Markets").child(marketID).addValueEventListener(new ValueEventListener() {
+        firebase.child("Markets").child(marketID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("In PendingShop", "Getting Market Name");
@@ -174,6 +176,7 @@ public class PendingShops extends ActionBarActivity {
                     pending_list.setAdapter(new CustomAdapter_ShopsList(PendingShops.this,shop_name,shop_categories,market_name));
                 else
                     Log.d("In PendingShop","waiting for pending_list");
+                status.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -204,8 +207,8 @@ public class PendingShops extends ActionBarActivity {
     }
 
     private void deletePendingShop(final String shopID,final String marketID) {
-        pending_shop = firebase.child("Shopkeeper_Pending_Shops").child(user_id).child(shopID);
-        pending_shop.removeValue(new Firebase.CompletionListener() {
+        delete_pending_shop = firebase.child("Shopkeeper_Pending_Shops").child(user_id).child(shopID);
+        delete_pending_shop.removeValue(new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
@@ -246,6 +249,8 @@ public class PendingShops extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if(VEL != null)
+            pending_shop.removeEventListener(VEL);
         finish();
     }
 }
