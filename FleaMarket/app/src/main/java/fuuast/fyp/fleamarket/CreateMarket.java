@@ -1,7 +1,10 @@
 package fuuast.fyp.fleamarket;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -27,9 +30,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CreateMarket extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener{
+public class CreateMarket extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
     private String lat=null,lon=null,address=null,name=null,day;
+    private double adminLocation_lat,adminLocation_lon,marketLocation_lat,marketLocation_lon;
     private EditText et_name,et_radius;
     private Spinner sp;
     private ImageView img;
@@ -38,6 +42,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
     private Firebase firebase,markets;
     private GoogleMap mMap;
     private ProgressDialog progressDialog;
+    private Location currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,29 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         et_name = (EditText) findViewById(R.id.et_marketname);
         et_radius = (EditText) findViewById(R.id.et_radius);
 
+        //getLocation();
+        adminLocation_lat = 24.942163;
+        adminLocation_lon = 67.110005;
+
         img = (ImageView) findViewById(R.id.cm_img);
-        img.setOnClickListener(this);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("In CreateMarket","Create market button clicked");
+                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")&&!et_radius.getText().toString().equals("")&&!sp.getSelectedItem().equals("<Select Market Day>")) {
+                    img.setEnabled(false);
+                    marketDataModel.setAdminID(userDataModelSingleTon.getId());
+                    marketDataModel.setName(et_name.getText().toString());
+                    marketDataModel.setRadius(et_radius.getText().toString());
+                    marketDataModel.setLatitude(lat);
+                    marketDataModel.setLongitude(lon);
+                    marketDataModel.setAddress(address);
+                    marketDataModel.setDay(day);
+                    createMarket(marketDataModel);
+                }else
+                    Toast.makeText(CreateMarket.this,"Data Incomplete",Toast.LENGTH_LONG).show();
+            }
+        });
 
         marketDataModel=new MarketDataModel();
         userDataModelSingleTon=UserDataModelSingleTon.getInstance();
@@ -67,6 +93,18 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
         Toast.makeText(this,"Please Wait For Map",Toast.LENGTH_LONG).show();
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.createmarket_map)).getMapAsync(this);
+    }
+
+    public void getLocation() {
+        Log.d("In CreateMarket", "Getting current location");
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            adminLocation_lat = currentLocation.getLatitude();
+            adminLocation_lon = currentLocation.getLongitude();
+        }else{
+            Toast.makeText(CreateMarket.this,"Network is not Enabled",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void setSpinner(){
@@ -96,12 +134,13 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("MAP......", "Ready");
+        Log.d("In CreateMarket", "Map Ready..");
         mMap=googleMap;
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapClickListener(this);
         et_name.setEnabled(true);
         et_radius.setEnabled(true);
+        img.setEnabled(true);
         sp.setEnabled(true);
     }
 
@@ -109,38 +148,17 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng latLng) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng).draggable(true).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
-        lat= ""+latLng.latitude;
-        lon= ""+latLng.longitude;
+        marketLocation_lat = latLng.latitude;
+        marketLocation_lon = latLng.longitude;
 
-        GetAddress objGetAddress = new GetAddress(CreateMarket.this,Double.parseDouble(lat),Double.parseDouble(lon));
+        GetAddress objGetAddress = new GetAddress(CreateMarket.this,marketLocation_lat,marketLocation_lon);
         objGetAddress.get();
 
         while (objGetAddress.parsingComplete);
         address=objGetAddress.getCity();
         if (address==null)
             address="Unable to get address";
-        Log.d("ON MAP CLICK.....","\n"+lat+"\n"+lon+"\n"+address);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.cm_img:
-                Log.d("CREATE MARKET.....","CLICKED");
-                if (lat!=null&&lon!=null&&!et_name.getText().toString().equals("")&&!et_radius.getText().toString().equals("")&&!sp.getSelectedItem().equals("<Select Market Day>")) {
-                    img.setEnabled(false);
-                    marketDataModel.setAdminID(userDataModelSingleTon.getId());
-                    marketDataModel.setName(et_name.getText().toString());
-                    marketDataModel.setRadius(et_radius.getText().toString());
-                    marketDataModel.setLatitude(lat);
-                    marketDataModel.setLongitude(lon);
-                    marketDataModel.setAddress(address);
-                    marketDataModel.setDay(day);
-                    createMarket(marketDataModel);
-                }else
-                    Toast.makeText(this,"Data Incomplete",Toast.LENGTH_LONG).show();
-                break;
-        }
+        Log.d("In CreateMarket","MAP CLICKED.."+" "+lat+" "+lon+" "+address);
     }
 
     private void createMarket(MarketDataModel marketDataModel) {
@@ -156,7 +174,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                 if (firebaseError!=null){
                     img.setEnabled(true);
                     progressDialog.dismiss();
-                    Log.d("CREATE MARKET.....",firebaseError.getMessage());
+                    Log.d("In CreateMarket",firebaseError.getMessage());
                     Toast.makeText(CreateMarket.this,"Error Creating Market",Toast.LENGTH_SHORT).show();
                 }
                 else{

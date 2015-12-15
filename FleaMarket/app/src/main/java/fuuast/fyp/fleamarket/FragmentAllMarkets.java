@@ -21,11 +21,11 @@ import java.util.ArrayList;
 
 public class FragmentAllMarkets extends Fragment {
 
-    private ArrayList market_names,market_area,market_id,distance,sorted_market_names,sorted_market_area,sorted_market_id;
+    private ArrayList market_id,market_names,market_area,market_day,distance,sorted_market_id,sorted_market_names,sorted_market_area,sorted_market_day;
     private ArrayList<MarketDataModel> dataModelList;
     private Double[] distanceArray;
-    private String[] market_names_array,market_area_array,market_id_array;
-    private MarketDataModel[] datamodelArray;
+    private String[] market_id_array,market_names_array,market_area_array,market_day_array;
+    private MarketDataModel[] dataModelArray;
     private Firebase firebase;
     private ListView market_list;
     Location currentLocation,marketLocation;
@@ -42,10 +42,12 @@ public class FragmentAllMarkets extends Fragment {
         dataModelList = new ArrayList<MarketDataModel>();
         market_names = new ArrayList();
         market_area = new ArrayList();
+        market_day = new ArrayList();
         market_id = new ArrayList();
         distance=new ArrayList();
         sorted_market_names = new ArrayList();
         sorted_market_area = new ArrayList();
+        sorted_market_day = new ArrayList();
         sorted_market_id = new ArrayList();
 
         currentLocation=new Location("myLocation");
@@ -76,6 +78,7 @@ public class FragmentAllMarkets extends Fragment {
                 market_id.clear();
                 market_names.clear();
                 market_area.clear();
+                market_day.clear();
                 distance.clear();
 
                 for(DataSnapshot d:dataSnapshot.getChildren()){
@@ -86,6 +89,7 @@ public class FragmentAllMarkets extends Fragment {
                     market_id.add(d.getKey().toString());
                     market_names.add(marketDataModel.getName());
                     market_area.add(marketDataModel.getAddress());
+                    market_day.add(marketDataModel.getDay());
 
                     marketLocation=new Location("marketLocation");
                     marketLocation.setLatitude(Double.parseDouble(marketDataModel.getLatitude()));
@@ -100,14 +104,16 @@ public class FragmentAllMarkets extends Fragment {
                 market_id_array=new String[dataModelList.size()];
                 market_names_array=new String[dataModelList.size()];
                 market_area_array=new String[dataModelList.size()];
-                datamodelArray=new MarketDataModel[dataModelList.size()];
+                market_day_array=new String[dataModelList.size()];
+                dataModelArray=new MarketDataModel[dataModelList.size()];
 
                 for(int i=0;i<dataModelList.size();i++){
                     distanceArray[i]=Double.parseDouble(distance.get(i).toString());
                     market_id_array[i]=market_id.get(i).toString();
                     market_names_array[i]=market_names.get(i).toString();
                     market_area_array[i]=market_area.get(i).toString();
-                    datamodelArray[i]=dataModelList.get(i);
+                    market_day_array[i]=market_day.get(i).toString();
+                    dataModelArray[i]=dataModelList.get(i);
                 }
 
                 int i,j;
@@ -122,43 +128,48 @@ public class FragmentAllMarkets extends Fragment {
                     }
                     if (position!=i){
                         Double tempDist;
-                        String tempId,tempName,tempArea;
+                        String tempId,tempName,tempArea,tempDay;
                         MarketDataModel tempDatamodel;
 
                         tempDist=distanceArray[i];
                         tempId=market_id_array[i];
                         tempName=market_names_array[i];
                         tempArea=market_area_array[i];
-                        tempDatamodel=datamodelArray[i];
+                        tempDay=market_day_array[i];
+                        tempDatamodel=dataModelArray[i];
 
                         distanceArray[i]=distanceArray[position];
                         market_id_array[i]=market_id_array[position];
                         market_names_array[i]=market_names_array[position];
                         market_area_array[i]=market_area_array[position];
-                        datamodelArray[i]=datamodelArray[position];
+                        market_day_array[i]=market_day_array[position];
+                        dataModelArray[i]=dataModelArray[position];
 
                         distanceArray[position]=tempDist;
                         market_id_array[position]=tempId;
                         market_names_array[position]=tempName;
                         market_area_array[position]=tempArea;
-                        datamodelArray[position]=tempDatamodel;
+                        market_day_array[position]=tempDay;
+                        dataModelArray[position]=tempDatamodel;
                     }
                 }
 
                 market_id.clear();
                 market_names.clear();
                 market_area.clear();
+                market_day.clear();
                 distance.clear();
                 dataModelList.clear();
 
-                for (int k=0;k<datamodelArray.length;k++){
-                    dataModelList.add(datamodelArray[k]);
+                for (int k=0;k<dataModelArray.length;k++){
+                    dataModelList.add(dataModelArray[k]);
                     market_id.add(market_id_array[k]);
                     market_names.add(market_names_array[k]);
                     market_area.add(market_area_array[k]);
+                    market_day.add(market_day_array[k]);
                     distance.add(distanceArray[k]);
                 }
-                market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area,null));
+                market_list.setAdapter(new CustomAdapter_MarketsList(getActivity(),market_names,market_area,market_day));
             }
 
             @Override
@@ -176,5 +187,6 @@ public class FragmentAllMarkets extends Fragment {
         marketDataModelSingleTon.setMarket_lon(dataModelList.get(i).getLongitude());
         marketDataModelSingleTon.setMarket_name(dataModelList.get(i).getName());
         marketDataModelSingleTon.setRadius(dataModelList.get(i).getRadius());
+        marketDataModelSingleTon.setDay(dataModelList.get(i).getDay());
     }
 }

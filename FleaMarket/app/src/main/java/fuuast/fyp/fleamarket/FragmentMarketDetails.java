@@ -52,7 +52,7 @@ public class FragmentMarketDetails extends Fragment {
         });
 
         mt_area.setText(marketDataModelSingleTon.getMarket_address());
-        //mt_day.setText(marketDataModelSingleTon.getMarket_address());
+        mt_day.setText(marketDataModelSingleTon.getDay());
 
         admin_id = marketDataModelSingleTon.getAdmin_id();
         market_id = marketDataModelSingleTon.getMarket_id();

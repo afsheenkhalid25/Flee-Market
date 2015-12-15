@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ public class CreateShop extends ActionBarActivity {
     private EditText et_name,et_width,et_length;
     private double location_lat,location_lon;
     private Button btn_cancel,btn_next;
+    private LinearLayout disabled;
     private ImageView img_add;
     private Firebase firebase;
     private Spinner mySpinner;
@@ -56,6 +59,8 @@ public class CreateShop extends ActionBarActivity {
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
+        disabled = (LinearLayout)findViewById(R.id.disabled);
+
         et_name = (EditText)findViewById(R.id.cs_et_name);
         et_width = (EditText)findViewById(R.id.cs_et_width);
         et_length = (EditText)findViewById(R.id.cs_et_length);
@@ -67,8 +72,8 @@ public class CreateShop extends ActionBarActivity {
 
         //getLocation();
         currentLocation=new Location("myLocation");
-        currentLocation.setLatitude(24.848040);
-        currentLocation.setLongitude(67.169034);
+        currentLocation.setLatitude(24.942163);
+        currentLocation.setLongitude(67.110005);
 
         btn_cancel = (Button)findViewById(R.id.btn_cancle);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +105,7 @@ public class CreateShop extends ActionBarActivity {
         mySpinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("In CreateShop", "market spinner");
                 market_Id = market_id.get(position).toString();
             }
 
@@ -158,20 +164,26 @@ public class CreateShop extends ActionBarActivity {
                 market_names.clear();
                 market_address.clear();
                 for(DataSnapshot d:dataSnapshot.getChildren()) {
-                    market_id.add(d.getKey());
                     marketDataModel = d.getValue(MarketDataModel.class);
 
                     marketLocation=new Location("marketLocation");
                     marketLocation.setLatitude(Double.parseDouble(marketDataModel.getLatitude()));
                     marketLocation.setLongitude(Double.parseDouble(marketDataModel.getLongitude()));
-
                     double distance = currentLocation.distanceTo(marketLocation);
+
                     if(Math.round(distance)<Integer.parseInt(marketDataModel.getRadius())) {
-                        market_id.clear();
+                        market_id.add(d.getKey());
                         market_names.add(marketDataModel.getName());
                         market_address.add(marketDataModel.getAddress());
                         mySpinner.setAdapter(new CustomAdapter_MarketsList(CreateShop.this, market_names, market_address, null));
                     }
+                }if(market_id.size()==0) {
+                    btn_next.setEnabled(false);
+                    disabled.setVisibility(View.VISIBLE);
+                    Toast.makeText(CreateShop.this, "You are away from market range....", Toast.LENGTH_SHORT).show();
+                }else {
+                    btn_next.setEnabled(true);
+                    disabled.setVisibility(View.GONE);
                 }
             }
 
