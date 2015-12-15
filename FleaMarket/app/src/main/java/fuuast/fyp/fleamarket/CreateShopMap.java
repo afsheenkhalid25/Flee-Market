@@ -166,15 +166,18 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
 
         if (i==1){
             rectOptions.strokeWidth(2);
-            rectOptions.fillColor(Color.LTGRAY);
+            rectOptions.strokeColor(Color.parseColor("#D9FFF8DC"));
+            rectOptions.fillColor(Color.parseColor("#D9F0E68C"));
         }
         if (i==2){
             rectOptions.strokeWidth(2);
+            rectOptions.strokeColor(Color.parseColor("#AEBEC4BF"));
             rectOptions.fillColor(Color.GRAY);
         }
         if (i==3){
             rectOptions.strokeWidth(4);
-            rectOptions.fillColor(Color.GREEN);
+            rectOptions.strokeColor(Color.parseColor("#D9FFF8DC"));
+            rectOptions.fillColor(Color.parseColor("#D9F0E68C"));
         }
 
         Polygon polygon = mMap.addPolygon(rectOptions);
