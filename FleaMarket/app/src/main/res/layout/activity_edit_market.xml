@@ -1,5 +1,107 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:id="@+id/map"
-    tools:context="fuuast.fyp.fleamarket.EditMarket"
-    android:name="com.google.android.gms.maps.SupportMapFragment" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fuuast.fyp.fleamarket.CreateMarket"
+    android:background="@color/material_grey_100">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/material_blue_grey_800"
+        android:gravity="right"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Edit Market"
+            android:textColor="#FFFFFF"
+            android:textSize="23dp"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:id="@+id/rl" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_done"
+            android:paddingRight="10dp"
+            android:clickable="true"
+            android:id="@+id/img_done" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout"
+        android:padding="10dp"
+        android:background="@color/material_grey_300"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/marketpic"
+            android:clickable="true"
+            android:id="@+id/img_market"
+            android:layout_alignBottom="@+id/et_day"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:id="@+id/et_name"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/img_market"
+            android:layout_toEndOf="@+id/img_market"
+            android:text="Marekt Name" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/et_radius"
+            android:layout_below="@+id/et_name"
+            android:layout_toEndOf="@+id/img_market"
+            android:layout_toRightOf="@+id/img_market"
+            android:text="Market Radius" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:id="@+id/et_day"
+            android:layout_below="@+id/et_radius"
+            android:layout_toEndOf="@+id/img_market"
+            android:layout_toRightOf="@+id/img_market"
+            android:text="Market Day" />
+
+    </RelativeLayout>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editMarket_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="5dp" />
+
+</RelativeLayout>
+

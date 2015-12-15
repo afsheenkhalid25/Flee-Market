@@ -30,8 +30,10 @@ public class MarketMap extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_map);
+
         marketDataModelSingleTon=MarketDataModelSingleTon.getInstance();
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
+
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
     }

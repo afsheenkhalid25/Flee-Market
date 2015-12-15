@@ -175,5 +175,6 @@ public class FragmentAllMarkets extends Fragment {
         marketDataModelSingleTon.setMarket_lat(dataModelList.get(i).getLatitude());
         marketDataModelSingleTon.setMarket_lon(dataModelList.get(i).getLongitude());
         marketDataModelSingleTon.setMarket_name(dataModelList.get(i).getName());
+        marketDataModelSingleTon.setRadius(dataModelList.get(i).getRadius());
     }
 }

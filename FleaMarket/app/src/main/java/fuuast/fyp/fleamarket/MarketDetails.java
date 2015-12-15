@@ -251,8 +251,8 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "edit":
                 Log.d("menu item...", "Edit Market");
-                //Intent k = new Intent(this,CreateMarket.class);
-                //startActivity(k);
+                Intent i3 = new Intent(this,EditMarket.class);
+                startActivity(i3);
                 break;
             case "delete":
                 Log.d("menu item...", "Delete Market");
