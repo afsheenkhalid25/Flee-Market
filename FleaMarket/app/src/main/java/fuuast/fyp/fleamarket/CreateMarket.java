@@ -266,6 +266,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(Boolean check) {
             super.onPostExecute(check);
             if (check){
+                Toast.makeText(CreateMarket.this,currentCity,Toast.LENGTH_LONG).show();
                 new GetCurrentCity2().execute(marketLocation);
             }
             else {
@@ -297,8 +298,9 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected void onPostExecute(Boolean check) {
-            super.onPostExecute(check);
             if (check){
+                super.onPostExecute(check);
+                Toast.makeText(CreateMarket.this,marketCity,Toast.LENGTH_SHORT).show();
                 if (currentCity.toUpperCase().equals(marketCity.toUpperCase())){
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());
