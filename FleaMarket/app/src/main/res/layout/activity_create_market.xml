@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fuuast.fyp.fleamarket.CreateMarket"
-    android:background="@color/material_grey_100">
+    android:background="#fff0f0f0">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,6 +12,15 @@
         android:background="@color/material_blue_grey_800"
         android:gravity="right"
         android:id="@+id/linearLayout">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/marketpic"
+            android:id="@+id/imgage"
+            android:paddingBottom="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +51,7 @@
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@color/material_grey_300"
+        android:background="#ffdedfe6"
         android:outlineProvider="background" />
 
     <EditText

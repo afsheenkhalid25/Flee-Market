@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/material_grey_300"
+        android:background="#ffdedfe6"
         android:id="@+id/linearLayout"
         android:gravity="right"
         android:baselineAligned="true">
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/material_grey_300"
+        android:background="#ffdedfe6"
         android:layout_below="@+id/linearLayout"
         android:id="@+id/linearLayout2"
         android:gravity="right"

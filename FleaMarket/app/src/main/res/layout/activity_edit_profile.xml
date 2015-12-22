@@ -15,6 +15,14 @@
         android:id="@+id/ll_titleBar"
         android:gravity="right" >
 
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_action_back"
+            android:id="@+id/imgage" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +35,57 @@
             android:layout_weight="1" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout"
+        android:padding="10dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#ffdedfe6">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/profilepic"
+            android:clickable="true"
+            android:id="@+id/img_cat1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Email_ID"
+            android:textStyle="bold"
+            android:textColor="@color/material_blue_grey_800"
+            android:id="@+id/tv_email"
+            android:layout_above="@+id/tv_type"
+            android:layout_toRightOf="@+id/img_cat1"
+            android:layout_toEndOf="@+id/img_cat1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Account type: "
+            android:textColor="@color/material_blue_grey_800"
+            android:id="@+id/tv_type"
+            android:layout_alignBottom="@+id/img_cat1"
+            android:layout_toRightOf="@+id/img_cat1"
+            android:layout_toEndOf="@+id/img_cat1"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,22 +101,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Email_ID"
-                android:textStyle="bold"
-                android:background="@color/material_grey_300"
-                android:textColor="@color/material_blue_grey_800"
-                android:id="@+id/ep_tv_email"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="Change Password"
                 android:textColor="@color/material_blue_grey_800"
                 android:textSize="14dp"
-                android:background="@color/material_grey_300"
+                android:background="#ffdedfe6"
                 android:padding="5dp"
                 android:layout_marginTop="10dp"
                 android:id="@+id/ep_tv_password" />
@@ -94,7 +141,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="3dp"
-                android:background="@color/material_grey_600"
+                android:background="#ff8d8d8d"
                 android:textColor="#FFFFFF" />
 
             <TextView
@@ -103,7 +150,7 @@
                 android:text="Update Info"
                 android:textColor="@color/material_blue_grey_800"
                 android:textSize="14dp"
-                android:background="@color/material_grey_300"
+                android:background="#ffdedfe6"
                 android:padding="5dp"
                 android:layout_marginTop="20dp"/>
 
@@ -155,7 +202,7 @@
                         android:text="Detail"
                         android:textColor="@color/material_blue_grey_800"
                         android:textSize="14dp"
-                        android:background="@color/material_grey_300"
+                        android:background="#ffdedfe6"
                         android:padding="5dp"
                         android:layout_marginTop="10dp"/>
 
@@ -248,7 +295,7 @@
         android:text="Update"
         android:id="@+id/ep_btn_updateinfo"
         android:layout_below="@+id/scrollView"
-        android:background="@color/material_grey_600"
+        android:background="#ff8d8d8d"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

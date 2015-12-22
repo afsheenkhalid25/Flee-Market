@@ -22,6 +22,15 @@
         android:gravity="right"
         android:id="@+id/linearLayout2">
 
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/shoppic"
+            android:id="@+id/imgage"
+            android:paddingBottom="5dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +52,7 @@
         android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:id="@+id/textview"
-        android:background="@color/material_grey_300"
+        android:background="#ffdedfe6"
         android:layout_below="@+id/linearLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -66,7 +75,7 @@
         android:text="Shop Details:"
         android:paddingLeft="5dp"
         android:id="@+id/textView5"
-        android:background="@color/material_grey_300"
+        android:background="#ffdedfe6"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/spinner"
         android:layout_alignParentLeft="true"
@@ -110,7 +119,7 @@
         android:text="Add Category"
         android:paddingLeft="5dp"
         android:id="@+id/textView2"
-        android:background="@color/material_grey_300"
+        android:background="#ffdedfe6"
         android:textSize="20dp"
         android:layout_below="@+id/cs_et_length"
         android:layout_alignParentLeft="true"

@@ -131,6 +131,7 @@ public class AdminPanel extends ActionBarActivity implements View.OnClickListene
             case "edit_profile":
                 Log.d("menu item...", "Edit Profile");
                 Intent i = new Intent(this,EditProfile.class);
+                i.putExtra("ParentActivity","AdminPanel");
                 startActivity(i);
                 break;
             case "logout":

@@ -233,28 +233,6 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
         tv_owner_contact.setText(user_contact.toString());
     }
 
-    @Override
-    public void onBackPressed() {
-        switch (parentActivity){
-            case "ShopkeeperPanel":
-                Intent i1=new Intent(ShopDetails.this,ShopkeeperPanel.class);
-                startActivity(i1);
-                break;
-            case "PendingShops":
-                Intent i2=new Intent(ShopDetails.this,PendingShops.class);
-                startActivity(i2);
-                break;
-            case "MarketDetails":
-                Intent i3=new Intent(ShopDetails.this,MarketDetails.class);
-                startActivity(i3);
-                break;
-            case "ShopRequest":
-                Intent i4=new Intent(ShopDetails.this,ShopsRequest.class);
-                startActivity(i4);
-                break;
-        }
-    }
-
     private void getAllShops(){
         firebase.child("Market_Shops").child(market_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -325,6 +303,28 @@ public class ShopDetails extends FragmentActivity implements OnMapReadyCallback 
                 .fillColor(Color.parseColor("#D9F0E68C"));
 
         Polygon polygon = mMap.addPolygon(rectOptions);
+    }
+
+    @Override
+    public void onBackPressed() {
+        switch (parentActivity){
+            case "ShopkeeperPanel":
+                Intent i1=new Intent(ShopDetails.this,ShopkeeperPanel.class);
+                startActivity(i1);
+                break;
+            case "PendingShops":
+                Intent i2=new Intent(ShopDetails.this,PendingShops.class);
+                startActivity(i2);
+                break;
+            case "MarketDetails":
+                Intent i3=new Intent(ShopDetails.this,MarketDetails.class);
+                startActivity(i3);
+                break;
+            case "ShopRequest":
+                Intent i4=new Intent(ShopDetails.this,ShopsRequest.class);
+                startActivity(i4);
+                break;
+        }
     }
 
     @Override

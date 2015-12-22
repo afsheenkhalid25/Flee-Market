@@ -5,13 +5,20 @@
     android:layout_height="match_parent"
     tools:context="fuuast.fyp.fleamarket.ShopDetails">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/material_blue_grey_800"
         android:gravity="left"
         android:id="@+id/linearLayout">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/shoppic"
+            android:id="@+id/imgage" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,22 +28,28 @@
             android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:paddingLeft="10dp"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:textStyle="bold"
-            android:id="@+id/ll" />
+            android:id="@+id/ll"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imgage"
+            android:layout_toEndOf="@+id/imgage" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
+            android:text="Shop Market"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
             android:textColor="#FFFFFF"
             android:id="@+id/textView3"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_below="@+id/ll"
+            android:layout_alignLeft="@+id/ll"
+            android:layout_alignStart="@+id/ll" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +60,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout4"
-        android:background="@color/material_grey_300">
+        android:background="#ffdedfe6">
 
         <ImageView
             android:layout_width="40dp"
