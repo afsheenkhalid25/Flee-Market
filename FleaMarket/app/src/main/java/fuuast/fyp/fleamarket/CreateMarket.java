@@ -37,7 +37,7 @@ import java.util.Locale;
 
 public class CreateMarket extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-    private String address=null,day,currentCity,marketCity;
+    private String market_address=null,day,currentCity,marketCity;
     private EditText et_name,et_radius;
     private Spinner sp;
     private ImageView img;
@@ -144,6 +144,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void createMarket(MarketDataModel marketDataModel) {
+        Log.d("CREATE MARKET","CREATE MARKET");
         progressDialog.setMessage("\tCreating...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -220,6 +221,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d("CREATE MARKET","ON CONNECTED");
         currentLocation=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (currentLocation!=null){
             Toast.makeText(this,"Location Found",Toast.LENGTH_LONG).show();
@@ -245,6 +247,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected Boolean doInBackground(Location... params) {
+            Log.d("CREATE MARKET","ASYNC1");
             Location location=params[0];
             Geocoder geocoder= new Geocoder(CreateMarket.this, Locale.getDefault());
             List<Address> addresses=null;
@@ -266,7 +269,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(Boolean check) {
             super.onPostExecute(check);
             if (check){
-                Toast.makeText(CreateMarket.this,currentCity,Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateMarket.this,currentCity+"1",Toast.LENGTH_LONG).show();
                 new GetCurrentCity2().execute(marketLocation);
             }
             else {
@@ -279,6 +282,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected Boolean doInBackground(Location... params) {
+            Log.d("CREATE MARKET","ASYNC2");
             Location location=params[0];
             Geocoder geocoder= new Geocoder(CreateMarket.this, Locale.getDefault());
             List<Address> addresses=null;
@@ -289,6 +293,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
             }
             if (addresses != null && addresses.size() > 0) {
                 Address address = addresses.get(0);
+                market_address=address.getAddressLine(0)+","+address.getLocality()+","+address.getCountryName();
                 marketCity = address.getLocality();
                 return true;
             }
@@ -300,14 +305,14 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(Boolean check) {
             if (check){
                 super.onPostExecute(check);
-                Toast.makeText(CreateMarket.this,marketCity,Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateMarket.this,marketCity+"2",Toast.LENGTH_SHORT).show();
                 if (currentCity.toUpperCase().equals(marketCity.toUpperCase())){
                     marketDataModel.setAdminID(userDataModelSingleTon.getId());
                     marketDataModel.setName(et_name.getText().toString());
                     marketDataModel.setRadius(et_radius.getText().toString());
                     marketDataModel.setLatitude(marketLocation.getLatitude()+"");
                     marketDataModel.setLongitude(marketLocation.getLongitude()+"");
-                    marketDataModel.setAddress(address);
+                    marketDataModel.setAddress(market_address);
                     marketDataModel.setDay(day);
                     createMarket(marketDataModel);
                 }
