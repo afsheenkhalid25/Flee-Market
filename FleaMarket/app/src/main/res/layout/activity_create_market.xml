@@ -17,7 +17,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:paddingLeft="5dp"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:src="@drawable/marketpic"
             android:id="@+id/imgage"
             android:paddingBottom="5dp" />
