@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +24,17 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class CreateShop extends ActionBarActivity {
+public class CreateShop extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
     private String name,width,length,market_Id,category1,category2,category3,category1_url,category2_url,category3_url;
     private ArrayList market_id,market_names,market_address,category_name,category_url,select_ct_name,select_ct_url;
@@ -46,6 +49,10 @@ public class CreateShop extends ActionBarActivity {
     private AlertDialog category_dialog,alert;
     private Location currentLocation,marketLocation;
 
+    private GoogleApiClient mGoogleApiClient;
+
+    LocationRequest mLocationRequest;
+
     private CustomAdapter_CategoriesList dialog_adapter;
     private MarketDataModel marketDataModel = new MarketDataModel();
     private ShopDataModelSingleTon shopDataModelSingleTon = ShopDataModelSingleTon.getInstance();
@@ -59,6 +66,16 @@ public class CreateShop extends ActionBarActivity {
         Firebase.setAndroidContext(this);
         firebase=new Firebase("https://flee-market.firebaseio.com/");
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        createLocationRequest();
+
+        mGoogleApiClient.connect();
+
         disabled = (LinearLayout)findViewById(R.id.disabled);
 
         et_name = (EditText)findViewById(R.id.cs_et_name);
@@ -68,12 +85,6 @@ public class CreateShop extends ActionBarActivity {
         market_id = new ArrayList();
         market_names = new ArrayList();
         market_address = new ArrayList();
-        getMarketList();
-
-        //getLocation();
-        currentLocation=new Location("myLocation");
-        currentLocation.setLatitude(24.942163);
-        currentLocation.setLongitude(67.110005);
 
         btn_cancel = (Button)findViewById(R.id.btn_cancle);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +164,8 @@ public class CreateShop extends ActionBarActivity {
 
         checkEditState();
         getCategoryList();
+
+        Toast.makeText(CreateShop.this, "Getting Your Location", Toast.LENGTH_SHORT).show();
     }
 
     private void getMarketList() {
@@ -171,7 +184,7 @@ public class CreateShop extends ActionBarActivity {
                     marketLocation.setLongitude(Double.parseDouble(marketDataModel.getLongitude()));
                     double distance = currentLocation.distanceTo(marketLocation);
 
-                    if(Math.round(distance)<Integer.parseInt(marketDataModel.getRadius())) {
+                    if(Math.round(distance)<=Integer.parseInt(marketDataModel.getRadius())) {
                         market_id.add(d.getKey());
                         market_names.add(marketDataModel.getName());
                         market_address.add(marketDataModel.getAddress());
@@ -299,28 +312,21 @@ public class CreateShop extends ActionBarActivity {
         name = et_name.getText().toString();
         width = et_width.getText().toString();
         length = et_length.getText().toString();
-        //below two lines will be deleted after getting real current location
-        location_lat = currentLocation.getLatitude();
-        location_lon = currentLocation.getLongitude();
-        if (name.equals("") || width.equals("") || length.equals("")||select_ct_name.size()==0) {
-            Toast.makeText(CreateShop.this, "First fill complete details..", Toast.LENGTH_SHORT).show();
-        } else {
-            setShopDataSingleTon();
-            Intent j = new Intent(CreateShop.this, CreateShopMap.class);
-            startActivity(j);
-        }
-    }
 
-    public void getLocation() {
-        Log.d("In CreateShop", "Getting current location");
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            location_lat = currentLocation.getLatitude();
-            location_lon = currentLocation.getLongitude();
-        }else{
-            Toast.makeText(CreateShop.this,"Network is not Enabled",Toast.LENGTH_SHORT).show();
+        if(currentLocation!=null){
+            if (name.equals("") || width.equals("") || length.equals("")||select_ct_name.size()==0) {
+                Toast.makeText(CreateShop.this, "First fill complete details..", Toast.LENGTH_SHORT).show();
+            } else {
+                setShopDataSingleTon();
+                Intent j = new Intent(CreateShop.this, CreateShopMap.class);
+                startActivity(j);
+            }
         }
+        else{
+            Toast.makeText(CreateShop.this, "Unable To Get Your Location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateShop.this, "Enable Your Locationand Try Again Later", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void checkEditState() {
@@ -371,6 +377,8 @@ public class CreateShop extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        mGoogleApiClient.disconnect();
         Intent i = new Intent(CreateShop.this,ShopkeeperPanel.class);
         startActivity(i);
     }
@@ -378,6 +386,38 @@ public class CreateShop extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        mGoogleApiClient.disconnect();
         finish();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, CreateShop.this);
+        getMarketList();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        mGoogleApiClient.connect();
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(10000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation = location;
+        location_lat = currentLocation.getLatitude();
+        location_lon = currentLocation.getLongitude();
     }
 }
