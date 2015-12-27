@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -81,7 +80,7 @@ public class ShopkeeperPanel extends ActionBarActivity implements View.OnClickLi
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                final PopupMenu popup = new PopupMenu(ShopkeeperPanel.this,view, Gravity.RIGHT);
+                final PopupMenu popup = new PopupMenu(ShopkeeperPanel.this,view);
                 popup.inflate(R.menu.menu_shop_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override

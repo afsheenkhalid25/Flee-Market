@@ -394,7 +394,6 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
     @Override
     public void onConnected(Bundle bundle) {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, CreateShop.this);
-
     }
 
     @Override
@@ -419,6 +418,11 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
         currentLocation = location;
         location_lat = currentLocation.getLatitude();
         location_lon = currentLocation.getLongitude();
-        getMarketList();
+        if (market_id.size()>0){
+
+        }
+        else{
+            getMarketList();
+        }
     }
 }

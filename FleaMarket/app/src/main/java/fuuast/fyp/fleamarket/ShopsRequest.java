@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -72,7 +71,7 @@ public class ShopsRequest extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Shop_Id = shop_id.get(position).toString();
                 User_Id = user_id.get(position).toString();
-                popup = new PopupMenu(ShopsRequest.this, view, Gravity.RIGHT);
+                popup = new PopupMenu(ShopsRequest.this, view);
                 popup.inflate(R.menu.menu_request_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {

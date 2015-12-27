@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +24,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MarketDetails extends ActionBarActivity implements View.OnClickListener {
 
@@ -80,7 +78,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 userID = user_id.get(position).toString();
-                final PopupMenu popup = new PopupMenu(MarketDetails.this,view, Gravity.RIGHT);
+                final PopupMenu popup = new PopupMenu(MarketDetails.this,view);
                 popup.inflate(R.menu.menu_shop_list);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
