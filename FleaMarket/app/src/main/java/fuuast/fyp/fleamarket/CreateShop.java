@@ -324,7 +324,7 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
         }
         else{
             Toast.makeText(CreateShop.this, "Unable To Get Your Location", Toast.LENGTH_SHORT).show();
-            Toast.makeText(CreateShop.this, "Enable Your Locationand Try Again Later", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateShop.this, "Enable Your Location and Try Again Later", Toast.LENGTH_SHORT).show();
         }
 
     }

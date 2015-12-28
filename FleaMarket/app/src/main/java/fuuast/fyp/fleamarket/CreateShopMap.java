@@ -95,13 +95,13 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
                         createShop(shop,1);
                         mMap.addMarker(new MarkerOptions().position(shop.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.allshopflag)).title(sdm.getName()));
                     }
-                    newShop=new Shop(shopDataModelSingleTon.getLat(),shopDataModelSingleTon.getLon(),Double.parseDouble(shopDataModelSingleTon.getWidth()),Double.parseDouble(shopDataModelSingleTon.getLength()));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModelSingleTon.getLat(), shopDataModelSingleTon.getLon()), 23));
-                    if (shopsArrayList.size() > 0) {
-                        checkOverlapping();
-                    } else {
-                        createShop();
-                    }
+                }
+                newShop=new Shop(shopDataModelSingleTon.getLat(),shopDataModelSingleTon.getLon(),Double.parseDouble(shopDataModelSingleTon.getWidth()),Double.parseDouble(shopDataModelSingleTon.getLength()));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(shopDataModelSingleTon.getLat(), shopDataModelSingleTon.getLon()), 23));
+                if (shopsArrayList.size() > 0) {
+                    checkOverlapping();
+                } else {
+                    //createShop();
                 }
             }
 
