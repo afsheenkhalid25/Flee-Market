@@ -71,10 +71,11 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
-        createLocationRequest();
-
         mGoogleApiClient.connect();
+
+
+
+
 
         disabled = (LinearLayout)findViewById(R.id.disabled);
 
@@ -393,6 +394,7 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
 
     @Override
     public void onConnected(Bundle bundle) {
+        createLocationRequest();
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, CreateShop.this);
     }
 
@@ -416,13 +418,19 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        location_lat = currentLocation.getLatitude();
-        location_lon = currentLocation.getLongitude();
-        if (market_id.size()>0){
+        if(currentLocation!=null){
+            Toast.makeText(CreateShop.this,"Location Set",Toast.LENGTH_SHORT).show();
+            location_lat = currentLocation.getLatitude();
+            location_lon = currentLocation.getLongitude();
+            if (market_id.size()>0){
 
+            }
+            else{
+                getMarketList();
+            }
         }
         else{
-            getMarketList();
+         Toast.makeText(CreateShop.this,"Location Not Found",Toast.LENGTH_SHORT).show();
         }
     }
 }

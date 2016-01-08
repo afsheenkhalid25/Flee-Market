@@ -78,8 +78,9 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                 if (marketLocation!=null&&!et_name.getText().toString().equals("")&&!et_radius.getText().toString().equals("")&&!sp.getSelectedItem().equals("<Select Market Day>")) {
                     img.setEnabled(false);
                     new GetCurrentCity1().execute(currentLocation);
-                }else
+                }else{
                     Toast.makeText(CreateMarket.this,"Data Incomplete",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -273,6 +274,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
                 new GetCurrentCity2().execute(marketLocation);
             }
             else {
+                img.setEnabled(true);
                 Toast.makeText(CreateMarket.this,"Unable to find you city",Toast.LENGTH_LONG).show();
             }
         }
@@ -322,6 +324,7 @@ public class CreateMarket extends FragmentActivity implements OnMapReadyCallback
 
             }
             else {
+                img.setEnabled(true);
                 Toast.makeText(CreateMarket.this,"Unable To Find Market's City",Toast.LENGTH_LONG).show();
             }
         }
