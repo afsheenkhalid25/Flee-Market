@@ -73,10 +73,6 @@ public class CreateShop extends ActionBarActivity implements GoogleApiClient.Con
                 .build();
         mGoogleApiClient.connect();
 
-
-
-
-
         disabled = (LinearLayout)findViewById(R.id.disabled);
 
         et_name = (EditText)findViewById(R.id.cs_et_name);

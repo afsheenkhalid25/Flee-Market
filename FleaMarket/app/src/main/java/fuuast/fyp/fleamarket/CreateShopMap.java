@@ -78,14 +78,16 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Toast.makeText(CreateShopMap.this,"Map Ready",Toast.LENGTH_SHORT).show();
         mMap=googleMap;
         getAllShops();
     }
 
     private void getAllShops() {
-        firebase.child("Market_Shops").child(shopDataModelSingleTon.getMarket_id().toString()).addValueEventListener(new ValueEventListener() {
+        firebase.child("Market_Shops").child(shopDataModelSingleTon.getMarket_id().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(CreateShopMap.this,"Getting All Shops",Toast.LENGTH_SHORT).show();
                 shopsArrayList.clear();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot d:dataSnapshot.getChildren()){
@@ -102,6 +104,7 @@ public class CreateShopMap extends FragmentActivity implements OnMapReadyCallbac
                     checkOverlapping();
                 } else {
                     //createShop();
+                    createShop(newShop,3);
                 }
             }
 

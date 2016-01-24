@@ -254,6 +254,7 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
                 break;
             case "delete":
                 Log.d("menu item...", "Delete Market");
+                deleteMarket();
                 break;
         }
     }
@@ -271,5 +272,21 @@ public class MarketDetails extends ActionBarActivity implements View.OnClickList
         if(VEL != null)
             shops_list.removeEventListener(VEL);
         finish();
+    }
+
+    public void deleteMarket(){
+        firebase.child("Market_Shops").child(market_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot d:dataSnapshot.getChildren()){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }
